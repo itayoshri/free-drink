@@ -3,7 +3,11 @@ import axios, { Method } from "axios";
 const BASE_URL = "cocacola-app.co.il/api";
 
 type apiNamespace = "account" | "locations";
-type apiAction = "getUserInfo" | "register" | "getBranchesByLocation";
+type apiAction =
+  | "getUserInfo"
+  | "register"
+  | "getBranchesByLocation"
+  | "deleteUser";
 
 export interface IFetchDataParams {
   method: Method;
