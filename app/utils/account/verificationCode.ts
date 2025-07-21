@@ -15,6 +15,11 @@ export function verifyUser(verificationCode: string, mobilePhone: string) {
     method: "POST",
     namespace: "account",
     action: "verifyUser",
-    data: { verificationCode, mobilePhone } as ReqVerifyUser,
+    data: {
+      appleIdentityToken: null,
+      verificationCode,
+      mobilePhone,
+      fbAccessToken: null,
+    } as ReqVerifyUser,
   });
 }
