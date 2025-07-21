@@ -1,3 +1,5 @@
+<img src="./images/logo.png" width="150" alt="Logo">
+
 # FREE drink
 App that lets you get free drinks in Mashkar's vending machines, using Coca-Cola mobile app
 
