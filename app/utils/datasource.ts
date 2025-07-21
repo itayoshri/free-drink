@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Method } from "axios";
 
 const BASE_URL = "cocacola-app.co.il/api";
 
@@ -6,10 +6,12 @@ type apiNamespace = "account" | "locations";
 type apiAction = "getUserInfo" | "register" | "getBranchesByLocation";
 
 export interface IFetchDataParams {
+  method: Method;
   namespace: apiNamespace;
   action: apiAction;
-  query: string;
-  data: unknown;
+  query?: string;
+  data?: unknown;
+  token?: string;
 }
 
 export function buildFetchUrl(
@@ -17,16 +19,25 @@ export function buildFetchUrl(
   action: apiAction,
   query: string
 ) {
-  return `https://${BASE_URL}/${namespace}/${action}${query ? query : ""}`;
+  return `/${namespace}/${action}${query ? query : ""}`;
 }
 
 export async function fetchDataSource<T>({
+  method,
   namespace,
   action,
-  query,
+  query = "",
   data,
+  token,
 }: IFetchDataParams) {
-  const url = buildFetchUrl(namespace, action, query);
-  const res = await axios.post<T>(url, data);
+  const res = await axios<T>({
+    method: method,
+    baseURL: BASE_URL,
+    url: `${namespace}/${action}${query ? query : ""}`,
+    data,
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res.data;
 }
+
+//url, data, { auth: }
