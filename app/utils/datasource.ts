@@ -7,7 +7,9 @@ type apiAction =
   | "getUserInfo"
   | "register"
   | "getBranchesByLocation"
-  | "deleteUser";
+  | "deleteUser"
+  | "generateVerificationCode"
+  | "verifyUser";
 
 export interface IFetchDataParams {
   method: Method;
