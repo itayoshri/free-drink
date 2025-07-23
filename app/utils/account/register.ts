@@ -13,6 +13,7 @@ export default function register(token: string, mobilePhone: string) {
     namespace: "account",
     action: "register",
     data: {
+      appleIdentityToken: null,
       lastName: DEFAULT_FIRST_NAME,
       firstName: DEFAULT_LAST_NAME,
       birthDate: BIRTH_DATE,
@@ -25,7 +26,7 @@ export default function register(token: string, mobilePhone: string) {
       clientConfirmation: "true",
       agreeNewsletter: "false",
       email: generateRandomEmail(),
-      segment: "string",
+      segment: "Soldier",
     } as ReqRegisterUser,
   });
 }
