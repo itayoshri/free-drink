@@ -1,8 +1,9 @@
 import { ReqVerifyUser } from "@/interfaces/api/requests";
 import { fetchDataSource } from "../datasource";
+import { ResVerifyUser } from "@/interfaces/api/res";
 
 export default function sendVerificationCode(mobilePhone: string) {
-  fetchDataSource({
+  return fetchDataSource({
     method: "GET",
     namespace: "account",
     action: "generateVerificationCode",
@@ -11,7 +12,7 @@ export default function sendVerificationCode(mobilePhone: string) {
 }
 
 export function verifyUser(verificationCode: string, mobilePhone: string) {
-  fetchDataSource({
+  return fetchDataSource<ResVerifyUser>({
     method: "POST",
     namespace: "account",
     action: "verifyUser",

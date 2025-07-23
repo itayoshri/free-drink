@@ -1,6 +1,6 @@
 import axios, { Method } from "axios";
 
-const BASE_URL = "cocacola-app.co.il/api";
+const BASE_URL = "https://cocacola-app.co.il/api";
 
 type apiNamespace = "account" | "locations";
 type apiAction =
@@ -34,16 +34,16 @@ export async function fetchDataSource<T>({
   action,
   query = "",
   data,
-  token,
+  token = "",
 }: IFetchDataParams) {
   const res = await axios<T>({
     method: method,
     baseURL: BASE_URL,
-    url: `${namespace}/${action}${query ? query : ""}`,
-    data,
-    headers: { Authorization: `Bearer ${token}` },
+    url: `${namespace}/${action}${query ? `?${query}` : ""}`,
+    data: data,
+    headers: { Authorization: token ? `Bearer ${token}` : "" },
   });
-  return res.data;
+  return res.data as T;
 }
 
 //url, data, { auth: }
