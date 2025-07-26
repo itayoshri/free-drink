@@ -1,9 +1,9 @@
 import { HandleUser } from "@/utils/account";
 
-interface reqData {
+type reqData = {
   verificationCode: string;
   mobilePhone: string;
-}
+};
 
 export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
