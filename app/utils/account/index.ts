@@ -4,6 +4,12 @@ import { verifyUser } from "./verificationCode";
 
 const NEW_USER_CORKS = 60;
 
+/**
+ *
+ * @param mobilePhone - user's mobile phone
+ * @param verificationCode - code for phone verification
+ * @returns accessToken that used to verify and authorize against coca-cola's api
+ */
 export async function HandleUser(
   mobilePhone: string,
   verificationCode: string
