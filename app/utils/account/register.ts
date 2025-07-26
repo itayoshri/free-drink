@@ -1,5 +1,6 @@
 import { ReqRegisterUser } from "@/interfaces/api/requests";
 import { fetchDataSource } from "../datasource";
+import { ResRegiser } from "@/interfaces/api/res";
 
 const DOMAIN = "gmail.com";
 const DEFAULT_FIRST_NAME = "itay";
@@ -11,7 +12,7 @@ export default function register(
   verificationToken: string,
   mobilePhone: string
 ) {
-  return fetchDataSource({
+  return fetchDataSource<ResRegiser>({
     method: "POST",
     namespace: "account",
     action: "register",
