@@ -11,7 +11,7 @@ type question = {
 
 const uri = `mongodb+srv://${db_username}:${db_password}@cluster0.4xnbwfp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-export default async function answerQuestion(questionId: number) {
+export default async function GetAnswerId(questionId: number) {
   const client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,

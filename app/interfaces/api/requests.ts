@@ -1,4 +1,4 @@
-type BoolString = "true" | "false";
+export type BoolString = "true" | "false";
 
 interface Answer {
   id: number;
@@ -6,7 +6,7 @@ interface Answer {
 
 export interface ReqQuestionData {
   questionId: number;
-  signedHash: string;
+  signedHash?: string;
   answers: Answer[];
   questionnaireId: number;
   isLastQuestion: BoolString; // "false" or "true" as string

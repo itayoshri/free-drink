@@ -2,14 +2,17 @@ import axios, { Method } from "axios";
 
 const BASE_URL = "https://cocacola-app.co.il/api";
 
-type apiNamespace = "account" | "locations";
+type apiNamespace = "account" | "locations" | "content" | "questionnaire";
 type apiAction =
   | "getUserInfo"
   | "register"
   | "getBranchesByLocation"
   | "deleteUser"
   | "generateVerificationCode"
-  | "verifyUser";
+  | "verifyUser"
+  | "expandedContent"
+  | "answer"
+  | "recordLog";
 
 export interface IFetchDataParams {
   method: Method;
