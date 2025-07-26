@@ -5,6 +5,7 @@ import sendVerificationCode, {
 } from "@/utils/account/verificationCode";
 import { NextRequest } from "next/server";
 
+const NEW_USER_CORKS = 60;
 interface reqData {
   verificationCode: string;
   mobilePhone: string;
@@ -13,15 +14,23 @@ interface reqData {
 export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
-  const verificationToken = (await verifyUser(verificationCode, mobilePhone))
-    .body.verificationToken;
 
-  deleteUser(verificationToken);
+  console.log("authenticating...");
+  const resVerifyUser = await verifyUser(verificationCode, mobilePhone);
+  const verificationToken = resVerifyUser.body.verificationToken;
 
-  return new Response(
-    JSON.stringify(await register(verificationToken, mobilePhone)),
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  //delete user if exists and has less corks than a new one
+  const accessToken = resVerifyUser.body.userInfo.accessToken;
+  if (accessToken && resVerifyUser.body.userInfo.corks < NEW_USER_CORKS) {
+    console.log("deleting user...", verificationToken);
+    console.log(await deleteUser(verificationToken));
+
+    console.log("registering user...");
+    const resRegister = await register(verificationToken, mobilePhone);
+    console.log(resRegister);
+  }
+
+  return new Response(JSON.stringify(null), {
+    headers: { "Content-Type": "application/json" },
+  });
 }

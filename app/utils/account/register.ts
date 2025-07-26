@@ -7,7 +7,10 @@ const DEFAULT_LAST_NAME = "oshri";
 const CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 const BIRTH_DATE = "1999-06-21T00:00:00.000";
 
-export default function register(token: string, mobilePhone: string) {
+export default function register(
+  verificationToken: string,
+  mobilePhone: string
+) {
   return fetchDataSource({
     method: "POST",
     namespace: "account",
@@ -18,7 +21,7 @@ export default function register(token: string, mobilePhone: string) {
       firstName: DEFAULT_LAST_NAME,
       birthDate: BIRTH_DATE,
       agreeTerms: "true",
-      verifyToken: token,
+      verifyToken: verificationToken,
       agreeCbcNewsletter: "false",
       friendSourceId: null,
       mobilePhone: mobilePhone,
