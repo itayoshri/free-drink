@@ -3,8 +3,8 @@ import { fetchDataSource } from "../datasource";
 import { ResRegiser } from "@/interfaces/api/res";
 
 const DOMAIN = "gmail.com";
-const DEFAULT_FIRST_NAME = "itay";
-const DEFAULT_LAST_NAME = "oshri";
+const DEFAULT_FIRST_NAME = "דוד";
+const DEFAULT_LAST_NAME = "סמית'";
 const CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
 const BIRTH_DATE = "1999-06-21T00:00:00.000";
 
@@ -18,8 +18,8 @@ export default function register(
     action: "register",
     data: {
       appleIdentityToken: null,
-      lastName: DEFAULT_FIRST_NAME,
-      firstName: DEFAULT_LAST_NAME,
+      lastName: DEFAULT_LAST_NAME,
+      firstName: DEFAULT_FIRST_NAME,
       birthDate: BIRTH_DATE,
       agreeTerms: "true",
       verifyToken: verificationToken,
