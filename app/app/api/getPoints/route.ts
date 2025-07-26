@@ -1,10 +1,4 @@
 import { HandleUser } from "@/utils/account";
-import deleteUser from "@/utils/account/delete";
-import register from "@/utils/account/register";
-import sendVerificationCode, {
-  verifyUser,
-} from "@/utils/account/verificationCode";
-import { NextRequest } from "next/server";
 
 interface reqData {
   verificationCode: string;
