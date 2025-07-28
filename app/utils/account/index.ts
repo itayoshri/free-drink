@@ -17,14 +17,15 @@ export async function HandleUser(
   const resVerifyUser = await verifyUser(verificationCode, mobilePhone);
   const verificationToken = resVerifyUser.body.verificationToken;
 
-  const userExists = Boolean(resVerifyUser.body.userInfo.accessToken);
+  const accessToken = resVerifyUser.body.userInfo.accessToken;
+  const userExists = Boolean(accessToken);
   if (userExists && resVerifyUser.body.userInfo.corks >= NEW_USER_CORKS) {
-    return resVerifyUser.body.userInfo.accessToken;
+    return accessToken;
   } else {
     // delete user if exists and has less corks than a new one
     if (userExists) {
-      console.log("deleting user...", verificationToken);
-      console.log(await deleteUser(verificationToken));
+      console.log("deleting user...", accessToken);
+      console.log(await deleteUser(accessToken));
     }
 
     // create new user
