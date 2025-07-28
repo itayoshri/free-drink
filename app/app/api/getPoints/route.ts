@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   }
   await RecordLog(questionnaire.body.contentId, accessToken);
   */
-  return new Response(JSON.stringify(null), {
+  return new Response(JSON.stringify(accessToken), {
     headers: { "Content-Type": "application/json" },
   });
 }
