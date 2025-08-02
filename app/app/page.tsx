@@ -1,4 +1,6 @@
 "use client";
+import Button from "@/components/button";
+import Input from "@/components/input";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
@@ -28,29 +30,40 @@ export default function Home() {
   }, [code, mobilePhone]);
 
   return (
-    <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen">
-      <div className="flex flex-row">
-        <input
-          onChange={(newValue) => setMobilePhone(newValue.currentTarget.value)}
-          placeholder="Enter Phone Number"
-          className="text-black"
-          key={0}
-        />
-        <button onClick={() => sendVerificationCode()} className="bg-gray-400">
-          send code
-        </button>
-      </div>
-      {showCode ? (
-        <div className="flex flex-row">
-          <input
-            onChange={(newValue) => setCode(newValue.currentTarget.value)}
-            placeholder="Enter code"
+    <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
+      <div className="flex flex-col w-full gap-8">
+        <h1 className="text-5xl text-black font-bold">
+          הקלידו את מספר הטלפון שלכם.
+        </h1>
+        <div className="flex flex-col items-start w-full gap-4">
+          <Input
+            onChange={(newValue) =>
+              setMobilePhone(newValue.currentTarget.value)
+            }
+            placeholder="מספר טלפון"
             className="text-black"
+            key={0}
+          />
+          <Button
+            onClick={() => sendVerificationCode()}
+            className="bg-gray-400"
+          >
+            הבא
+          </Button>
+        </div>
+      </div>
+
+      {showCode ? (
+        <div className="flex flex-col items-start w-full gap-4">
+          <Input
+            onChange={(newValue) => setCode(newValue.currentTarget.value)}
+            placeholder="קוד אימות"
+            className=""
             key={1}
           />
-          <button onClick={() => getPoints()} className="bg-gray-400">
-            get 60 points to account
-          </button>
+          <Button onClick={() => getPoints()} className="">
+            קבל 60 פקקים
+          </Button>
         </div>
       ) : null}
     </div>
