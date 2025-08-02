@@ -1,7 +1,11 @@
 import { ReqRecordLog } from "@/interfaces/api/requests";
 import { fetchDataSource } from "../datasource";
 
-export default function RecordLog(contentId: number, token: string) {
+export default function RecordLog(
+  contentId: number,
+  state: string,
+  token: string
+) {
   return fetchDataSource({
     method: "POST",
     namespace: "content",
@@ -9,7 +13,7 @@ export default function RecordLog(contentId: number, token: string) {
     token,
     data: {
       contentId,
-      type: "Finished",
+      type: state,
     } as ReqRecordLog,
   });
 }

@@ -22,9 +22,11 @@ export default async function GetAnswerId(questionId: number) {
 
   const database = client.db("free-drink");
   const questions = database.collection("questions");
+  console.log(questions);
   // Queries for a movie that has a title value of 'Back to the Future'
   const query = { questionId: questionId };
   const question = (await questions.findOne<question>(query)) as question;
+  await client.close();
 
   return question.answerId;
 }
