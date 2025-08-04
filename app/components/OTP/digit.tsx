@@ -5,7 +5,7 @@ type DigitProps = {
 export default function Digit({ setValue }: DigitProps) {
   return (
     <input
-      className="text-5xl w-full border-[1px] ltr: text-black text-center py-4 rounded-xl font-inter font-[100] border-gray-300"
+      type="number" className="text-5xl w-full border-[1px] ltr: text-black text-center py-4 rounded-xl font-inter font-[100] border-gray-300"
       onInput={(e) => {
         const target = e.target as HTMLInputElement;
         const val = target.value;
