@@ -7,10 +7,15 @@ export interface ButtonProps {
   ref: Ref<HTMLButtonElement>;
 }
 
-export default function Button({ children, onClick, ref }: ButtonProps) {
+export default function Button({
+  children,
+  onClick,
+  ref,
+  className = "",
+}: ButtonProps) {
   return (
     <button
-      className="bg-red-600 py-3 rounded-xl w-full text-xl text-white font-medium flex justify-center items-center"
+      className={`bg-red-600 py-3 rounded-xl w-full text-xl text-white font-medium flex justify-center items-center ${className}`}
       onClick={onClick}
       ref={ref}
     >

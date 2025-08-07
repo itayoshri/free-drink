@@ -100,7 +100,6 @@ export default function Home() {
                 setMobilePhone(newValue.currentTarget.value)
               }
               placeholder="מספר טלפון"
-              className="text-black"
               key={0}
             />
             <Button
