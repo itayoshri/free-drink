@@ -38,7 +38,6 @@ export default function VerifyPage() {
     const handleKeyDown = (event: { key: string }) => {
       const buttonRef = codeButtonRef;
       if (event.key === "Enter") {
-        // Trigger click if button exists
         if (buttonRef.current) {
           buttonRef.current.click();
         }
@@ -47,7 +46,6 @@ export default function VerifyPage() {
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // Cleanup listener on unmount
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };

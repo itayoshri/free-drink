@@ -1,8 +1,6 @@
 "use client";
 import Button from "@/components/button";
 import Input from "@/components/input";
-import Digit from "@/components/OTP/digit";
-import ScreenConfetti from "@/components/UI/Confetti";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -18,7 +16,7 @@ export default function Home() {
       .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
       .then((res) => {
         if (res.status == 200) {
-          router.push(`/verify?mobilePhone=${mobilePhone}`); // Navigates to the /dashboard page
+          router.push(`/verify?mobilePhone=${mobilePhone}`);
         }
       });
   }, [mobilePhone, router]);
@@ -44,8 +42,6 @@ export default function Home() {
 
   return (
     <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
-      {/*TODO: seperate to components*/}
-
       <div className="flex flex-col w-full gap-8">
         <h1 className="text-5xl text-black font-bold">
           הקלידו את מספר הטלפון שלכם.
