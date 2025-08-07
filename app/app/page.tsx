@@ -4,9 +4,12 @@ import Input from "@/components/input";
 import Digit from "@/components/OTP/digit";
 import ScreenConfetti from "@/components/UI/Confetti";
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Home() {
+  const phoneButtonRef = useRef<HTMLButtonElement>(null);
+  const codeButtonRef = useRef<HTMLButtonElement>(null);
+
   const [mobilePhone, setMobilePhone] = useState("0");
   const [showCode, setShowCode] = useState(false);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -39,6 +42,25 @@ export default function Home() {
       });
   }, [digits, mobilePhone]);
 
+  useEffect(() => {
+    const handleKeyDown = (event: { key: string }) => {
+      const buttonRef = showCode ? codeButtonRef : phoneButtonRef;
+      if (event.key === "Enter") {
+        // Trigger click if button exists
+        if (buttonRef.current) {
+          buttonRef.current.click();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showCode]);
+
   return (
     <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
       {/*TODO: seperate to components*/}
@@ -57,7 +79,11 @@ export default function Home() {
               </div>
               {/*<a className="text-black text-lg">לא קיבלתם את הקוד? שליחה מחדש</a>*/}
             </div>
-            <Button onClick={() => getPoints()} className="">
+            <Button
+              onClick={() => getPoints()}
+              className=""
+              ref={codeButtonRef}
+            >
               קבל 60 פקקים
             </Button>
           </div>
@@ -80,6 +106,7 @@ export default function Home() {
             <Button
               onClick={() => sendVerificationCode()}
               className="bg-gray-400"
+              ref={phoneButtonRef}
             >
               הבא
             </Button>
