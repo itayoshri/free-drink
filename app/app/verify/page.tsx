@@ -1,15 +1,13 @@
 "use client";
-
 import Button from "@/components/button";
 import Digit from "@/components/OTP/digit";
 import ScreenConfetti from "@/components/UI/Confetti";
+import { useAuth } from "@/context";
 import axios from "axios";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const searchParams = useSearchParams();
-  const mobilePhone = searchParams.get("mobilePhone");
+  const { mobilePhone } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -51,25 +49,27 @@ export default function VerifyPage() {
     };
   }, []);
   return (
-    <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
-      <div className="flex flex-col items-center gap-9 w-full">
-        <h2 className="text-black text-xl font-bold">
-          הקלידו את קוד האימות שקיבלתם
-        </h2>
-        <div className="flex flex-col items-center w-full gap-4">
-          <div className="flex w-full gap-2 justify-between">
-            <Digit setValue={(digit) => changeDigit(3, digit)}></Digit>
-            <Digit setValue={(digit) => changeDigit(2, digit)}></Digit>
-            <Digit setValue={(digit) => changeDigit(1, digit)}></Digit>
-            <Digit setValue={(digit) => changeDigit(0, digit)}></Digit>
+    <Suspense>
+      <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
+        <div className="flex flex-col items-center gap-9 w-full">
+          <h2 className="text-black text-xl font-bold">
+            הקלידו את קוד האימות שקיבלתם
+          </h2>
+          <div className="flex flex-col items-center w-full gap-4">
+            <div className="flex w-full gap-2 justify-between">
+              <Digit setValue={(digit) => changeDigit(3, digit)}></Digit>
+              <Digit setValue={(digit) => changeDigit(2, digit)}></Digit>
+              <Digit setValue={(digit) => changeDigit(1, digit)}></Digit>
+              <Digit setValue={(digit) => changeDigit(0, digit)}></Digit>
+            </div>
+            {/*<a className="text-black text-lg">לא קיבלתם את הקוד? שליחה מחדש</a>*/}
           </div>
-          {/*<a className="text-black text-lg">לא קיבלתם את הקוד? שליחה מחדש</a>*/}
+          <Button onClick={() => getPoints()} className="" ref={codeButtonRef}>
+            קבל 60 פקקים
+          </Button>
         </div>
-        <Button onClick={() => getPoints()} className="" ref={codeButtonRef}>
-          קבל 60 פקקים
-        </Button>
+        {showConfetti ? <ScreenConfetti /> : null}
       </div>
-      {showConfetti ? <ScreenConfetti /> : null}
-    </div>
+    </Suspense>
   );
 }

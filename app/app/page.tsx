@@ -4,19 +4,18 @@ import Input from "@/components/input";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context";
 
 export default function Home() {
   const router = useRouter();
-
   const phoneButtonRef = useRef<HTMLButtonElement>(null);
-  const [mobilePhone, setMobilePhone] = useState("0");
-
+  const { setMobilePhone, mobilePhone } = useAuth();
   const sendVerificationCode = useCallback(() => {
     axios
       .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
       .then((res) => {
         if (res.status == 200) {
-          router.push(`/verify?mobilePhone=${mobilePhone}`);
+          router.push("/verify");
         }
       });
   }, [mobilePhone, router]);
@@ -52,6 +51,7 @@ export default function Home() {
               setMobilePhone(newValue.currentTarget.value)
             }
             placeholder="מספר טלפון"
+            type="tel"
             key={0}
           />
           <Button
