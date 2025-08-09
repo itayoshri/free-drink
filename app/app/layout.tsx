@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context";
+import { NoKey } from "@/components/Icons";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +16,13 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={`antialiased`}>{children}</body>
+        <body className={`antialiased`}>
+          <div className="bg-white flex flex-col gap-4 justify-center items-center h-[100dvh] w-screen px-6">
+            <NoKey width={24} className="text-black absolute top-5 left-5" />
+
+            {children}
+          </div>
+        </body>
       </html>
     </AuthProvider>
   );

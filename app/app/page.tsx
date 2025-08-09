@@ -40,28 +40,24 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-white flex flex-col gap-4 justify-center items-center h-[100dvh] w-screen px-6">
-      <div className="flex flex-col w-full gap-8">
-        <h1 className="text-5xl text-black font-bold">
-          הקלידו את מספר הטלפון שלכם.
-        </h1>
-        <div className="flex flex-col items-start w-full gap-4">
-          <Input
-            onChange={(newValue) =>
-              setMobilePhone(newValue.currentTarget.value)
-            }
-            placeholder="מספר טלפון"
-            type="tel"
-            key={0}
-          />
-          <Button
-            onClick={() => sendVerificationCode()}
-            className="bg-gray-400"
-            ref={phoneButtonRef}
-          >
-            הבא
-          </Button>
-        </div>
+    <div className="flex flex-col w-full gap-8">
+      <h1 className="text-5xl text-black font-bold">
+        הקלידו את מספר הטלפון שלכם.
+      </h1>
+      <div className="flex flex-col items-start w-full gap-4">
+        <Input
+          onChange={(newValue) => setMobilePhone(newValue.currentTarget.value)}
+          placeholder="מספר טלפון"
+          type="tel"
+          key={0}
+        />
+        <Button
+          onClick={() => sendVerificationCode()}
+          className="bg-gray-400"
+          ref={phoneButtonRef}
+        >
+          הבא
+        </Button>
       </div>
     </div>
   );
