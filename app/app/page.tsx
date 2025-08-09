@@ -40,7 +40,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
+    <div className="bg-white flex flex-col gap-4 justify-center items-center h-[100dvh] w-screen px-6">
       <div className="flex flex-col w-full gap-8">
         <h1 className="text-5xl text-black font-bold">
           הקלידו את מספר הטלפון שלכם.

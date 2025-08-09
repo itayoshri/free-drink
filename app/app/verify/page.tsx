@@ -37,7 +37,7 @@ export default function VerifyPage() {
       const buttonRef = codeButtonRef;
       if (event.key === "Enter") {
         if (buttonRef.current) {
-          buttonRef.current.click();
+          //buttonRef.current.click();
         }
       }
     };
@@ -49,8 +49,8 @@ export default function VerifyPage() {
     };
   }, []);
   return (
-    <Suspense>
-      <div className="bg-white flex flex-col gap-4 justify-center items-center h-screen w-screen px-6">
+    <>
+      <div className="bg-white flex flex-col gap-4 justify-center items-center h-[100dvh] w-screen px-6">
         <div className="flex flex-col items-center gap-9 w-full">
           <h2 className="text-black text-xl font-bold">
             הקלידו את קוד האימות שקיבלתם
@@ -68,8 +68,8 @@ export default function VerifyPage() {
             קבל 60 פקקים
           </Button>
         </div>
-        {showConfetti ? <ScreenConfetti /> : null}
       </div>
-    </Suspense>
+      {showConfetti ? <ScreenConfetti /> : null}
+    </>
   );
 }
