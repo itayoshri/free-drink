@@ -1,4 +1,6 @@
-import { Wrapper } from "../types";
+import { ReactNode } from "react";
+
+export type Wrapper = { children?: ReactNode | ReactNode[] };
 
 export interface SVGProps {
   className?: string;
