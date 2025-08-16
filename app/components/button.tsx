@@ -4,7 +4,7 @@ export interface ButtonProps {
   children: ReactNode;
   onClick(): unknown;
   className?: string;
-  ref: Ref<HTMLButtonElement>;
+  ref?: Ref<HTMLButtonElement>;
 }
 
 export default function Button({
