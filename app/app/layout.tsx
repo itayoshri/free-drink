@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context";
 import { NoKey } from "@/components/Icons";
+import ClientAuth from "@/components/Auth";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body className={`antialiased`}>
+          <ClientAuth />
           <div className="bg-white flex flex-col gap-4 justify-center items-center h-[100dvh] w-screen px-6">
             <NoKey width={24} className="text-black absolute top-5 left-5" />
 
