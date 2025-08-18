@@ -1,11 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Button from "../button";
 import Input from "../input";
+import axios from "axios";
+import router from "next/router";
 
 export default function ClientAuth() {
   const [input, setInput] = useState("");
+  const verify = useCallback(() => {
+    axios.post(`/api/auth`, { token: input }).then((res) => {
+      if (res.status == 200) {
+        console.log(res.data);
+      }
+    });
+  }, [input]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   return (
     <div className="flex absolute h-[100dvh] px-6 w-screen items-center justify-center bg-black/50">
@@ -16,7 +25,7 @@ export default function ClientAuth() {
             onChange={(newValue) => setInput(newValue.currentTarget.value)}
             placeholder="סיסמה"
           />
-          <Button onClick={() => console.log(1)} ref={buttonRef}>
+          <Button onClick={() => verify()} ref={buttonRef}>
             אימות
           </Button>
         </div>
