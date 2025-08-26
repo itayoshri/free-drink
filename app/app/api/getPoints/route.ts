@@ -11,7 +11,7 @@ type reqData = {
   mobilePhone: string;
 };
 
-export const fields = {
+const fields = {
   KnowledgeQuestionnaire: "questionnaireId",
   Hotspots: "hotSpotQuestionnaireId",
 };
