@@ -66,7 +66,8 @@ export async function POST(request: Request) {
       answers = await GetAnswers(
         fields[type as keyof typeof fields],
         questionnaire.id,
-        db
+        db,
+        id
       );
     } finally {
       const numberOfQuestions = answers.length;

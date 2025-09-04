@@ -7,12 +7,23 @@ export async function AddAnswer(answer: unknown) {
   client.close();
 }
 
-export async function GetAnswers(field: string, id: number, db: Db) {
+export async function GetAnswers(
+  field: string,
+  id: number,
+  db: Db,
+  contentId?: number
+) {
   const questions = db.collection("questions");
-  const answers = await questions.find({ [field]: id }).toArray();
+  const filter = { [field]: id };
 
+  const answers = await questions.find(filter).toArray();
+
+  // throw error if no answers with the contentId
   if (field == "contentId" && answers.length == 0) {
     throw new Error("No answers with this contentId have been found");
+  } else if (field != "contentId" && answers.length != 0) {
+    // add contentId to objects that doesn't have
+    await questions.updateMany(filter, { $set: { contentId: contentId } });
   }
 
   return answers;
