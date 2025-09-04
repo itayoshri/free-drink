@@ -2,7 +2,7 @@ import deleteUser from "./delete";
 import register from "./register";
 import { verifyUser } from "./verificationCode";
 
-const NEW_USER_CORKS = 60;
+const NEW_USER_CORKS = 90;
 
 /**
  *

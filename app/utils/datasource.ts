@@ -19,7 +19,8 @@ type apiAction =
   | "expandedContent"
   | "answer"
   | "recordLog"
-  | "Answer";
+  | "Answer"
+  | "getUserPoints";
 
 export interface IFetchDataParams {
   method: Method;

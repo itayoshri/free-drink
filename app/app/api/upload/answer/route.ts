@@ -11,14 +11,15 @@ type reqData = {
 
 export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
-  const { mobilePhone, verificationCode, answer } = data;
+  const { answer } = data;
+  console.log(answer);
 
   //const accessToken = await HandleUser(mobilePhone, verificationCode);
   //console.log(accessToken);
 
   //const contents = (await GetHomePage(accessToken)).body.contents;
   //UpdateContent(contents, accessToken);
-  AddAnswer(answer);
+  await AddAnswer(answer);
 
   /*
 

@@ -1,4 +1,4 @@
-import { OptionalId } from "mongodb";
+import { Db, OptionalId } from "mongodb";
 import GetDB from ".";
 
 export async function AddAnswer(answer: unknown) {
@@ -7,12 +7,10 @@ export async function AddAnswer(answer: unknown) {
   client.close();
 }
 
-export async function GetAnswers(field: string, id: number) {
-  const { db, client } = GetDB();
+export async function GetAnswers(field: string, id: number, db: Db) {
   const questions = db.collection("questions");
   const answers = await questions.find({ [field]: id }).toArray();
 
-  await client.close();
   return answers;
 }
 
