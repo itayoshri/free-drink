@@ -13,14 +13,19 @@ export const CORKS_FOR_DRINK = 80;
  */
 export async function HandleUser(
   mobilePhone: string,
-  verificationCode: string
+  verificationCode: string,
+  reset?: boolean
 ) {
   const resVerifyUser = await verifyUser(verificationCode, mobilePhone);
   const verificationToken = resVerifyUser.body.verificationToken;
 
   const accessToken = resVerifyUser.body.userInfo?.accessToken;
   const userExists = Boolean(accessToken);
-  if (userExists && resVerifyUser.body.userInfo.corks >= NEW_USER_CORKS) {
+  if (
+    userExists &&
+    resVerifyUser.body.userInfo.corks >= NEW_USER_CORKS &&
+    !reset
+  ) {
     return accessToken;
   } else {
     // delete user if exists and has less corks than a new one
