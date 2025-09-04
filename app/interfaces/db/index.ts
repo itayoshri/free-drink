@@ -6,3 +6,7 @@ export interface DBContent {
   type: string; // TODO: type
   content: ResExpendedContent["body"]["content"];
 }
+
+export interface DBAnswer {
+  contentId?: number;
+}

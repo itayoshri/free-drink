@@ -1,5 +1,5 @@
 import { BoolString } from "@/interfaces/api/requests";
-import { HandleUser } from "@/utils/account";
+import { CORKS_FOR_DRINK, HandleUser, NEW_USER_CORKS } from "@/utils/account";
 import GetUserPoints from "@/utils/account/points";
 import GetQuestionnaire from "@/utils/content/expandedContent";
 import GetHomePage from "@/utils/content/homePage";
@@ -26,33 +26,56 @@ export async function POST(request: Request) {
   const accessToken = await HandleUser(mobilePhone, verificationCode);
   const contents = (await GetHomePage()).body.contents;
 
+  // TODO: get number from user
+  const targetNumberOfCorks = CORKS_FOR_DRINK;
+  let answeredCounter = 0;
+
   // TODO: add contentId + type to answers collection
+
   // run trough every content in home page
+  // TODO: support for multiple format types
   for (const content of contents.filter(
     (c) => c.formatType == "KnowledgeQuestionnaire"
   )) {
+    // try to answer questions till get to the corks target
+    if (
+      targetNumberOfCorks - (NEW_USER_CORKS - answeredCounter * 10) >=
+      targetNumberOfCorks
+    )
+      break;
+
     const { formatType: type, id } = content;
-    await RecordLog(id, "Started", accessToken);
 
-    const questionnaire = await GetContentById(id, db); /*GetQuestionnaire(
-      id,
-      type,
-      accessToken,
-      db
-    );*/
+    // TODO: add answer type
+    let answers: object[] = [];
 
-    // if question found in db
-    if (questionnaire) {
-      console.log(id);
+    // if answer with contentId found in DB
+    try {
+      answers = await GetAnswers("contentId", id, db);
+    } catch {
+      // try to get answer by questionnaireId
+      const questionnaire = await GetContentById(id, db);
+
+      // skip if content hasn't been found in DB
+      if (!questionnaire) {
+        console.log("skipped");
+        continue;
+      }
+
       //TODO: fix messy types
-      const answers = await GetAnswers(
+      answers = await GetAnswers(
         fields[type as keyof typeof fields],
         questionnaire.id,
         db
       );
+    } finally {
+      const numberOfQuestions = answers.length;
 
-      const numberOfQuestions = questionnaire.questions.length;
-      if (answers.length == numberOfQuestions) {
+      // if answers were found
+      if (numberOfQuestions > 0) {
+        await RecordLog(id, "Started", accessToken);
+
+        // run trough every answer to question and answer it on server
         for (const index in answers) {
           const answer = answers[index];
           const isLastQuestion = numberOfQuestions == Number(index) + 1;
@@ -63,10 +86,9 @@ export async function POST(request: Request) {
             accessToken
           );
 
-          console.log(id, answer);
+          await RecordLog(id, "Finished", accessToken);
+          answeredCounter++;
         }
-
-        await RecordLog(id, "Finished", accessToken);
       }
     }
   }

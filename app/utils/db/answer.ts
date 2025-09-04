@@ -11,6 +11,10 @@ export async function GetAnswers(field: string, id: number, db: Db) {
   const questions = db.collection("questions");
   const answers = await questions.find({ [field]: id }).toArray();
 
+  if (field == "contentId" && answers.length == 0) {
+    throw new Error("No answers with this contentId have been found");
+  }
+
   return answers;
 }
 
