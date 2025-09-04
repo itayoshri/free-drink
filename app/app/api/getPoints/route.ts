@@ -38,11 +38,7 @@ export async function POST(request: Request) {
     (c) => c.formatType == "KnowledgeQuestionnaire"
   )) {
     // try to answer questions till get to the corks target
-    if (
-      targetNumberOfCorks - (NEW_USER_CORKS - answeredCounter * 10) >=
-      targetNumberOfCorks
-    )
-      break;
+    if (targetNumberOfCorks <= NEW_USER_CORKS + answeredCounter * 10) break;
 
     const { formatType: type, id } = content;
 
