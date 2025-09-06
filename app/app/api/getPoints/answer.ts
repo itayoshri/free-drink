@@ -1,7 +1,6 @@
 import { BoolString } from "@/interfaces/api/requests";
 import RecordLog from "@/utils/content/recordLog";
-import db from "@/utils/db";
-import { GetAnswersFromDBByField, GetContentsFromDB } from "@/utils/db/answer";
+import { GetAnswersFromDBByField } from "@/utils/db/answer";
 import AnswerQuestion from "@/utils/questionnaire/answer";
 import { Db, Document, WithId } from "mongodb";
 

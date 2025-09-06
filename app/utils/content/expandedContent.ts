@@ -1,7 +1,5 @@
 import { ResExpendedContent } from "@/interfaces/api/res";
 import { fetchDataSource } from "../datasource";
-import { GetContentById } from "../db/content";
-import { Db } from "mongodb";
 
 export function GetQuestionnaireFromServer(
   id: number,

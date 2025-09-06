@@ -1,4 +1,3 @@
-import db from "@/utils/db";
 import { GetContentsFromDB } from "@/utils/db/answer";
 import { Db, Document } from "mongodb";
 

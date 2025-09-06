@@ -1,8 +1,6 @@
 import { content } from "@/interfaces/api/res";
 import GetDB from ".";
-import GetQuestionnaire, {
-  GetQuestionnaireFromServer,
-} from "../content/expandedContent";
+import { GetQuestionnaireFromServer } from "../content/expandedContent";
 import { Db } from "mongodb";
 import { DBContent } from "@/interfaces/db";
 

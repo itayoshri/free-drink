@@ -1,7 +1,4 @@
-import { HandleUser } from "@/utils/account";
-import GetHomePage from "@/utils/content/homePage";
 import { AddAnswer } from "@/utils/db/answer";
-import UpdateContent from "@/utils/db/content";
 
 type reqData = {
   verificationCode: string;
