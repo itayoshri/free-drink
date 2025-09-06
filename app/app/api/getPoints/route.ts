@@ -1,11 +1,5 @@
 import { CORKS_FOR_DRINK, HandleUser } from "@/utils/account";
 import GetUserPoints from "@/utils/account/points";
-import GetHomePage from "@/utils/content/homePage";
-import GetDB from "@/utils/db";
-import { GetAnswersFromDB } from "@/utils/db/answer";
-import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
-import GetContents from "./contents";
-import { DBContent } from "@/interfaces/db";
 import { NextResponse } from "next/server";
 import HandleAnswers from ".";
 
