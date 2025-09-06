@@ -57,6 +57,15 @@ export interface ResHomePage {
   };
 }
 
+export interface ResGetUserPoints {
+  body: {
+    userId: number;
+    corks: number;
+    angels: number;
+    message: string | null;
+  };
+}
+
 export type content = {
   id: number;
   targetType: string;
