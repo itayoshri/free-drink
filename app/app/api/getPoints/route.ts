@@ -14,6 +14,7 @@ import {
 import { GetContentById } from "@/utils/db/content";
 import AnswerQuestion from "@/utils/questionnaire/answer";
 import { Document } from "mongodb";
+import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
 
 type reqData = {
   verificationCode: string;
@@ -25,6 +26,9 @@ export const fields = {
   Hotspots: "hotSpotQuestionnaireId",
 };
 
+// TODO: get number from user
+//const targetNumberOfCorks = CORKS_FOR_DRINK;
+
 export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
@@ -33,80 +37,18 @@ export async function POST(request: Request) {
   const contents = (await GetHomePage()).body.contents;
   let contentIds = contents.map((c) => c.id);
 
-  // TODO: get number from user
-  const targetNumberOfCorks = CORKS_FOR_DRINK;
-  let answeredCounter = 0;
+  const answers = await GetAnswersFromDB(contentIds, db);
 
-  // get answers
-  const answers = [] as Document[];
-
-  // get answers that has an updated contentId
-  answers.push(...(await GetAnswersFromDB(contentIds, db)));
-
-  // pervent duplicates
+  // filter out answers that were found and get the rest
   const mapped = new Set(answers.map((a) => a.contentId));
   contentIds = contentIds.filter((contentId) => !mapped.has(contentId));
-
-  // get answers which doesn't have a contentId and update it
   const expandedContents = await GetContentsFromDB(contentIds, db);
-  const fieldsMap = expandedContents
-    ?.map((c) => {
-      const key = fields[c.type as keyof typeof fields];
-      const value = c.content?.id;
-      if (!key || value === undefined) return null; // skip invalid entries
-      return { [key]: value };
-    })
-    .filter((item) => item !== null);
+  answers.push(...(await GetAnswersByField(expandedContents, db)));
 
-  answers.push(
-    ...(await GetAnswersFromDBByField(fieldsMap ? fieldsMap : [], db))
-  );
+  client.close();
 
-  await client.close();
-
-  // TODO if fieldmap
-  const questionsMap = new Map<number, Document[]>();
-
-  for (const answer of answers) {
-    if (!questionsMap.has(answer.contentId)) {
-      questionsMap.set(answer.contentId, []);
-    }
-    questionsMap.get(answer.contentId)!.push(answer);
-  }
-
-  const questions = Array.from(questionsMap.values());
-
-  for (const answers of questions) {
-    const numberOfQuestions = answers.length;
-
-    if (numberOfQuestions > 0) {
-      // run trough every answer to question and answer it on server
-      for (const index in answers) {
-        const answer = answers[index];
-        let id;
-
-        // TODO: check
-        id = answer.contentId;
-        if (!id) {
-          id = expandedContents.find((c) => c.content.id)?.id;
-          if (!id) continue;
-        }
-
-        await RecordLog(id, "Started", accessToken);
-
-        const isLastQuestion = numberOfQuestions == Number(index) + 1;
-
-        await AnswerQuestion(
-          answer,
-          String(isLastQuestion) as BoolString,
-          accessToken
-        );
-
-        await RecordLog(id, "Finished", accessToken);
-        answeredCounter++;
-      }
-    }
-  }
+  const questions = GroupAnswers(answers);
+  await AnswerQuestions(questions, expandedContents, accessToken);
 
   return new Response(JSON.stringify(await GetUserPoints(accessToken)), {
     headers: { "Content-Type": "application/json" },
