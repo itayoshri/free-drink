@@ -2,7 +2,8 @@ import deleteUser from "./delete";
 import register from "./register";
 import { verifyUser } from "./verificationCode";
 
-const NEW_USER_CORKS = 60;
+export const NEW_USER_CORKS = 60;
+export const CORKS_FOR_DRINK = 80;
 
 /**
  *
@@ -12,15 +13,17 @@ const NEW_USER_CORKS = 60;
  */
 export async function HandleUser(
   mobilePhone: string,
-  verificationCode: string
+  verificationCode: string,
+  reset?: boolean
 ) {
   const resVerifyUser = await verifyUser(verificationCode, mobilePhone);
   const verificationToken = resVerifyUser.body.verificationToken;
+  const userCorks = resVerifyUser.body.userInfo.corks;
 
   const accessToken = resVerifyUser.body.userInfo?.accessToken;
   const userExists = Boolean(accessToken);
-  if (userExists && resVerifyUser.body.userInfo.corks >= NEW_USER_CORKS) {
-    return accessToken;
+  if (userExists && userCorks >= CORKS_FOR_DRINK && !reset) {
+    return { accessToken, userCorks };
   } else {
     // delete user if exists and has less corks than a new one
     if (userExists) {
@@ -31,6 +34,9 @@ export async function HandleUser(
     // create new user
     console.log("registering user...");
     const resRegister = await register(verificationToken, mobilePhone);
-    return resRegister.body.userInfo.accessToken;
+    return {
+      accessToken: resRegister.body.userInfo.accessToken,
+      userCorks: resRegister.body.userInfo.corks,
+    };
   }
 }

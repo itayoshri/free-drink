@@ -1,31 +1,56 @@
-import { HandleUser } from "@/utils/account";
-import GetQuestionnaire from "@/utils/content/expandedContent";
-import GetAnswerId from "@/utils/content/questionnaire";
-import RecordLog from "@/utils/content/recordLog";
-import AnswerQuestion from "@/utils/questionnaire/answer";
+import { CORKS_FOR_DRINK, HandleUser } from "@/utils/account";
+import GetUserPoints from "@/utils/account/points";
+import { NextResponse } from "next/server";
+import HandleAnswers from ".";
 
 type reqData = {
   verificationCode: string;
   mobilePhone: string;
 };
 
+// TODO: get number from user
+
 export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
+  const targetNumberOfCorks = CORKS_FOR_DRINK;
 
-  const accessToken = await HandleUser(mobilePhone, verificationCode);
-  /*
-  await RecordLog(6591, "Started", accessToken);
+  try {
+    const { accessToken, userCorks } = await HandleUser(
+      mobilePhone,
+      verificationCode
+    );
 
-  const questionnaire = await GetQuestionnaire(6591, accessToken);
-  console.log(questionnaire);
-  const questions = questionnaire.body.content.questions;
-  for (const question of questions) {
-    AnswerQuestion(await GetAnswerId(question.id));
+    if (userCorks >= targetNumberOfCorks)
+      return NextResponse.json(
+        {
+          success: true,
+          data: { userCorks, accessToken },
+          message: "user already has enough corks",
+        },
+        { status: 200 }
+      );
+
+    const corksForTarget = targetNumberOfCorks - userCorks;
+    await HandleAnswers(corksForTarget, accessToken);
+    const corks = (await GetUserPoints(accessToken)).body.corks;
+
+    return NextResponse.json(
+      {
+        success: Boolean(corks >= targetNumberOfCorks),
+        data: { corks, accessToken },
+        message: "",
+      },
+      { status: 200 }
+    );
+  } catch {
+    return NextResponse.json(
+      {
+        success: false,
+        data: null,
+        message: "Invalid verification code",
+      },
+      { status: 400 }
+    );
   }
-  await RecordLog(questionnaire.body.contentId, "Finished", accessToken);
-  */
-  return new Response(JSON.stringify(accessToken), {
-    headers: { "Content-Type": "application/json" },
-  });
 }

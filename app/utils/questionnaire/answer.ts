@@ -5,9 +5,7 @@ import crypto from "crypto";
 const SECRET = process.env.SECRET;
 
 export default function AnswerQuestion(
-  questionnaireId: number,
-  questionId: number,
-  answerId: number,
+  data: object,
   isLastQuestion: BoolString,
   token: string
 ) {
@@ -17,10 +15,7 @@ export default function AnswerQuestion(
     action: "answer",
     token,
     data: {
-      questionId,
-      signedHash: GenerateSignedHash(questionId, questionnaireId),
-      answers: [{ id: answerId }],
-      questionnaireId,
+      ...data,
       isLastQuestion,
     } as ReqQuestionData,
   });
