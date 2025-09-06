@@ -64,7 +64,7 @@ export default function VerifyPage() {
           {/*<a className="text-black text-lg">לא קיבלתם את הקוד? שליחה מחדש</a>*/}
         </div>
         <Button onClick={() => getPoints()} className="" ref={codeButtonRef}>
-          קבל 60 פקקים
+          קבלו 80 פקקים
         </Button>
       </div>
       {showConfetti ? <ScreenConfetti /> : null}
