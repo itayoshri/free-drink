@@ -13,11 +13,21 @@ export async function GetContentsFromDB(contentIds: number[], db: Db) {
   return await contents.find({ contentId: { $in: contentIds } }).toArray();
 }
 
+/**
+ * @param contentIds - an array of contentIds
+ * @param db - MongoDB
+ * @returns Array of answers from DB
+ */
 export async function GetAnswersFromDB(contentIds: number[], db: Db) {
   const questions = db.collection<DBAnswer>("questions");
   return await questions.find({ contentId: { $in: contentIds } }).toArray();
 }
 
+/**
+ * @param fieldsMap - array of a field and value
+ * @param db - MongoDB
+ * @returns Array of answers from DB
+ */
 export async function GetAnswersFromDBByField(
   fieldsMap: {
     [x: string]: number;

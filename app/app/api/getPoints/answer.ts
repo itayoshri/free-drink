@@ -10,6 +10,13 @@ export const fields = {
   Hotspots: "hotSpotQuestionnaireId",
 };
 
+/**
+ * run trough all questions and answer every single one of them
+ *
+ * @param questions - two dimensional array of answers grouped by their contentId
+ * @param expandedContents - expanded content used to get the id of answers without one
+ * @param accessToken - string that is used to verify and authorize against coca-cola's api
+ */
 export async function AnswerQuestions(
   questions: Document[][],
   expandedContents: DBContent[],
@@ -33,6 +40,15 @@ export async function AnswerQuestions(
   }
 }
 
+/**
+ * answer single question using coca-cola's api
+ *
+ * @param answer - data of answer formated for coca-cola's api
+ * @param numberOfQuestions - the number of questions that the answer is part of
+ * @param index - index of current question in the questions set
+ * @param expandedContents - expanded content used to get the id of answers without one
+ * @param accessToken - string that is used to verify and authorize against coca-cola's api
+ */
 export async function AnswerSingleQuestion(
   answer: Document,
   numberOfQuestions: number,
@@ -59,6 +75,12 @@ export async function AnswerSingleQuestion(
   await RecordLog(id, "Finished", accessToken);
 }
 
+/**
+ * taking array of answers for various questions and group them by contentId
+ *
+ * @param answers - answers pool
+ * @returns two dimensional array of answers grouped by their contentId
+ */
 export function GroupAnswers(answers: DBAnswer[]) {
   const questionsMap = new Map<number, DBAnswer[]>();
 
@@ -72,6 +94,13 @@ export function GroupAnswers(answers: DBAnswer[]) {
   return Array.from(questionsMap.values());
 }
 
+/**
+ * filter out useless data and return answers from DB using field map
+ *
+ * @param expandedContents - unfiltered array of content from DB
+ * @param db - MongoDB
+ * @returns answers from DB !!with no contentId!!
+ */
 export async function GetAnswersByField(expandedContents: DBContent[], db: Db) {
   const fieldsMap = expandedContents
     ?.map((c) => {

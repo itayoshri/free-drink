@@ -5,6 +5,12 @@ import { GetAnswersFromDB } from "@/utils/db/answer";
 import { GetAnswersByField, GroupAnswers, AnswerQuestions } from "./answer";
 import GetContents from "./contents";
 
+/**
+ * solve games on coca-cola's app in order to get corks using coca-cola's api and DB of answers
+ *
+ * @param corksForTarget - corks that need to be achieved
+ * @param accessToken - string that is used to verify and authorize against coca-cola's api
+ */
 export default async function HandleAnswers(
   corksForTarget: number,
   accessToken: string
