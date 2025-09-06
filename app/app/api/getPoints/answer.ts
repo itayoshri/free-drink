@@ -3,7 +3,7 @@ import { DBAnswer, DBContent } from "@/interfaces/db";
 import RecordLog from "@/utils/content/recordLog";
 import { GetAnswersFromDBByField } from "@/utils/db/answer";
 import AnswerQuestion from "@/utils/questionnaire/answer";
-import { Db, Document, WithId } from "mongodb";
+import { Db } from "mongodb";
 
 export const fields = {
   KnowledgeQuestionnaire: "questionnaireId",
@@ -18,7 +18,7 @@ export const fields = {
  * @param accessToken - string that is used to verify and authorize against coca-cola's api
  */
 export async function AnswerQuestions(
-  questions: Document[][],
+  questions: DBAnswer[][],
   expandedContents: DBContent[],
   accessToken: string
 ) {
@@ -50,7 +50,7 @@ export async function AnswerQuestions(
  * @param accessToken - string that is used to verify and authorize against coca-cola's api
  */
 export async function AnswerSingleQuestion(
-  answer: Document,
+  answer: DBAnswer,
   numberOfQuestions: number,
   index: number,
   expandedContents: DBContent[],
@@ -61,7 +61,7 @@ export async function AnswerSingleQuestion(
   // TODO: REFACTOR
   id = answer.contentId;
   if (!id) {
-    id = expandedContents.find((c) => c.contentId);
+    id = expandedContents.find((c) => c.contentId)?.contentId;
     if (!id) return;
   }
   const isLastQuestion = numberOfQuestions == index + 1;

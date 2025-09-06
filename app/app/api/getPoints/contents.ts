@@ -1,5 +1,6 @@
+import { DBAnswer } from "@/interfaces/db";
 import { GetContentsFromDB } from "@/utils/db/answer";
-import { Db, Document } from "mongodb";
+import { Db } from "mongodb";
 
 /**
  * filter out already mapped answers and return the expandedContent of the rest from DB
@@ -10,7 +11,7 @@ import { Db, Document } from "mongodb";
  * @returns expanded contents
  */
 export default async function GetContents(
-  answers: Document[],
+  answers: DBAnswer[],
   contentIds: number[],
   db: Db
 ) {
