@@ -54,7 +54,6 @@ export async function POST(request: Request) {
 
   let expandedContents = [] as WithId<Document>[];
   if (answers.length * 10 < corksForTarget) {
-    console.log(1);
     expandedContents = await GetContents(answers, contentIds, db);
     answers.push(...(await GetAnswersByField(expandedContents, db)));
   }
