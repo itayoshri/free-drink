@@ -34,16 +34,6 @@ export default async function UpdateContent(
   client.close();
 }
 
-export async function GetContent() {
-  const { db, client } = GetDB();
-
-  const contents = db.collection("contents");
-  const res = await contents.find({ ["points"]: 10 }).toArray();
-
-  client.close();
-  return res;
-}
-
 export async function GetContentById(contentId: number, db: Db) {
   const contents = db.collection("contents");
   const content = await contents.findOne<DBContent>({
