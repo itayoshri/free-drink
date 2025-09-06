@@ -4,7 +4,11 @@ import db from "@/utils/db";
 import { GetAnswersFromDBByField, GetContentsFromDB } from "@/utils/db/answer";
 import AnswerQuestion from "@/utils/questionnaire/answer";
 import { Db, Document, WithId } from "mongodb";
-import { fields } from "./route";
+
+export const fields = {
+  KnowledgeQuestionnaire: "questionnaireId",
+  Hotspots: "hotSpotQuestionnaireId",
+};
 
 export async function AnswerQuestions(
   questions: Document[][],

@@ -1,6 +1,5 @@
 import { Db, OptionalId } from "mongodb";
 import GetDB from ".";
-import { fields } from "../../app/api/getPoints/route";
 
 export async function AddAnswer(answer: unknown) {
   const { db, client } = GetDB();

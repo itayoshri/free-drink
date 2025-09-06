@@ -12,11 +12,6 @@ type reqData = {
   mobilePhone: string;
 };
 
-export const fields = {
-  KnowledgeQuestionnaire: "questionnaireId",
-  Hotspots: "hotSpotQuestionnaireId",
-};
-
 // TODO: get number from user
 
 export async function POST(request: Request) {
