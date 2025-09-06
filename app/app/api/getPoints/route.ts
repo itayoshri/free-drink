@@ -6,8 +6,7 @@ import { GetAnswersFromDB } from "@/utils/db/answer";
 import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
 import GetContents from "./contents";
 import { DBContent } from "@/interfaces/db";
-import { ApiRes } from "@/interfaces/api";
-import { NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 
 type reqData = {
   verificationCode: string;
@@ -16,10 +15,7 @@ type reqData = {
 
 // TODO: get number from user
 
-export async function POST(
-  request: Request,
-  response: NextApiResponse<ApiRes>
-) {
+export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
   const targetNumberOfCorks = CORKS_FOR_DRINK;
@@ -31,11 +27,14 @@ export async function POST(
   );
 
   if (userCorks >= targetNumberOfCorks)
-    response.status(200).json({
-      success: true,
-      data: { userCorks, accessToken },
-      message: "user already has enough corks",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: { userCorks, accessToken },
+        message: "",
+      },
+      { status: 200 }
+    );
 
   const corksForTarget = targetNumberOfCorks - userCorks;
 
@@ -56,9 +55,12 @@ export async function POST(
   await AnswerQuestions(questions, expandedContents, accessToken);
 
   const corks = (await GetUserPoints(accessToken)).body.corks;
-  response.status(200).json({
-    success: Boolean(corks >= targetNumberOfCorks),
-    data: { corks, accessToken },
-    message: "",
-  });
+  return NextResponse.json(
+    {
+      success: Boolean(corks >= targetNumberOfCorks),
+      data: { corks, accessToken },
+      message: "",
+    },
+    { status: 200 }
+  );
 }
