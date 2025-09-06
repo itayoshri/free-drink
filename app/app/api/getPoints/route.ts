@@ -6,6 +6,7 @@ import { GetAnswersFromDB } from "@/utils/db/answer";
 import { Document, WithId } from "mongodb";
 import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
 import GetContents from "./contents";
+import { DBContent } from "@/interfaces/db";
 
 type reqData = {
   verificationCode: string;
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 
   const answers = await GetAnswersFromDB(contentIds, db);
 
-  let expandedContents = [] as WithId<Document>[];
+  let expandedContents = [] as DBContent[];
   if (answers.length * 10 < corksForTarget) {
     expandedContents = await GetContents(answers, contentIds, db);
     answers.push(...(await GetAnswersByField(expandedContents, db)));

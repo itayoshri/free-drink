@@ -1,5 +1,6 @@
 import { Db, OptionalId } from "mongodb";
 import GetDB from ".";
+import { DBAnswer, DBContent } from "@/interfaces/db";
 
 export async function AddAnswer(answer: unknown) {
   const { db, client } = GetDB();
@@ -8,12 +9,12 @@ export async function AddAnswer(answer: unknown) {
 }
 
 export async function GetContentsFromDB(contentIds: number[], db: Db) {
-  const contents = db.collection("contents");
+  const contents = db.collection<DBContent>("contents");
   return await contents.find({ contentId: { $in: contentIds } }).toArray();
 }
 
 export async function GetAnswersFromDB(contentIds: number[], db: Db) {
-  const questions = db.collection("questions");
+  const questions = db.collection<DBAnswer>("questions");
   return await questions.find({ contentId: { $in: contentIds } }).toArray();
 }
 
@@ -23,6 +24,6 @@ export async function GetAnswersFromDBByField(
   }[],
   db: Db
 ) {
-  const questions = db.collection("questions");
+  const questions = db.collection<DBAnswer>("questions");
   return await questions.find({ $or: fieldsMap }).toArray();
 }

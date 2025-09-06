@@ -1,4 +1,5 @@
 import { BoolString } from "@/interfaces/api/requests";
+import { DBAnswer, DBContent } from "@/interfaces/db";
 import RecordLog from "@/utils/content/recordLog";
 import { GetAnswersFromDBByField } from "@/utils/db/answer";
 import AnswerQuestion from "@/utils/questionnaire/answer";
@@ -11,7 +12,7 @@ export const fields = {
 
 export async function AnswerQuestions(
   questions: Document[][],
-  expandedContents: WithId<Document>[],
+  expandedContents: DBContent[],
   accessToken: string
 ) {
   for (const answers of questions) {
@@ -36,7 +37,7 @@ export async function AnswerSingleQuestion(
   answer: Document,
   numberOfQuestions: number,
   index: number,
-  expandedContents: WithId<Document>[],
+  expandedContents: DBContent[],
   accessToken: string
 ) {
   let id;
@@ -44,7 +45,7 @@ export async function AnswerSingleQuestion(
   // TODO: REFACTOR
   id = answer.contentId;
   if (!id) {
-    id = expandedContents.find((c) => c.content.id)?.id;
+    id = expandedContents.find((c) => c.contentId);
     if (!id) return;
   }
   const isLastQuestion = numberOfQuestions == index + 1;
@@ -58,8 +59,8 @@ export async function AnswerSingleQuestion(
   await RecordLog(id, "Finished", accessToken);
 }
 
-export function GroupAnswers(answers: Document[]) {
-  const questionsMap = new Map<number, Document[]>();
+export function GroupAnswers(answers: DBAnswer[]) {
+  const questionsMap = new Map<number, DBAnswer[]>();
 
   for (const answer of answers) {
     if (!questionsMap.has(answer.contentId)) {
@@ -71,10 +72,7 @@ export function GroupAnswers(answers: Document[]) {
   return Array.from(questionsMap.values());
 }
 
-export async function GetAnswersByField(
-  expandedContents: WithId<Document>[],
-  db: Db
-) {
+export async function GetAnswersByField(expandedContents: DBContent[], db: Db) {
   const fieldsMap = expandedContents
     ?.map((c) => {
       const key = fields[c.type as keyof typeof fields];

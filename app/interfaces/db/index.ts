@@ -1,4 +1,4 @@
-import { ReqQuestionData } from "../api/requests";
+import { BoolString, ReqQuestionData } from "../api/requests";
 import { ResExpendedContent } from "../api/res";
 
 export interface DBContent {
@@ -8,5 +8,6 @@ export interface DBContent {
 }
 
 export interface DBAnswer {
-  contentId?: number;
+  contentId: number;
+  isLastQuestion: BoolString;
 }
