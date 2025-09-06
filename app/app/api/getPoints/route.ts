@@ -11,10 +11,11 @@ import {
   GetAnswersFromDBByField,
   GetContentsFromDB,
 } from "@/utils/db/answer";
-import { GetContentById } from "@/utils/db/content";
+import { GetContent, GetContentById } from "@/utils/db/content";
 import AnswerQuestion from "@/utils/questionnaire/answer";
-import { Document } from "mongodb";
+import { Document, WithId } from "mongodb";
 import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
+import GetContents from "./contents";
 
 type reqData = {
   verificationCode: string;
@@ -27,23 +28,36 @@ export const fields = {
 };
 
 // TODO: get number from user
-//const targetNumberOfCorks = CORKS_FOR_DRINK;
 
 export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
+  const targetNumberOfCorks = CORKS_FOR_DRINK;
+
   const { db, client } = GetDB();
-  const accessToken = await HandleUser(mobilePhone, verificationCode, true);
+  const { accessToken, corks } = await HandleUser(
+    mobilePhone,
+    verificationCode
+  );
+
+  if (corks == targetNumberOfCorks)
+    return new Response(JSON.stringify("user already has enough corks"), {
+      headers: { "Content-Type": "application/json" },
+    });
+
+  const corksForTarget = targetNumberOfCorks - corks;
+
   const contents = (await GetHomePage()).body.contents;
-  let contentIds = contents.map((c) => c.id);
+  const contentIds = contents.map((c) => c.id);
 
   const answers = await GetAnswersFromDB(contentIds, db);
 
-  // filter out answers that were found and get the rest
-  const mapped = new Set(answers.map((a) => a.contentId));
-  contentIds = contentIds.filter((contentId) => !mapped.has(contentId));
-  const expandedContents = await GetContentsFromDB(contentIds, db);
-  answers.push(...(await GetAnswersByField(expandedContents, db)));
+  let expandedContents = [] as WithId<Document>[];
+  if (answers.length * 10 < corksForTarget) {
+    console.log(1);
+    expandedContents = await GetContents(answers, contentIds, db);
+    answers.push(...(await GetAnswersByField(expandedContents, db)));
+  }
 
   client.close();
 
