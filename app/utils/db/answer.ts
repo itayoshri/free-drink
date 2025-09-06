@@ -1,5 +1,6 @@
 import { Db, OptionalId } from "mongodb";
 import GetDB from ".";
+import { fields } from "../../app/api/getPoints/route";
 
 export async function AddAnswer(answer: unknown) {
   const { db, client } = GetDB();
@@ -30,3 +31,23 @@ export async function GetAnswers(
 }
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
+export async function GetContentsFromDB(contentIds: number[], db: Db) {
+  const contents = db.collection("contents");
+  return await contents.find({ contentId: { $in: contentIds } }).toArray();
+}
+
+export async function GetAnswersFromDB(contentIds: number[], db: Db) {
+  const questions = db.collection("questions");
+  return await questions.find({ contentId: { $in: contentIds } }).toArray();
+}
+
+export async function GetAnswersFromDBByField(
+  fieldsMap: {
+    [x: string]: number;
+  }[],
+  db: Db
+) {
+  const questions = db.collection("questions");
+  return await questions.find({ $or: fieldsMap }).toArray();
+}

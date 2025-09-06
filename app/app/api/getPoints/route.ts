@@ -5,16 +5,22 @@ import GetQuestionnaire from "@/utils/content/expandedContent";
 import GetHomePage from "@/utils/content/homePage";
 import RecordLog from "@/utils/content/recordLog";
 import GetDB from "@/utils/db";
-import { GetAnswers } from "@/utils/db/answer";
+import {
+  GetAnswers,
+  GetAnswersFromDB,
+  GetAnswersFromDBByField,
+  GetContentsFromDB,
+} from "@/utils/db/answer";
 import { GetContentById } from "@/utils/db/content";
 import AnswerQuestion from "@/utils/questionnaire/answer";
+import { Document } from "mongodb";
 
 type reqData = {
   verificationCode: string;
   mobilePhone: string;
 };
 
-const fields = {
+export const fields = {
   KnowledgeQuestionnaire: "questionnaireId",
   Hotspots: "hotSpotQuestionnaireId",
 };
@@ -23,74 +29,79 @@ export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
   const { db, client } = GetDB();
-  const accessToken = await HandleUser(mobilePhone, verificationCode);
+  const accessToken = await HandleUser(mobilePhone, verificationCode, true);
   const contents = (await GetHomePage()).body.contents;
+  const contentIds = contents.map((c) => c.id);
 
   // TODO: get number from user
   const targetNumberOfCorks = CORKS_FOR_DRINK;
   let answeredCounter = 0;
 
-  // TODO: add contentId + type to answers collection
+  // get answers
+  const answers = [] as Document[];
 
-  // run trough every content in home page
-  // TODO: support for multiple format types
-  for (const content of contents.filter(
-    (c) => c.formatType == "KnowledgeQuestionnaire"
-  )) {
-    // try to answer questions till get to the corks target
-    if (targetNumberOfCorks <= NEW_USER_CORKS + answeredCounter * 10) break;
+  // get answers that has an updated contentId
+  answers.push(...(await GetAnswersFromDB(contentIds, db)));
 
-    const { formatType: type, id } = content;
+  // TODO: pervent duplicates
+  // get answers which doesn't have a contentId and update it
+  const expandedContents = await GetContentsFromDB(contentIds, db);
+  const fieldsMap = expandedContents?.map((c) => ({
+    [fields[c.type as keyof typeof fields]]: c.content?.id,
+  }));
 
-    // TODO: add answer type
-    let answers: object[] = [];
+  console.log(fieldsMap);
+  answers.push(
+    ...(await GetAnswersFromDBByField(fieldsMap ? fieldsMap : [], db))
+  );
 
-    // if answer with contentId found in DB
-    try {
-      answers = await GetAnswers("contentId", id, db);
-    } catch {
-      // try to get answer by questionnaireId
-      const questionnaire = await GetContentById(id, db);
+  await client.close();
 
-      // skip if content hasn't been found in DB
-      if (!questionnaire) {
-        console.log("skipped");
-        continue;
-      }
+  // TODO if fieldmap
+  const questionsMap = new Map<number, Document[]>();
 
-      //TODO: fix messy types
-      answers = await GetAnswers(
-        fields[type as keyof typeof fields],
-        questionnaire.id,
-        db,
-        id
-      );
-    } finally {
-      const numberOfQuestions = answers.length;
+  for (const answer of answers) {
+    if (!questionsMap.has(answer.contentId)) {
+      questionsMap.set(answer.contentId, []);
+    }
+    questionsMap.get(answer.contentId)!.push(answer);
+  }
 
-      // if answers were found
-      if (numberOfQuestions > 0) {
+  const questions = Array.from(questionsMap.values());
+
+  for (const answers of questions) {
+    const numberOfQuestions = answers.length;
+
+    if (numberOfQuestions > 0) {
+      // run trough every answer to question and answer it on server
+      for (const index in answers) {
+        const answer = answers[index];
+        let id;
+
+        // TODO: check
+        try {
+          id = answer.contentId;
+        } catch {
+          id = expandedContents.find((c) => c.content.id)?.id;
+          //if (!id) continue;
+        }
+
         await RecordLog(id, "Started", accessToken);
 
-        // run trough every answer to question and answer it on server
-        for (const index in answers) {
-          const answer = answers[index];
-          const isLastQuestion = numberOfQuestions == Number(index) + 1;
+        const isLastQuestion = numberOfQuestions == Number(index) + 1;
 
-          await AnswerQuestion(
-            answer,
-            String(isLastQuestion) as BoolString,
-            accessToken
-          );
+        await AnswerQuestion(
+          answer,
+          String(isLastQuestion) as BoolString,
+          accessToken
+        );
 
-          await RecordLog(id, "Finished", accessToken);
-          answeredCounter++;
-        }
+        await RecordLog(id, "Finished", accessToken);
+        answeredCounter++;
       }
     }
   }
-
-  await client.close();
+  // if answers were found
 
   return new Response(JSON.stringify(await GetUserPoints(accessToken)), {
     headers: { "Content-Type": "application/json" },
