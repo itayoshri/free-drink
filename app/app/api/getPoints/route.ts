@@ -20,47 +20,58 @@ export async function POST(request: Request) {
   const { mobilePhone, verificationCode } = data;
   const targetNumberOfCorks = CORKS_FOR_DRINK;
 
-  const { db, client } = GetDB();
-  const { accessToken, userCorks } = await HandleUser(
-    mobilePhone,
-    verificationCode
-  );
+  try {
+    const { accessToken, userCorks } = await HandleUser(
+      mobilePhone,
+      verificationCode
+    );
 
-  if (userCorks >= targetNumberOfCorks)
+    if (userCorks >= targetNumberOfCorks)
+      return NextResponse.json(
+        {
+          success: true,
+          data: { userCorks, accessToken },
+          message: "user already has enough corks",
+        },
+        { status: 200 }
+      );
+
+    const { db, client } = GetDB();
+    const corksForTarget = targetNumberOfCorks - userCorks;
+
+    const contents = (await GetHomePage()).body.contents;
+    const contentIds = contents.map((c) => c.id);
+
+    const answers = await GetAnswersFromDB(contentIds, db);
+
+    let expandedContents = [] as DBContent[];
+    if (answers.length * 10 < corksForTarget) {
+      expandedContents = await GetContents(answers, contentIds, db);
+      answers.push(...(await GetAnswersByField(expandedContents, db)));
+    }
+
+    client.close();
+
+    const questions = GroupAnswers(answers);
+    await AnswerQuestions(questions, expandedContents, accessToken);
+
+    const corks = (await GetUserPoints(accessToken)).body.corks;
     return NextResponse.json(
       {
-        success: true,
-        data: { userCorks, accessToken },
+        success: Boolean(corks >= targetNumberOfCorks),
+        data: { corks, accessToken },
         message: "",
       },
       { status: 200 }
     );
-
-  const corksForTarget = targetNumberOfCorks - userCorks;
-
-  const contents = (await GetHomePage()).body.contents;
-  const contentIds = contents.map((c) => c.id);
-
-  const answers = await GetAnswersFromDB(contentIds, db);
-
-  let expandedContents = [] as DBContent[];
-  if (answers.length * 10 < corksForTarget) {
-    expandedContents = await GetContents(answers, contentIds, db);
-    answers.push(...(await GetAnswersByField(expandedContents, db)));
+  } catch {
+    return NextResponse.json(
+      {
+        success: false,
+        data: null,
+        message: "Invalid verification code",
+      },
+      { status: 400 }
+    );
   }
-
-  client.close();
-
-  const questions = GroupAnswers(answers);
-  await AnswerQuestions(questions, expandedContents, accessToken);
-
-  const corks = (await GetUserPoints(accessToken)).body.corks;
-  return NextResponse.json(
-    {
-      success: Boolean(corks >= targetNumberOfCorks),
-      data: { corks, accessToken },
-      message: "",
-    },
-    { status: 200 }
-  );
 }
