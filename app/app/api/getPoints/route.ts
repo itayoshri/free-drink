@@ -31,7 +31,7 @@ export async function POST(request: Request) {
   const { db, client } = GetDB();
   const accessToken = await HandleUser(mobilePhone, verificationCode, true);
   const contents = (await GetHomePage()).body.contents;
-  const contentIds = contents.map((c) => c.id);
+  let contentIds = contents.map((c) => c.id);
 
   // TODO: get number from user
   const targetNumberOfCorks = CORKS_FOR_DRINK;
@@ -43,14 +43,21 @@ export async function POST(request: Request) {
   // get answers that has an updated contentId
   answers.push(...(await GetAnswersFromDB(contentIds, db)));
 
-  // TODO: pervent duplicates
+  // pervent duplicates
+  const mapped = new Set(answers.map((a) => a.contentId));
+  contentIds = contentIds.filter((contentId) => !mapped.has(contentId));
+
   // get answers which doesn't have a contentId and update it
   const expandedContents = await GetContentsFromDB(contentIds, db);
-  const fieldsMap = expandedContents?.map((c) => ({
-    [fields[c.type as keyof typeof fields]]: c.content?.id,
-  }));
+  const fieldsMap = expandedContents
+    ?.map((c) => {
+      const key = fields[c.type as keyof typeof fields];
+      const value = c.content?.id;
+      if (!key || value === undefined) return null; // skip invalid entries
+      return { [key]: value };
+    })
+    .filter((item) => item !== null);
 
-  console.log(fieldsMap);
   answers.push(
     ...(await GetAnswersFromDBByField(fieldsMap ? fieldsMap : [], db))
   );
@@ -79,11 +86,10 @@ export async function POST(request: Request) {
         let id;
 
         // TODO: check
-        try {
-          id = answer.contentId;
-        } catch {
+        id = answer.contentId;
+        if (!id) {
           id = expandedContents.find((c) => c.content.id)?.id;
-          //if (!id) continue;
+          if (!id) continue;
         }
 
         await RecordLog(id, "Started", accessToken);
@@ -101,7 +107,6 @@ export async function POST(request: Request) {
       }
     }
   }
-  // if answers were found
 
   return new Response(JSON.stringify(await GetUserPoints(accessToken)), {
     headers: { "Content-Type": "application/json" },
