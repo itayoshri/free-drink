@@ -7,6 +7,7 @@ import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
 import GetContents from "./contents";
 import { DBContent } from "@/interfaces/db";
 import { NextResponse } from "next/server";
+import HandleAnswers from ".";
 
 type reqData = {
   verificationCode: string;
@@ -36,26 +37,10 @@ export async function POST(request: Request) {
         { status: 200 }
       );
 
-    const { db, client } = GetDB();
     const corksForTarget = targetNumberOfCorks - userCorks;
-
-    const contents = (await GetHomePage()).body.contents;
-    const contentIds = contents.map((c) => c.id);
-
-    const answers = await GetAnswersFromDB(contentIds, db);
-
-    let expandedContents = [] as DBContent[];
-    if (answers.length * 10 < corksForTarget) {
-      expandedContents = await GetContents(answers, contentIds, db);
-      answers.push(...(await GetAnswersByField(expandedContents, db)));
-    }
-
-    client.close();
-
-    const questions = GroupAnswers(answers);
-    await AnswerQuestions(questions, expandedContents, accessToken);
-
+    await HandleAnswers(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
+
     return NextResponse.json(
       {
         success: Boolean(corks >= targetNumberOfCorks),
