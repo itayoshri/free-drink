@@ -35,17 +35,17 @@ export async function POST(request: Request) {
   const targetNumberOfCorks = CORKS_FOR_DRINK;
 
   const { db, client } = GetDB();
-  const { accessToken, corks } = await HandleUser(
+  const { accessToken, userCorks } = await HandleUser(
     mobilePhone,
     verificationCode
   );
 
-  if (corks == targetNumberOfCorks)
+  if (userCorks == targetNumberOfCorks)
     return new Response(JSON.stringify("user already has enough corks"), {
       headers: { "Content-Type": "application/json" },
     });
 
-  const corksForTarget = targetNumberOfCorks - corks;
+  const corksForTarget = targetNumberOfCorks - userCorks;
 
   const contents = (await GetHomePage()).body.contents;
   const contentIds = contents.map((c) => c.id);
