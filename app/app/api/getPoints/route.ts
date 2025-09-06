@@ -3,10 +3,11 @@ import GetUserPoints from "@/utils/account/points";
 import GetHomePage from "@/utils/content/homePage";
 import GetDB from "@/utils/db";
 import { GetAnswersFromDB } from "@/utils/db/answer";
-import { Document, WithId } from "mongodb";
 import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
 import GetContents from "./contents";
 import { DBContent } from "@/interfaces/db";
+import { ApiRes } from "@/interfaces/api";
+import { NextApiResponse } from "next";
 
 type reqData = {
   verificationCode: string;
@@ -15,7 +16,10 @@ type reqData = {
 
 // TODO: get number from user
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  response: NextApiResponse<ApiRes>
+) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
   const targetNumberOfCorks = CORKS_FOR_DRINK;
@@ -26,9 +30,11 @@ export async function POST(request: Request) {
     verificationCode
   );
 
-  if (userCorks == targetNumberOfCorks)
-    return new Response(JSON.stringify("user already has enough corks"), {
-      headers: { "Content-Type": "application/json" },
+  if (userCorks >= targetNumberOfCorks)
+    response.status(200).json({
+      success: true,
+      data: { userCorks, accessToken },
+      message: "user already has enough corks",
     });
 
   const corksForTarget = targetNumberOfCorks - userCorks;
@@ -49,7 +55,10 @@ export async function POST(request: Request) {
   const questions = GroupAnswers(answers);
   await AnswerQuestions(questions, expandedContents, accessToken);
 
-  return new Response(JSON.stringify(await GetUserPoints(accessToken)), {
-    headers: { "Content-Type": "application/json" },
+  const corks = (await GetUserPoints(accessToken)).body.corks;
+  response.status(200).json({
+    success: Boolean(corks >= targetNumberOfCorks),
+    data: { corks, accessToken },
+    message: "",
   });
 }
