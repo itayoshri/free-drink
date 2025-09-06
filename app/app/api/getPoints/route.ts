@@ -1,18 +1,8 @@
-import { BoolString } from "@/interfaces/api/requests";
-import { CORKS_FOR_DRINK, HandleUser, NEW_USER_CORKS } from "@/utils/account";
+import { CORKS_FOR_DRINK, HandleUser } from "@/utils/account";
 import GetUserPoints from "@/utils/account/points";
-import GetQuestionnaire from "@/utils/content/expandedContent";
 import GetHomePage from "@/utils/content/homePage";
-import RecordLog from "@/utils/content/recordLog";
 import GetDB from "@/utils/db";
-import {
-  GetAnswers,
-  GetAnswersFromDB,
-  GetAnswersFromDBByField,
-  GetContentsFromDB,
-} from "@/utils/db/answer";
-import { GetContent, GetContentById } from "@/utils/db/content";
-import AnswerQuestion from "@/utils/questionnaire/answer";
+import { GetAnswersFromDB } from "@/utils/db/answer";
 import { Document, WithId } from "mongodb";
 import { AnswerQuestions, GetAnswersByField, GroupAnswers } from "./answer";
 import GetContents from "./contents";
