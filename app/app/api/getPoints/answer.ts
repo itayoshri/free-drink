@@ -56,23 +56,13 @@ export async function AnswerSingleQuestion(
   expandedContents: DBContent[],
   accessToken: string
 ) {
-  let id;
-
-  // TODO: REFACTOR
-  id = answer.contentId;
-  if (!id) {
-    id = expandedContents.find((c) => c.contentId)?.contentId;
-    if (!id) return;
-  }
   const isLastQuestion = numberOfQuestions == index + 1;
 
-  await RecordLog(id, "Started", accessToken);
   await AnswerQuestion(
     answer,
     String(isLastQuestion) as BoolString,
     accessToken
   );
-  await RecordLog(id, "Finished", accessToken);
 }
 
 /**
