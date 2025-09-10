@@ -34,14 +34,17 @@ export async function POST(request: Request) {
     const corksForTarget = targetNumberOfCorks - userCorks;
     await HandleAnswers(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
+    const achieved = Boolean(corks >= targetNumberOfCorks);
 
     return NextResponse.json(
       {
-        success: Boolean(corks >= targetNumberOfCorks),
+        success: achieved,
         data: { corks, accessToken },
-        message: "",
+        message: achieved
+          ? ""
+          : "there aren't enough available solved games on our DB",
       },
-      { status: 200 }
+      { status: achieved ? 200 : 204 }
     );
   } catch {
     return NextResponse.json(
