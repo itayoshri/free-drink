@@ -35,6 +35,7 @@ export async function POST(request: Request) {
     await HandleAnswers(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
     const achieved = Boolean(corks >= targetNumberOfCorks);
+    console.log(achieved);
 
     return NextResponse.json(
       {
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
           ? ""
           : "there aren't enough available solved games on our DB",
       },
-      { status: achieved ? 200 : 204 }
+      { status: 200 }
     );
   } catch {
     return NextResponse.json(
