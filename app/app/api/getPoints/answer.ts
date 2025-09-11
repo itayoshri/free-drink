@@ -1,6 +1,9 @@
 import { BoolString } from "@/interfaces/api/requests";
 import { DBAnswer, DBContent } from "@/interfaces/db";
-import { GetAnswersFromDBByField } from "@/utils/db/answer";
+import {
+  UpdateAnswersWithContentId,
+  GetAnswersFromDBByField,
+} from "@/utils/db/answer";
 import AnswerQuestion from "@/utils/questionnaire/answer";
 import { Db, WithId } from "mongodb";
 import GetContents from "./contents";
@@ -101,9 +104,7 @@ export async function GetAnswersByField(
     fieldsMap ? fieldsMap : [],
     db
   );
-
-  const labeledAnswers = [] as DBAnswer[];
-
+  const labeledAnswers = [] as WithId<DBAnswer>[];
   unlabeledAnswers.map((answer) =>
     labeledAnswers.push({
       ...answer,
@@ -111,7 +112,7 @@ export async function GetAnswersByField(
     })
   );
 
-  //TODO: add contentIds to documents on DB
+  await UpdateAnswersWithContentId(labeledAnswers, db);
 
   return labeledAnswers;
 }
