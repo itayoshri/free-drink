@@ -112,7 +112,8 @@ export async function GetAnswersByField(
     })
   );
 
-  await UpdateAnswersWithContentId(labeledAnswers, db);
+  if (labeledAnswers.length > 0)
+    await UpdateAnswersWithContentId(labeledAnswers, db);
 
   return labeledAnswers;
 }
