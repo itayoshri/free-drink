@@ -1,9 +1,9 @@
 import { BoolString } from "@/interfaces/api/requests";
 import { DBAnswer, DBContent } from "@/interfaces/db";
-import RecordLog from "@/utils/content/recordLog";
 import { GetAnswersFromDBByField } from "@/utils/db/answer";
 import AnswerQuestion from "@/utils/questionnaire/answer";
-import { Db } from "mongodb";
+import { Db, WithId } from "mongodb";
+import GetContents from "./contents";
 
 export const fields = {
   KnowledgeQuestionnaire: "questionnaireId",
@@ -19,7 +19,6 @@ export const fields = {
  */
 export async function AnswerQuestions(
   questions: DBAnswer[][],
-  expandedContents: DBContent[],
   accessToken: string
 ) {
   for (const answers of questions) {
@@ -32,7 +31,6 @@ export async function AnswerQuestions(
           answers[index],
           numberOfQuestions,
           Number(index),
-          expandedContents,
           accessToken
         );
       }
@@ -53,7 +51,6 @@ export async function AnswerSingleQuestion(
   answer: DBAnswer,
   numberOfQuestions: number,
   index: number,
-  expandedContents: DBContent[],
   accessToken: string
 ) {
   const isLastQuestion = numberOfQuestions == index + 1;
@@ -87,12 +84,40 @@ export function GroupAnswers(answers: DBAnswer[]) {
 /**
  * filter out useless data and return answers from DB using field map
  *
- * @param expandedContents - unfiltered array of content from DB
+ * @param answers - already mapped answers
+ * @param contentIds - array of content ids
  * @param db - MongoDB
- * @returns answers from DB !!with no contentId!!
+ * @returns answers from DB
  */
-export async function GetAnswersByField(expandedContents: DBContent[], db: Db) {
-  const fieldsMap = expandedContents
+export async function GetAnswersByField(
+  answers: DBAnswer[],
+  contentIds: number[],
+  db: Db
+) {
+  const expandedContents = await GetContents(answers, contentIds, db);
+  const fieldsMap = GetFieldsMap(expandedContents);
+
+  const unlabeledAnswers = await GetAnswersFromDBByField(
+    fieldsMap ? fieldsMap : [],
+    db
+  );
+
+  const labeledAnswers = [] as DBAnswer[];
+
+  unlabeledAnswers.map((answer) =>
+    labeledAnswers.push({
+      ...answer,
+      contentId: GetAnswerContentId(answer, expandedContents),
+    })
+  );
+
+  //TODO: add contentIds to documents on DB
+
+  return labeledAnswers;
+}
+
+function GetFieldsMap(expandedContents: WithId<DBContent>[]) {
+  return expandedContents
     ?.map((c) => {
       const key = fields[c.type as keyof typeof fields];
       const value = c.content?.id;
@@ -100,6 +125,15 @@ export async function GetAnswersByField(expandedContents: DBContent[], db: Db) {
       return { [key]: value };
     })
     .filter((item) => item !== null);
+}
 
-  return await GetAnswersFromDBByField(fieldsMap ? fieldsMap : [], db);
+function GetAnswerContentId(
+  answer: WithId<DBAnswer>,
+  expandedContents: WithId<DBContent>[]
+) {
+  let id: number;
+  if (answer.questionnaireId) id = answer.questionnaireId;
+  else if (answer.hotSpotQuestionnaireId) id = answer.hotSpotQuestionnaireId;
+
+  return expandedContents.find((c) => c.content?.id == id)?.contentId as number;
 }
