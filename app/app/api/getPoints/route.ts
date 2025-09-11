@@ -35,7 +35,6 @@ export async function POST(request: Request) {
     await HandleAnswers(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
     const achieved = Boolean(corks >= targetNumberOfCorks);
-    console.log(achieved);
 
     return NextResponse.json(
       {
@@ -47,7 +46,8 @@ export async function POST(request: Request) {
       },
       { status: 200 }
     );
-  } catch {
+  } catch (e) {
+    console.log(e);
     return NextResponse.json(
       {
         success: false,
