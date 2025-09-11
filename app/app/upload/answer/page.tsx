@@ -11,14 +11,17 @@ export default function UploadAnswersPage() {
       .post("/api/upload/answer", { answer: JSON.parse(answer) })
       .then((res) => {
         if (res.status == 200) {
+          setAnswer("");
         }
       });
+    setAnswer("");
   }, []);
 
   return (
     <div className="flex flex-col w-full gap-4 h-full py-30">
       <textarea
         onChange={(e) => setAnswer(e.target.value)}
+        value={answer}
         className="text-black font-code ltr text-left h-full border-[1px] border-gray-300 w-full font-medium outline-red-600 py-3 px-4 rounded-xl"
       ></textarea>
       <Button onClick={() => uploadAnswer(answer)} ref={ref}>
