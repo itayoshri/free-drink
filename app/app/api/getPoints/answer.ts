@@ -7,6 +7,7 @@ import {
 import AnswerQuestion from "@/utils/questionnaire/answer";
 import { Db, WithId } from "mongodb";
 import GetContents from "./contents";
+import { apiAction, apiNamespace } from "@/utils/datasource";
 
 export const fields = {
   KnowledgeQuestionnaire: "questionnaireId",
@@ -59,6 +60,7 @@ export async function AnswerSingleQuestion(
   const isLastQuestion = numberOfQuestions == index + 1;
 
   await AnswerQuestion(
+    GetApiRequestRoute(answer),
     answer,
     String(isLastQuestion) as BoolString,
     accessToken
@@ -138,4 +140,10 @@ function GetAnswerContentId(
   else if (answer.hotSpotQuestionnaireId) id = answer.hotSpotQuestionnaireId;
 
   return expandedContents.find((c) => c.content?.id == id)?.contentId as number;
+}
+
+function GetApiRequestRoute(answer: DBAnswer): [apiNamespace, apiAction] {
+  if (answer.questionnaireId) return ["questionnaire", "answer"];
+  else if (answer.hotSpotQuestionnaireId) return ["hotspot", "Answer"];
+  return ["questionnaire", "answer"];
 }
