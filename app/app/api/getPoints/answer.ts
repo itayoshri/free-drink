@@ -8,6 +8,7 @@ import AnswerQuestion from "@/utils/questionnaire/answer";
 import { Db, WithId } from "mongodb";
 import GetContents from "./contents";
 import { apiAction, apiNamespace } from "@/utils/datasource";
+import { GetQuestionnaireFromServer } from "@/utils/content/expandedContent";
 
 export const fields = {
   KnowledgeQuestionnaire: "questionnaireId",
@@ -58,6 +59,13 @@ export async function AnswerSingleQuestion(
   accessToken: string
 ) {
   const isLastQuestion = numberOfQuestions == index + 1;
+  const apiRoute = GetApiRequestRoute(answer);
+
+  // TODO: locate in the higher function
+  // send heavy expandedContent request only if an hotspot game
+  if (apiRoute[0] == "hotspot") {
+    await GetQuestionnaireFromServer(answer.contentId, "Hotspots", accessToken);
+  }
 
   await AnswerQuestion(
     GetApiRequestRoute(answer),
