@@ -20,12 +20,14 @@ export default async function HandleAnswers(
   const contentIds = contents.map((c) => c.id);
   const answers = (await GetAnswersFromDB(contentIds, db)) as DBAnswer[];
 
-  if (answers.length * 10 < corksForTarget) {
+  let questions = GroupAnswers(answers);
+
+  if (questions.length * 10 < corksForTarget) {
     answers.push(...(await GetAnswersByField(answers, contentIds, db)));
+    questions = GroupAnswers(answers);
   }
 
   client.close();
 
-  const questions = GroupAnswers(answers);
   await AnswerQuestions(questions, accessToken);
 }
