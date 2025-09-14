@@ -1,5 +1,7 @@
+import CompletedPage from "@/components/UI/Completed";
 import LoadingPage from "@/components/UI/Loading";
 
 export default function Loading() {
-  return <LoadingPage />;
+  const loading = false;
+  return loading ? <LoadingPage /> : <CompletedPage></CompletedPage>;
 }
