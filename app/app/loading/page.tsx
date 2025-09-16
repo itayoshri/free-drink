@@ -1,5 +1,5 @@
-import CompletedPage from "@/components/UI/Completed";
-import LoadingPage from "@/components/UI/Loading";
+import CompletedPage from "@/app/Completed";
+import LoadingPage from "@/app/Loading";
 
 export default function Loading() {
   const loading = false;

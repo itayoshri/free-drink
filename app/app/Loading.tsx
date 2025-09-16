@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 export default function LoadingPage() {
   const TEXTS = ["מתחבר למשתמש", "מעבד תשובות מ-DB", "עונה על חידונים"];
   const [index, setIndex] = useState(0);
+  console.log("loading");
 
   useEffect(() => {
     if (index < TEXTS.length - 1) {

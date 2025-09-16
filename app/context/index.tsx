@@ -4,19 +4,31 @@ import React, { createContext, useContext, useState } from "react";
 type AuthContextType = {
   accessToken: string | null;
   mobilePhone: string | null;
+  step: Step;
   setAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
+  setStep: (step: Step) => void;
 };
+
+type Step = "phoneNumber" | "verificationCode" | "loading" | "completed";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [mobilePhone, setMobilePhone] = useState<string | null>(null);
+  const [step, setStep] = useState<Step>("phoneNumber");
 
   return (
     <AuthContext.Provider
-      value={{ accessToken, mobilePhone, setAccessToken, setMobilePhone }}
+      value={{
+        accessToken,
+        mobilePhone,
+        step,
+        setAccessToken,
+        setMobilePhone,
+        setStep,
+      }}
     >
       {children}
     </AuthContext.Provider>

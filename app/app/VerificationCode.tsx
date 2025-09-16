@@ -1,13 +1,13 @@
 "use client";
 import Button from "@/components/button";
 import Digit from "@/components/OTP/digit";
-import ScreenConfetti from "@/components/UI/Confetti";
+import ScreenConfetti from "@/app/Confetti";
 import { useAuth } from "@/context";
 import axios from "axios";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const { mobilePhone } = useAuth();
+  const { mobilePhone, setStep } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -21,16 +21,17 @@ export default function VerifyPage() {
   }, []);
 
   const getPoints = useCallback(() => {
+    setStep("loading");
     axios
       .post(`/api/getPoints`, {
         verificationCode: digits.join(""),
         mobilePhone: mobilePhone,
       })
       .then((res) => {
-        console.log(res.data);
+        setStep("completed");
         setConfetti(true);
       });
-  }, [digits, mobilePhone]);
+  }, [digits, mobilePhone, setStep]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
