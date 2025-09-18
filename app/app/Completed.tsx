@@ -11,7 +11,7 @@ export default function CompletedPage() {
 
   // TODO: Get request duration
   // TODO: Get in better way from req data
-  const action = getPointsResData.succses
+  const action = getPointsResData.success
     ? Action.TWO_QUESTIONS_OR_MORE
     : Action.FAILED;
 
