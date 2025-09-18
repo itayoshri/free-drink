@@ -31,7 +31,7 @@ export default function VerifyPage() {
         setgetPointsResData(res.data);
         setStep("completed");
       });
-  }, [digits, mobilePhone, setStep]);
+  }, [digits, mobilePhone, setStep, setgetPointsResData]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
