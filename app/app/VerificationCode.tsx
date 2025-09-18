@@ -7,7 +7,7 @@ import axios from "axios";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const { mobilePhone, setStep } = useAuth();
+  const { mobilePhone, setStep, setgetPointsResData } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -28,8 +28,8 @@ export default function VerifyPage() {
         mobilePhone: mobilePhone,
       })
       .then((res) => {
+        setgetPointsResData(res.data);
         setStep("completed");
-        setConfetti(true);
       });
   }, [digits, mobilePhone, setStep]);
 
