@@ -3,22 +3,21 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import axios from "axios";
 import { useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context";
 
 export default function PhoneInputPage() {
-  const router = useRouter();
   const phoneButtonRef = useRef<HTMLButtonElement>(null);
   const { setMobilePhone, mobilePhone, setStep } = useAuth();
   const sendVerificationCode = useCallback(() => {
+    setStep("loading");
     axios
       .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
       .then((res) => {
         if (res.status == 200) {
           setStep("verificationCode");
-        }
+        } else setStep("phoneNumber");
       });
-  }, [mobilePhone, router]);
+  }, [mobilePhone, setStep]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
