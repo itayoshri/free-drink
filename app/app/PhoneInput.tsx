@@ -7,17 +7,18 @@ import { useAuth } from "@/context";
 
 export default function PhoneInputPage() {
   const phoneButtonRef = useRef<HTMLButtonElement>(null);
-  const { setMobilePhone, mobilePhone, setStep } = useAuth();
+  const { setMobilePhone, mobilePhone, setStep, setLoading } = useAuth();
   const sendVerificationCode = useCallback(() => {
-    setStep("loading");
+    setLoading(true);
     axios
       .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
       .then((res) => {
+        setLoading(false);
         if (res.status == 200) {
           setStep("verificationCode");
-        } else setStep("phoneNumber");
+        }
       });
-  }, [mobilePhone, setStep]);
+  }, [mobilePhone, setLoading, setStep]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {

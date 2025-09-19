@@ -6,7 +6,7 @@ import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const { mobilePhone, setStep, setgetPointsResData } = useAuth();
+  const { mobilePhone, setStep, setgetPointsResData, setLoading } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -19,7 +19,7 @@ export default function VerifyPage() {
   }, []);
 
   const getPoints = useCallback(() => {
-    setStep("loading");
+    setLoading(true);
     axios
       .post(`/api/getPoints`, {
         verificationCode: digits.join(""),
@@ -28,8 +28,9 @@ export default function VerifyPage() {
       .then((res) => {
         setgetPointsResData(res.data);
         setStep("completed");
+        setLoading(false);
       });
-  }, [digits, mobilePhone, setStep, setgetPointsResData]);
+  }, [digits, mobilePhone, setLoading, setStep, setgetPointsResData]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {

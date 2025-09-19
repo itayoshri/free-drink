@@ -5,10 +5,12 @@ type AuthContextType = {
   accessToken: string | null;
   mobilePhone: string | null;
   step: Step;
+  loading: boolean;
   getPointsResData: Record<string, unknown>;
   setAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
   setStep: (step: Step) => void;
+  setLoading: (loading: boolean) => void;
   setgetPointsResData: (data: Record<string, unknown>) => void;
 };
 
@@ -20,6 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [mobilePhone, setMobilePhone] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("phoneNumber");
+  const [loading, setLoading] = useState(false);
   const [getPointsResData, setgetPointsResData] = useState({});
 
   return (
@@ -28,10 +31,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         accessToken,
         mobilePhone,
         step,
+        loading,
         getPointsResData,
         setAccessToken,
         setMobilePhone,
         setStep,
+        setLoading,
         setgetPointsResData,
       }}
     >
