@@ -1,5 +1,5 @@
 "use client";
-import { CircularProgress } from "@mui/material";
+import LoadingSpinner from "@/components/UI/Loading";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
@@ -20,16 +20,10 @@ export default function LoadingPage() {
 
   return (
     <div className="w-screen h-[100dvh] gap-6 z-50 flex flex-col justify-center items-center bg-white">
-      <Image
-        src={"/logo.png"}
-        width={120}
-        height={20}
-        style={{ height: "auto" }}
-        alt="itay"
-      />
+      <Image src={"/logo.png"} width={120} height={20} alt="itay" priority />
       <div className="flex flex-col items-center gap-3">
         <a className="text-xl text-black font-bold">{TEXTS[index]}</a>
-        <CircularProgress sx={{ color: "#DD1D2A" }} />
+        <LoadingSpinner />
       </div>
     </div>
   );
