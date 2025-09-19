@@ -37,7 +37,7 @@ export default function CompletedPage() {
         <RequestActionCard action={action} duration={2} />
         <Button disabled>לקבלת משקה מהמכונה</Button>
       </div>
-      <ScreenConfetti />
+      {userCorks >= 80 ? <ScreenConfetti /> : null}
     </div>
   );
 }
