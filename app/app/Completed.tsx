@@ -5,6 +5,7 @@ import RequestActionCard, {
   actionInfo,
 } from "@/components/UI/RequestActionCard";
 import { useAuth } from "@/context";
+import ScreenConfetti from "./Confetti";
 
 export default function CompletedPage() {
   const { getPointsResData } = useAuth();
@@ -32,11 +33,11 @@ export default function CompletedPage() {
           (getPointsResData.data as Record<string, unknown>).userCorks
         } פקקים`}</a>
       </div>
-
       <div className="flex flex-col w-full gap-4">
         <RequestActionCard action={action} duration={2} />
         <Button disabled>לקבלת משקה מהמכונה</Button>
       </div>
+      <ScreenConfetti />
     </div>
   );
 }

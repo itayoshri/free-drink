@@ -1,17 +1,15 @@
 "use client";
 import Button from "@/components/button";
 import Digit from "@/components/OTP/digit";
-import ScreenConfetti from "@/app/Confetti";
 import { useAuth } from "@/context";
 import axios from "axios";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
   const { mobilePhone, setStep, setgetPointsResData } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
-  const [showConfetti, setConfetti] = useState(false);
 
   const changeDigit = useCallback((index: number, digit: number) => {
     setDigits((arr) => {
@@ -68,7 +66,6 @@ export default function VerifyPage() {
           קבלו 80 פקקים
         </Button>
       </div>
-      {showConfetti ? <ScreenConfetti /> : null}
     </>
   );
 }
