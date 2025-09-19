@@ -11,15 +11,28 @@ export default function CompletedPage() {
 
   // TODO: Get request duration
   // TODO: Get in better way from req data
-  const action = getPointsResData.success
-    ? Action.TWO_QUESTIONS_OR_MORE
-    : Action.FAILED;
+  // TODO: Get if user already had corks
+  const userCorks = (getPointsResData.data as Record<string, unknown>)
+    .userCorks as number;
+  const action =
+    userCorks >= 80
+      ? Action.TWO_QUESTIONS_OR_MORE
+      : userCorks >= 70
+      ? Action.ONE_QUESTION
+      : Action.FAILED;
 
   return (
     <div className="flex flex-col w-full gap-6 items-center">
-      <a className="text-center font-bold text-3xl text-black">
-        {actionInfo[action].message}
-      </a>
+      {/* TODO: add Check icon */}
+      <div className="flex flex-col items-center text-black">
+        <a className="text-center font-bold text-3xl">
+          {actionInfo[action].message}
+        </a>
+        <a className="text-xl">{`קיבלתם ${
+          (getPointsResData.data as Record<string, unknown>).userCorks
+        } פקקים`}</a>
+      </div>
+
       <div className="flex flex-col w-full gap-4">
         <RequestActionCard action={action} duration={2} />
         <Button disabled>לקבלת משקה מהמכונה</Button>
