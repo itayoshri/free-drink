@@ -8,7 +8,7 @@ import { useAuth } from "@/context";
 import ScreenConfetti from "./Confetti";
 
 export default function CompletedPage() {
-  const { getPointsResData } = useAuth();
+  const { getPointsResData, setStep } = useAuth();
 
   // TODO: Get request duration
   // TODO: Get in better way from req data
@@ -35,7 +35,11 @@ export default function CompletedPage() {
       </div>
       <div className="flex flex-col w-full gap-4">
         <RequestActionCard action={action} duration={2} />
-        <Button disabled>לקבלת משקה מהמכונה</Button>
+        {userCorks < 80 ? (
+          <Button onClick={() => setStep("phoneNumber")}>נסו שוב</Button>
+        ) : (
+          <Button disabled>לקבלת משקה מהמכונה</Button>
+        )}
       </div>
       {userCorks >= 80 ? <ScreenConfetti /> : null}
     </div>
