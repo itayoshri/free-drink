@@ -19,6 +19,7 @@ export default function VerifyPage() {
   }, []);
 
   const getPoints = useCallback(async () => {
+    const startTime = performance.now();
     setLoading(true);
     try {
       await axios
@@ -27,8 +28,10 @@ export default function VerifyPage() {
           mobilePhone: mobilePhone,
         })
         .then((res) => {
+          const endTime = performance.now();
+          const duration = ((endTime - startTime) / 1000).toFixed(2);
           setStep("completed");
-          setgetPointsResData(res.data);
+          setgetPointsResData({ ...res.data, duration });
         });
     } catch {
       // TODO: add toast error

@@ -34,7 +34,10 @@ export default function CompletedPage() {
         } פקקים`}</a>
       </div>
       <div className="flex flex-col w-full gap-4">
-        <RequestActionCard action={action} duration={2} />
+        <RequestActionCard
+          action={action}
+          duration={getPointsResData.duration as number}
+        />
         {userCorks < 80 ? (
           <Button onClick={() => setStep("phoneNumber")}>נסו שוב</Button>
         ) : (
