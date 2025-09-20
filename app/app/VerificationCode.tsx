@@ -18,18 +18,23 @@ export default function VerifyPage() {
     });
   }, []);
 
-  const getPoints = useCallback(() => {
+  const getPoints = useCallback(async () => {
     setLoading(true);
-    axios
-      .post(`/api/getPoints`, {
-        verificationCode: digits.join(""),
-        mobilePhone: mobilePhone,
-      })
-      .then((res) => {
-        setgetPointsResData(res.data);
-        setStep("completed");
-        setLoading(false);
-      });
+    try {
+      await axios
+        .post(`/api/getPoints`, {
+          verificationCode: digits.join(""),
+          mobilePhone: mobilePhone,
+        })
+        .then((res) => {
+          setStep("completed");
+          setgetPointsResData(res.data);
+        });
+    } catch {
+      // TODO: add toast error
+    } finally {
+      setLoading(false);
+    }
   }, [digits, mobilePhone, setLoading, setStep, setgetPointsResData]);
 
   useEffect(() => {
