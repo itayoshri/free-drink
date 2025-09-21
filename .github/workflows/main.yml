@@ -30,7 +30,7 @@ jobs:
         run: |
           docker push myuser/myapp:${{ github.sha }}
           docker push myuser/myapp:latest
-  
+
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
@@ -44,10 +44,4 @@ jobs:
 
       - name: Pull and run Docker on server
         run: |
-          ssh itayo@${{ secrets.SERVER_IP }} << 'EOF'
-            docker pull ${{ DOCKER_REPO }}:latest
-            docker stop freed || true
-            docker rm freed || true
-            docker run -d --name freed -p 80:80 ${{ DOCKER_REPO }}:latest
-EOF
-
+          ssh itayo@${{ secrets.SERVER_IP }} << echo itay
