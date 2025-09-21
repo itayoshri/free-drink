@@ -18,7 +18,7 @@ export async function HandleUser(
 ) {
   const resVerifyUser = await verifyUser(verificationCode, mobilePhone);
   const verificationToken = resVerifyUser.body.verificationToken;
-  const userCorks = resVerifyUser.body.userInfo.corks;
+  const userCorks = resVerifyUser.body.userInfo?.corks
 
   const accessToken = resVerifyUser.body.userInfo?.accessToken;
   const userExists = Boolean(accessToken);
