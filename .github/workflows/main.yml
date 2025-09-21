@@ -23,13 +23,13 @@ jobs:
       - name: Build Docker image
         run: |
           cd app
-          docker build -t ${{ DOCKER_REPO }}:${{ github.sha }} .
-          docker tag ${{ DOCKER_REPO }}:${{ github.sha }} ${{ DOCKER_REPO }}:latest
+          docker build -t $DOCKER_REPO:${{ github.sha }} .
+          docker tag $DOCKER_REPO:${{ github.sha }} $DOCKER_REPO:latest
 
       - name: Push Docker image
         run: |
-          docker push ${{ DOCKER_REPO }}:${{ github.sha }}
-          docker push ${{ DOCKER_REPO }}:latest
+          docker push $DOCKER_REPO:${{ github.sha }}
+          docker push $DOCKER_REPO:latest
 
   deploy:
     needs: build-and-push
