@@ -1,0 +1,53 @@
+on:
+  workflow_call:
+    inputs:
+      docker_repo:
+        required: true
+        type: string
+      image_tag:
+        required: false
+        default: latest
+        type: string
+    secrets:
+      SERVER_IP:
+        required: true
+      SSH_PRIVATE_KEY:
+        required: true
+      DB_USERNAME:
+        required: true
+      DB_PASSWORD:
+        required: true
+
+jobs:
+  deploy:
+    name: Pull Docker image on the app server and run it
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }
+      SERVER_IP: ${{ secrets.SERVER_IP }}
+      DOCKER_REPO: ${{ inputs.docker_repo }}
+      IMAGE_TAG: ${{ inputs.image_tag }}
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+
+      - name: Pull and run Docker on server
+        env:
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          ssh itayo@$SERVER_IP <<EOF
+            sudo -s
+            docker pull $DOCKER_REPO:$IMAGE_TAG
+            docker stop freed >/dev/null 2>&1 || true
+            docker rm freed >/dev/null 2>&1 || true
+            docker run -d --name freed -p 80:3000 \
+              -e DB_USERNAME="${DB_USERNAME}" \
+              -e DB_PASSWORD="${DB_PASSWORD}" \
+              $DOCKER_REPO:$IMAGE_TAG
+          EOF
