@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - test/self-host
+  workflow_dispatch:
 
 env:
   DOCKER_REPO: "${{ vars.DOCKER_USERNAME }}/freed"
