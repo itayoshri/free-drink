@@ -14,8 +14,6 @@ on:
         default: latest
         type: string
     secrets:
-      DOCKER_USERNAME:
-        required: true
       DOCKER_PASSWORD:
         required: true
 

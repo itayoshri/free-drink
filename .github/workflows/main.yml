@@ -4,60 +4,24 @@ on:
       - main
   workflow_dispatch:
 
-env:
+vars:
   DOCKER_REPO: "${{ vars.DOCKER_USERNAME }}/freed"
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image
-        run: |
-          cd app
-          docker build -t $DOCKER_REPO:${{ github.sha }} .
-          docker tag $DOCKER_REPO:${{ github.sha }} $DOCKER_REPO:latest
-
-      - name: Push Docker image
-        run: |
-          docker push $DOCKER_REPO:${{ github.sha }}
-          docker push $DOCKER_REPO:latest
+    uses: .github/workflows/build.yml
+    with:
+      branch: main
+      docker_repo: ${{ vars.DOCKER_REPO }}
+    secrets:
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-    env:
-      PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Reference the private key stored in GitHub Secrets
+    uses: .github/workflows/deploy.yml
+    with:
+      docker_repo: ${{ vars.DOCKER_REPO }}
+    secrets:
       SERVER_IP: ${{ secrets.SERVER_IP }}
-    steps:
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
-
-      - name: Pull and run Docker on server
-        env:
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: |
-          ssh itayo@$SERVER_IP <<EOF
-            sudo -s
-            docker pull $DOCKER_REPO:latest
-            docker stop freed >/dev/null 2>&1 || true
-            docker rm freed >/dev/null 2>&1 || true
-            docker run -d --name freed -p 80:3000 \
-              -e DB_USERNAME="${DB_USERNAME}" \
-              -e DB_PASSWORD="${DB_PASSWORD}" \
-              $DOCKER_REPO:latest
-          EOF
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
