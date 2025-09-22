@@ -38,9 +38,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up SSH
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Reference the private key stored in GitHub Secrets
+
         run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
