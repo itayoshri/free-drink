@@ -1,7 +1,6 @@
 on:
   push:
     branches:
-      - test/self-host
       - main
   workflow_dispatch:
 
@@ -22,16 +21,16 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # - name: Build Docker image
-      #   run: |
-      #     cd app
-      #     docker build -t $DOCKER_REPO:${{ github.sha }} .
-      #     docker tag $DOCKER_REPO:${{ github.sha }} $DOCKER_REPO:latest
+      - name: Build Docker image
+        run: |
+          cd app
+          docker build -t $DOCKER_REPO:${{ github.sha }} .
+          docker tag $DOCKER_REPO:${{ github.sha }} $DOCKER_REPO:latest
 
-      # - name: Push Docker image
-      #   run: |
-      #     docker push $DOCKER_REPO:${{ github.sha }}
-      #     docker push $DOCKER_REPO:latest
+      - name: Push Docker image
+        run: |
+          docker push $DOCKER_REPO:${{ github.sha }}
+          docker push $DOCKER_REPO:latest
 
   deploy:
     needs: build-and-push
