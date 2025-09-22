@@ -52,7 +52,7 @@ jobs:
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
             docker pull $DOCKER_REPO:latest
-            docker stop freed || true
-            docker rm freed || true
+            docker stop freed >/dev/null 2>&1 || true
+            docker rm freed >/dev/null 2>&1 || true
             docker run -d --name freed -p 80:3000 $DOCKER_REPO:latest
           EOF
