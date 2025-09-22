@@ -49,4 +49,4 @@ jobs:
 
       - name: Pull and run Docker on server
         run: |
-          ssh itayo@${{ secrets.SERVER_IP }} << echo itay
+          ssh itayo@${{ secrets.SERVER_IP }}
