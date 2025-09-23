@@ -19,3 +19,8 @@ export interface FormattedQuestionnaire {
   type: string;
   questions: FormattedQuestion[];
 }
+
+export interface ModelSchema {
+  questionId: number;
+  answerId: number;
+}

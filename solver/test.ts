@@ -1,18 +1,15 @@
-import { GoogleGenAI } from "@google/genai";
+import GetDB from "../app/utils/db";
+import { GetContentsFromDB } from "../app/utils/db/answer";
+import RunDataOnModel from "./utils/data";
+import dotenv from "dotenv";
+dotenv.config();
 
-const ai = new GoogleGenAI({});
+export default async function Test() {
+  const { db, client } = GetDB();
+  const content = (await GetContentsFromDB([6820], db))[0];
+  client.close();
 
-async function main() {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: "Explain how AI works in a few words",
-    config: {
-      thinkingConfig: {
-        thinkingBudget: 0, // Disables thinking
-      },
-    },
-  });
-  console.log(response.text);
+  RunDataOnModel(content);
 }
 
-await main();
+Test();

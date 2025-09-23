@@ -1,10 +1,14 @@
 import { Type } from "@google/genai";
-import { DBContent } from "../../../app/interfaces/db";
+import { DBContent, DBAnswer } from "../../../app/interfaces/db";
 import GetFormattedQuestionnaire from "./format";
 import BuildPrompt from "./prompt";
-import GetDB from "../../../app/utils/db/index";
-import { GetAnswersFromDB } from "../../../app/utils/db/answer";
 import AskAIModel from "../model";
+import { ModelSchema } from "@/interfaces/data";
+import GenerateSignedHash from "../api/signedHash";
+import GetAPIFormattedAnswerRequest from "../api/answer";
+import GetDB from "../../../app/utils/db";
+import { GetAnswersFromDB } from "../../../app/utils/db/answer";
+import isCorrectAnswer from "./validation";
 
 export const schema = {
   //contentId: Type.NUMBER,
@@ -24,16 +28,21 @@ INPUT:
 `;
 
 export default async function RunDataOnModel(content: DBContent) {
+  const answers = [] as DBAnswer[];
   const data = GetFormattedQuestionnaire(content);
   const questions = data.questions;
 
-  //const { db, client } = GetDB();
-  //const dbAnswers = await GetAnswersFromDB([data.contentId], db);
-
+  // TODO: validation
+  /*const { db, client } = GetDB();
+  const dbAnswers = await GetAnswersFromDB([data.contentId], db);
+*/
   for (const question of questions) {
     const prompt = BuildPrompt(BASE_PROMPT, question);
-    //console.log(prompt);
-    const answer = await AskAIModel(prompt, schema);
-    console.log(answer.text);
+    const modelAnswer = await AskAIModel(prompt, schema);
+    const answer = GetAPIFormattedAnswerRequest(
+      modelAnswer.text as string,
+      data
+    );
+    answers.push(answer);
   }
 }

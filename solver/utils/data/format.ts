@@ -1,5 +1,9 @@
 import { question, answer } from "../../../app/interfaces/api/res";
-import { FormattedAnswer, FormattedQuestion } from "../../interfaces/data";
+import {
+  FormattedAnswer,
+  FormattedQuestion,
+  FormattedQuestionnaire,
+} from "../../interfaces/data";
 import { DBContent } from "../../../app/interfaces/db/";
 
 export function GetFormattedAnswers(answers: answer[]): FormattedAnswer[] {
@@ -17,9 +21,12 @@ export function GetFormattedQuestion(question: question): FormattedQuestion {
   };
 }
 
-export default function GetFormattedQuestionnaire(content: DBContent) {
+export default function GetFormattedQuestionnaire(
+  content: DBContent
+): FormattedQuestionnaire {
   return {
     id: content.content.id,
+    type: content.type,
     contentId: content.contentId,
     questions: content.content.questions.map((question) =>
       GetFormattedQuestion(question)

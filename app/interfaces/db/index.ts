@@ -13,6 +13,7 @@ export interface DBAnswer {
   questionnaireId?: number;
   hotSpotQuestionnaireId?: number;
   answers?: Answer[];
+  signedHash?: string;
 }
 
 type Answer = {
