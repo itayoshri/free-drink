@@ -12,3 +12,10 @@ export interface FormattedQuestion {
   question: string;
   answers: FormattedAnswer[];
 }
+
+export interface FormattedQuestionnaire {
+  contentId: number;
+  id: number;
+  type: string;
+  questions: FormattedQuestion[];
+}
