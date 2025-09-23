@@ -73,7 +73,7 @@ export type content = {
   rewardingCaps: number;
 };
 
-type answer = {
+export type answer = {
   id: number;
   questionId: number;
   answer: string;
@@ -83,7 +83,7 @@ type answer = {
   order: number;
 };
 
-type question = {
+export type question = {
   id: number;
   questionnaireId: number;
   questionLayoutId: number;
