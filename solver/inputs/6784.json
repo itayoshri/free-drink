@@ -1,0 +1,668 @@
+{
+  "_id": { "$oid": "68c719ff8a3ffe4c08001144" },
+  "contentId": { "$numberInt": "6784" },
+  "type": "KnowledgeQuestionnaire",
+  "content": {
+    "id": { "$numberInt": "5574" },
+    "contentId": { "$numberInt": "6784" },
+    "name": "QuestionnaireName",
+    "title": "QuestionnaireTitle",
+    "timeInSeconds": null,
+    "amountOfClues": null,
+    "cutAnswersCluePaymentAmount": null,
+    "wordsGameCluePaymentAmount": null,
+    "couplesGameCluePaymentAmount": null,
+    "questions": [
+      {
+        "id": { "$numberInt": "31343" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "2" },
+        "question": "למייגן מרקל",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102402" },
+            "questionId": { "$numberInt": "31343" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102401" },
+            "questionId": { "$numberInt": "31343" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31346" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "5" },
+        "question": "לקלואי קרדשיאן",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102407" },
+            "questionId": { "$numberInt": "31346" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102408" },
+            "questionId": { "$numberInt": "31346" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31332" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "1" },
+        "question": "לאופרה ווינפרי",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102380" },
+            "questionId": { "$numberInt": "31332" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102379" },
+            "questionId": { "$numberInt": "31332" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31345" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "4" },
+        "question": "לדואה ליפה",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102406" },
+            "questionId": { "$numberInt": "31345" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102405" },
+            "questionId": { "$numberInt": "31345" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31348" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "7" },
+        "question": "לפדרו פסקל",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102412" },
+            "questionId": { "$numberInt": "31348" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102411" },
+            "questionId": { "$numberInt": "31348" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31347" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "6" },
+        "question": "לקייט הדסון",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102410" },
+            "questionId": { "$numberInt": "31347" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102409" },
+            "questionId": { "$numberInt": "31347" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31351" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "10" },
+        "question": "לכריס פראט",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102417" },
+            "questionId": { "$numberInt": "31351" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102418" },
+            "questionId": { "$numberInt": "31351" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31350" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "9" },
+        "question": "למייקל ג'ורדן",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102415" },
+            "questionId": { "$numberInt": "31350" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102416" },
+            "questionId": { "$numberInt": "31350" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31349" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "8" },
+        "question": "לטיילור סוויפט",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102414" },
+            "questionId": { "$numberInt": "31349" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102413" },
+            "questionId": { "$numberInt": "31349" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      },
+      {
+        "id": { "$numberInt": "31344" },
+        "questionnaireId": { "$numberInt": "5574" },
+        "questionLayoutId": { "$numberInt": "5" },
+        "order": { "$numberInt": "3" },
+        "question": "לגווינת' פאלטרו",
+        "soundUrl": "",
+        "image": {
+          "imageUrl": "https://prdstorageac.blob.core.windows.net/prod/coke%20shooting%20day/Day%2013/Reactions/IMG_0425.png",
+          "alt": null
+        },
+        "youtubeUrl": null,
+        "isVerticalVideo": false,
+        "correctAnswerFeedback": "תשובה נכונה",
+        "incorrectAnswerFeedback": "תשובה לא נכונה",
+        "displayAnswerOnSameScreen": true,
+        "userAnswer": null,
+        "freeScreen": false,
+        "freeScreenButtonText": null,
+        "wordsCompletionGame": false,
+        "couplesGame": false,
+        "mustAnswerOn": { "$numberInt": "1" },
+        "amountOfAnswersGroups": { "$numberInt": "0" },
+        "couplesGameGuessingAttempts": null,
+        "couplesGameMinimumCorrectAnswers": null,
+        "isSliderTemplate": false,
+        "answers": [
+          {
+            "id": { "$numberInt": "102403" },
+            "questionId": { "$numberInt": "31344" },
+            "answer": "יש פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "1" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          },
+          {
+            "id": { "$numberInt": "102404" },
+            "questionId": { "$numberInt": "31344" },
+            "answer": "אין פודקאסט",
+            "image": { "imageUrl": "", "alt": null },
+            "answerValue": null,
+            "order": { "$numberInt": "2" },
+            "summaryImage": null,
+            "summaryDescription": null,
+            "directionRtl": null,
+            "sliderAnswer": {
+              "min": { "$numberInt": "0" },
+              "max": { "$numberInt": "0" },
+              "steps": { "$numberInt": "0" },
+              "sliderIcon": null,
+              "answerButtonText": null
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
