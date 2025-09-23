@@ -12,4 +12,9 @@ export interface DBAnswer {
   isLastQuestion: BoolString;
   questionnaireId?: number;
   hotSpotQuestionnaireId?: number;
+  answers?: Answer[];
 }
+
+type Answer = {
+  id: number;
+};
