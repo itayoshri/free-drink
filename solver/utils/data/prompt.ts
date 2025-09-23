@@ -1,6 +1,6 @@
 const BASE_PROMPT = "";
 
-export default function DataToPrompt(prompt: string, data: object) {
+export default function BuildPrompt(prompt: string, data: object) {
   return `${prompt}
-    ${data}`;
+    ${JSON.stringify(data)}`;
 }
