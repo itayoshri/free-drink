@@ -3,12 +3,7 @@ import { DBContent, DBAnswer } from "../../../app/interfaces/db";
 import GetFormattedQuestionnaire from "./format";
 import BuildPrompt from "./prompt";
 import AskAIModel from "../model";
-import { ModelSchema } from "@/interfaces/data";
-import GenerateSignedHash from "../api/signedHash";
-import GetAPIFormattedAnswerRequest from "../api/answer";
-import GetDB from "../../../app/utils/db";
-import { GetAnswersFromDB } from "../../../app/utils/db/answer";
-import isCorrectAnswer from "./validation";
+import formatAnswerRequest from "../api/answer";
 
 export const schema = {
   //contentId: Type.NUMBER,
@@ -39,10 +34,7 @@ export default async function RunDataOnModel(content: DBContent) {
   for (const question of questions) {
     const prompt = BuildPrompt(BASE_PROMPT, question);
     const modelAnswer = await AskAIModel(prompt, schema);
-    const answer = GetAPIFormattedAnswerRequest(
-      modelAnswer.text as string,
-      data
-    );
+    const answer = formatAnswerRequest(modelAnswer.text as string, data);
     answers.push(answer);
   }
 }

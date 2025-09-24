@@ -2,7 +2,7 @@ import { FormattedQuestionnaire, ModelSchema } from "@/interfaces/data";
 import GenerateSignedHash from "./signedHash";
 import { DBAnswer } from "../../../app/interfaces/db";
 
-export default function GetAPIFormattedAnswerRequest(
+export default function formatAnswerRequest(
   modelAnswer: string,
   data: FormattedQuestionnaire
 ) {
