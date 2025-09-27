@@ -2,7 +2,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 export default async function AskAIModel(
   prompt: string,
-  responseSchema: Record<string, Type>
+  responseSchema: Record<string, any>
 ) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -15,7 +15,6 @@ export default async function AskAIModel(
         thinkingBudget: 0, // Disables thinking
       },*/
       tools: [{ googleSearch: {} }],
-      //responseMimeType: "application/json",
       responseJsonSchema: responseSchema,
     },
   });

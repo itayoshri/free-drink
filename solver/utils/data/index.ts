@@ -4,20 +4,39 @@ import GetFormattedQuestionnaire from "./format";
 import BuildPrompt from "./prompt";
 import AskAIModel from "../model";
 import formatAnswerRequest from "../api/answer";
+import GetDB from "../../../app/utils/db";
 
 export const schema = {
   //contentId: Type.NUMBER,
   //questionnaireId: Type.NUMBER,
-  questionId: Type.NUMBER,
-  answerId: Type.NUMBER,
+  type: "object",
+  properties: {
+    result: {
+      type: "object",
+      properties: {
+        questionId: { type: "number" },
+        answerId: { type: "number" },
+      },
+      required: ["questionId", "answerId"],
+    },
+    explanation: { type: "string" },
+  },
+  required: ["result", "explanation"],
   // isLastQuestion
   // answers: Type.Array(?)
 };
 
 const BASE_PROMPT = `
-קרא את השאלה ואת התשובות האפשרויות והסבר מהי התשובה הנכונה או זו שיוצרת את המשפט הנכון ביותר במילים שלך. אחר כך החזר JSON שמכיל רק:
-{ "questionId", "answerId" } כאשר answerId מתאים לתשובה שבחרת.
+קרא את השאלה ואת התשובות האפשרויות וחשוב מהי התשובה הנכונה או זו שיוצרת את המשפט הנכון ביותר. החזר אך ורק JSON בפורמט הבא:
+{
+  "result": {
+    "questionId": number,
+    "answerId": number|null
+  },
+  "explanation": string
+}
 אם אינך בטוח – כתוב answerId=null
+החזר אך ורק JSON. אל תוסיף טקסט, כותרות או סימוני json.  
 INPUT:
 
 `;
@@ -32,15 +51,19 @@ export default async function RunDataOnModel(
   let counter = 0;
 
   // TODO: validation
-  /*const { db, client } = GetDB();
-  const dbAnswers = await GetAnswersFromDB([data.contentId], db);
-*/
+  const { db, client } = GetDB();
+  //const dbAnswers = await GetAnswersFromDB([data.contentId], db);
+
   for (const question of questions) {
-    if (counter > limit) break;
+    if (counter >= limit) break;
     const prompt = BuildPrompt(BASE_PROMPT, question);
     const modelAnswer = await AskAIModel(prompt, schema);
     const answer = formatAnswerRequest(modelAnswer.text as string, data);
     answers.push(answer);
     counter++;
   }
+
+  const collection = db.collection("answers");
+  await collection.insertMany(answers);
+  client.close();
 }

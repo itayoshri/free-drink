@@ -6,7 +6,10 @@ export default function formatAnswerRequest(
   modelAnswer: string,
   data: FormattedQuestionnaire
 ) {
-  const JsonModelAnswer = JSON.parse(modelAnswer) as ModelSchema;
+  const firstBrace = modelAnswer.indexOf("{");
+  const lastBrace = modelAnswer.lastIndexOf("}");
+  const jsonString = modelAnswer.slice(firstBrace, lastBrace + 1);
+  const JsonModelAnswer = JSON.parse(jsonString).result as ModelSchema;
   const signedHash = GenerateSignedHash(JsonModelAnswer.questionId, data.id);
   return {
     questionId: JsonModelAnswer.questionId,

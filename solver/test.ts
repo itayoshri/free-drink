@@ -6,10 +6,10 @@ dotenv.config();
 
 export default async function Test() {
   const { db, client } = GetDB();
-  const content = (await GetContentsFromDB([6820], db))[0];
+  const content = (await GetContentsFromDB([6859], db))[0];
   client.close();
 
-  RunDataOnModel(content, 1);
+  RunDataOnModel(content, 99999);
 }
 
 Test();
