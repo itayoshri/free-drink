@@ -19,7 +19,7 @@ export async function GetContentsFromDB(contentIds: number[], db: Db) {
  * @returns Array of answers from DB
  */
 export async function GetAnswersFromDB(contentIds: number[], db: Db) {
-  const questions = db.collection<DBAnswer>("questions");
+  const questions = db.collection<DBAnswer>("answers");
   return await questions.find({ contentId: { $in: contentIds } }).toArray();
 }
 
