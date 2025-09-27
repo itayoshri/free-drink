@@ -51,9 +51,6 @@ export default async function RunDataOnModel(
   let counter = 0;
 
   // TODO: validation
-  const { db, client } = GetDB();
-  //const dbAnswers = await GetAnswersFromDB([data.contentId], db);
-
   for (const question of questions) {
     if (counter >= limit) break;
     const prompt = BuildPrompt(BASE_PROMPT, question);
@@ -63,7 +60,5 @@ export default async function RunDataOnModel(
     counter++;
   }
 
-  const collection = db.collection("answers");
-  await collection.insertMany(answers);
-  client.close();
+  return answers;
 }
