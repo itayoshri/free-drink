@@ -22,19 +22,25 @@ INPUT:
 
 `;
 
-export default async function RunDataOnModel(content: DBContent) {
+export default async function RunDataOnModel(
+  content: DBContent,
+  limit: number
+) {
   const answers = [] as DBAnswer[];
   const data = GetFormattedQuestionnaire(content);
   const questions = data.questions;
+  let counter = 0;
 
   // TODO: validation
   /*const { db, client } = GetDB();
   const dbAnswers = await GetAnswersFromDB([data.contentId], db);
 */
   for (const question of questions) {
+    if (counter > limit) break;
     const prompt = BuildPrompt(BASE_PROMPT, question);
     const modelAnswer = await AskAIModel(prompt, schema);
     const answer = formatAnswerRequest(modelAnswer.text as string, data);
     answers.push(answer);
+    counter++;
   }
 }

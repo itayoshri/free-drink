@@ -9,7 +9,7 @@ export default async function Test() {
   const content = (await GetContentsFromDB([6820], db))[0];
   client.close();
 
-  RunDataOnModel(content);
+  RunDataOnModel(content, 1);
 }
 
 Test();
