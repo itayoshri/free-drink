@@ -17,5 +17,6 @@ export default function formatAnswerRequest(
     signedHash: signedHash,
     questionnaireId: data.id,
     isLastQuestion: "false",
+    answers: [{ id: JsonModelAnswer.answerId }],
   } as DBAnswer;
 }
