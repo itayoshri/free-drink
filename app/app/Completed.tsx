@@ -10,11 +10,10 @@ import ScreenConfetti from "./Confetti";
 export default function CompletedPage() {
   const { getPointsResData, setStep } = useAuth();
 
-  // TODO: Get request duration
   // TODO: Get in better way from req data
   // TODO: Get if user already had corks
   const userCorks = (getPointsResData.data as Record<string, unknown>)
-    .userCorks as number;
+    .corks as number;
   const action =
     userCorks >= 80
       ? Action.TWO_QUESTIONS_OR_MORE
@@ -29,9 +28,7 @@ export default function CompletedPage() {
         <a className="text-center font-bold text-3xl">
           {actionInfo[action].message}
         </a>
-        <a className="text-xl">{`קיבלתם ${
-          (getPointsResData.data as Record<string, unknown>).userCorks
-        } פקקים`}</a>
+        <a className="text-xl">{`קיבלתם ${userCorks} פקקים`}</a>
       </div>
       <div className="flex flex-col w-full gap-4">
         <RequestActionCard
