@@ -1,5 +1,6 @@
 "use client";
 import LoadingSpinner from "@/components/UI/Loading";
+import Logo from "@/components/UI/Logo";
 import { useAuth } from "@/context";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -22,7 +23,7 @@ export default function LoadingPage() {
 
   return (
     <div className="w-screen h-[100dvh] gap-6 z-50 flex flex-col justify-center items-center bg-white">
-      <Image src={"/logo.png"} width={120} height={20} alt="itay" priority />
+      <Logo />
       <div className="flex flex-col items-center gap-3">
         {step === "verificationCode" ? (
           <a className="text-xl text-black font-bold">{TEXTS[index]}</a>
