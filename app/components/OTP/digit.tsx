@@ -7,7 +7,7 @@ export default function Digit({ setValue }: DigitProps) {
     <input
       type="number"
       maxLength={1}
-      className="text-5xl w-full border-[1px] ltr: text-black text-center py-4 rounded-xl font-inter font-bold border-gray-300"
+      className="text-5xl w-full border-[1px] ltr: text-black text-center py-4 rounded-xl font-inter border-gray-300"
       onInput={(e) => {
         const target = e.target as HTMLInputElement;
         const val = target.value;
@@ -24,18 +24,16 @@ export default function Digit({ setValue }: DigitProps) {
           }
         }
       }}
-      onKeyDown={(e) => {
+      onKeyUp={(e) => {
         const target = e.target as HTMLInputElement;
         const key = e.key.toLowerCase();
 
         if (key == "backspace" || key == "delete") {
-          if (target.value == "") {
-            const prev = target.nextElementSibling as HTMLInputElement;
-            if (prev) {
-              prev.focus();
-              prev.value = "";
-            }
-          } else target.value = "";
+          target.value = "";
+          const prev = target.nextElementSibling as HTMLInputElement;
+          if (prev) {
+            prev.focus();
+          }
           return;
         }
       }}
