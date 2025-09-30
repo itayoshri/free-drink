@@ -1,64 +1,21 @@
 "use client";
-import Button from "@/components/button";
-import Input from "@/components/input";
-import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/context";
+import PhoneInputPage from "./PhoneInput";
+import VerifyPage from "./VerificationCode";
+import LoadingPage from "./Loading";
+import CompletedPage from "./Completed";
+import { JSX } from "react";
+
+const steps: Record<string, JSX.Element> = {
+  phoneNumber: <PhoneInputPage />,
+  verificationCode: <VerifyPage />,
+  completed: <CompletedPage />,
+};
 
 export default function Home() {
-  const router = useRouter();
-  const phoneButtonRef = useRef<HTMLButtonElement>(null);
-  const { setMobilePhone, mobilePhone } = useAuth();
-  const sendVerificationCode = useCallback(() => {
-    axios
-      .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
-      .then((res) => {
-        if (res.status == 200) {
-          router.push("/verify");
-        }
-      });
-  }, [mobilePhone, router]);
+  const { step, loading } = useAuth();
 
-  useEffect(() => {
-    const handleKeyDown = (event: { key: string }) => {
-      const buttonRef = phoneButtonRef;
-      if (event.key === "Enter") {
-        // Trigger click if button exists
-        if (buttonRef.current) {
-          buttonRef.current.click();
-        }
-      }
-    };
+  if (loading) return <LoadingPage />;
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  return (
-    <div className="flex flex-col w-full gap-8">
-      <h1 className="text-5xl text-black font-bold">
-        הקלידו את מספר הטלפון שלכם.
-      </h1>
-      <div className="flex flex-col items-start w-full gap-4">
-        <Input
-          onChange={(newValue) => setMobilePhone(newValue.currentTarget.value)}
-          placeholder="מספר טלפון"
-          type="tel"
-          key={0}
-        />
-        <Button
-          onClick={() => sendVerificationCode()}
-          className="bg-gray-400"
-          ref={phoneButtonRef}
-        >
-          הבא
-        </Button>
-      </div>
-    </div>
-  );
+  return steps[step] ?? null;
 }
