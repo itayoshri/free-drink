@@ -13,7 +13,7 @@ type RequestAction = {
 
 export const actionInfo = [
   { action: "לא נפתרו חידות", message: "הפעם זה לא הצליח :(" },
-  { action: "פתירת חידה אחת", message: "כמעט הצלחנו" },
+  { action: "פתירת חידה אחת", message: "כמעט הצלחנו!" },
   {
     action: "פתירת שתי חידות או יותר",
     message: "הפעולה הושלמה בהצלחה!",
