@@ -2,20 +2,24 @@ import { ReactNode, Ref } from "react";
 
 export interface ButtonProps {
   children: ReactNode;
-  onClick(): unknown;
+  onClick?(): unknown;
   className?: string;
-  ref: Ref<HTMLButtonElement>;
+  ref?: Ref<HTMLButtonElement>;
+  disabled?: boolean;
 }
 
 export default function Button({
   children,
-  onClick,
-  ref,
+  onClick = () => null,
+  ref = null,
   className = "",
+  disabled = false,
 }: ButtonProps) {
   return (
     <button
-      className={`bg-red-600 py-3 rounded-xl w-full text-xl text-white font-medium flex justify-center items-center ${className}`}
+      className={`${
+        disabled ? "bg-red-300" : "bg-red-600"
+      } py-3 rounded-xl w-full text-xl text-white font-medium flex justify-center items-center ${className}`}
       onClick={onClick}
       ref={ref}
     >

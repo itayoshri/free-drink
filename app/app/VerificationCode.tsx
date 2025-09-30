@@ -1,17 +1,15 @@
 "use client";
 import Button from "@/components/button";
 import Digit from "@/components/OTP/digit";
-import ScreenConfetti from "@/components/UI/Confetti";
 import { useAuth } from "@/context";
 import axios from "axios";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const { mobilePhone } = useAuth();
+  const { mobilePhone, setStep, setgetPointsResData, setLoading } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
-  const [showConfetti, setConfetti] = useState(false);
 
   const changeDigit = useCallback((index: number, digit: number) => {
     setDigits((arr) => {
@@ -20,17 +18,27 @@ export default function VerifyPage() {
     });
   }, []);
 
-  const getPoints = useCallback(() => {
-    axios
-      .post(`/api/getPoints`, {
-        verificationCode: digits.join(""),
-        mobilePhone: mobilePhone,
-      })
-      .then((res) => {
-        console.log(res.data);
-        setConfetti(true);
-      });
-  }, [digits, mobilePhone]);
+  const getPoints = useCallback(async () => {
+    const startTime = performance.now();
+    setLoading(true);
+    try {
+      await axios
+        .post(`/api/getPoints`, {
+          verificationCode: digits.join(""),
+          mobilePhone: mobilePhone,
+        })
+        .then((res) => {
+          const endTime = performance.now();
+          const duration = ((endTime - startTime) / 1000).toFixed(2);
+          setStep("completed");
+          setgetPointsResData({ ...res.data, duration });
+        });
+    } catch {
+      // TODO: add toast error
+    } finally {
+      setLoading(false);
+    }
+  }, [digits, mobilePhone, setLoading, setStep, setgetPointsResData]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
@@ -67,7 +75,6 @@ export default function VerifyPage() {
           קבלו 80 פקקים
         </Button>
       </div>
-      {showConfetti ? <ScreenConfetti /> : null}
     </>
   );
 }
