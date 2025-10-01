@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/components/button";
 import OtpInput from "@/components/UI/OTP";
+import EditPhoneNumber from "@/components/UI/OTP/Edit";
 import { useAuth } from "@/context";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -74,27 +75,15 @@ export default function VerifyPage() {
           <h2 className="text-black text-2xl font-bold">
             הקלידו את קוד האימות שקיבלתם
           </h2>
-          <div className="flex flex-col items-center">
-            <p className="text-md text-gray-500">
-              <span className="font-medium">הקלידו את קוד האימות שנשלח ל</span>
-              <span className="font-inter font-semibold">{mobilePhone}</span>
-            </p>
-            <button
-              onClick={() => clearPhoneNumber()}
-              className="text-red-500 font-bold"
-            >
-              ערוך מספר
-            </button>
-          </div>
+          <EditPhoneNumber
+            mobilePhone={mobilePhone as string}
+            clearPhoneNumber={clearPhoneNumber}
+          />
         </div>
         <div className="flex flex-col items-center w-full gap-4">
           <OtpInput changeDigit={changeDigit} length={4} />
-          {/*<div className="text-lg text-gray-500 font-medium">
-            <span className="text-red-500 font-bold">שליחה מחדש</span>{" "}
-            <span>בעוד</span> <span className="font-inter">1:36</span>
-          </div>*/}
         </div>
-        <Button onClick={() => getPoints()} className="" ref={codeButtonRef}>
+        <Button onClick={() => getPoints()} className="">
           קבלו 80 פקקים
         </Button>
       </div>
