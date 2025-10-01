@@ -6,7 +6,13 @@ import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const { mobilePhone, setStep, setgetPointsResData, setLoading } = useAuth();
+  const {
+    mobilePhone,
+    setMobilePhone,
+    setStep,
+    setgetPointsResData,
+    setLoading,
+  } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -17,6 +23,11 @@ export default function VerifyPage() {
       return arr;
     });
   }, []);
+
+  const clearPhoneNumber = useCallback(() => {
+    setMobilePhone("");
+    setStep("phoneNumber");
+  }, [setMobilePhone, setStep]);
 
   const getPoints = useCallback(async () => {
     const startTime = performance.now();
@@ -58,13 +69,30 @@ export default function VerifyPage() {
   }, []);
   return (
     <>
-      <div className="flex flex-col items-center gap-9 w-full">
-        <h2 className="text-black text-xl font-bold">
-          הקלידו את קוד האימות שקיבלתם
-        </h2>
+      <div className="flex flex-col items-center gap-8 w-full">
+        <div className="flex flex-col items-center gap-1">
+          <h2 className="text-black text-2xl font-bold">
+            הקלידו את קוד האימות שקיבלתם
+          </h2>
+          <div className="flex flex-col items-center">
+            <p className="text-md text-gray-500">
+              <span className="font-medium">הקלידו את קוד האימות שנשלח ל</span>
+              <span className="font-inter font-semibold">{mobilePhone}</span>
+            </p>
+            <button
+              onClick={() => clearPhoneNumber()}
+              className="text-red-500 font-bold"
+            >
+              ערוך מספר
+            </button>
+          </div>
+        </div>
         <div className="flex flex-col items-center w-full gap-4">
           <OtpInput changeDigit={changeDigit} length={4} />
-          {/*<a className="text-black text-lg">לא קיבלתם את הקוד? שליחה מחדש</a>*/}
+          {/*<div className="text-lg text-gray-500 font-medium">
+            <span className="text-red-500 font-bold">שליחה מחדש</span>{" "}
+            <span>בעוד</span> <span className="font-inter">1:36</span>
+          </div>*/}
         </div>
         <Button onClick={() => getPoints()} className="" ref={codeButtonRef}>
           קבלו 80 פקקים
