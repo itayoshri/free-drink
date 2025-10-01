@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/button";
-import Digit from "@/components/OTP/digit";
+import OtpInput from "@/components/UI/OtpInput";
 import { useAuth } from "@/context";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -63,12 +63,7 @@ export default function VerifyPage() {
           הקלידו את קוד האימות שקיבלתם
         </h2>
         <div className="flex flex-col items-center w-full gap-4">
-          <div className="flex w-full gap-2 justify-between">
-            <Digit setValue={(digit) => changeDigit(3, digit)}></Digit>
-            <Digit setValue={(digit) => changeDigit(2, digit)}></Digit>
-            <Digit setValue={(digit) => changeDigit(1, digit)}></Digit>
-            <Digit setValue={(digit) => changeDigit(0, digit)}></Digit>
-          </div>
+          <OtpInput changeDigit={changeDigit} length={4} />
           {/*<a className="text-black text-lg">לא קיבלתם את הקוד? שליחה מחדש</a>*/}
         </div>
         <Button onClick={() => getPoints()} className="" ref={codeButtonRef}>
