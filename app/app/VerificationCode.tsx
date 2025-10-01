@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/button";
-import OtpInput from "@/components/UI/OtpInput";
+import OtpInput from "@/components/UI/OTP";
 import { useAuth } from "@/context";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";

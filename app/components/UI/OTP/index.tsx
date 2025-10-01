@@ -1,4 +1,4 @@
-import Digit from "../OTP/digit";
+import Digit from "./digit";
 
 export default function OtpInput({
   changeDigit,
