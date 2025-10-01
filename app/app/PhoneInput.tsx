@@ -9,15 +9,17 @@ export default function PhoneInputPage() {
   const phoneButtonRef = useRef<HTMLButtonElement>(null);
   const { setMobilePhone, mobilePhone, setStep, setLoading } = useAuth();
   const sendVerificationCode = useCallback(() => {
-    setLoading(true);
-    axios
-      .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
-      .then((res) => {
-        setLoading(false);
-        if (res.status == 200) {
-          setStep("verificationCode");
-        }
-      });
+    if (mobilePhone) {
+      setLoading(true);
+      axios
+        .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
+        .then((res) => {
+          setLoading(false);
+          if (res.status == 200) {
+            setStep("verificationCode");
+          }
+        });
+    }
   }, [mobilePhone, setLoading, setStep]);
 
   useEffect(() => {
