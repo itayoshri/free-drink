@@ -18,8 +18,8 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  findOne(phone_number: string): Promise<User | null> {
-    return this.usersRepository.findOneBy({ phone_number });
+  findOne(phoneNumber: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ phone_number: phoneNumber });
   }
 
   async createUser(
