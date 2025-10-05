@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-  user_id: number;
+  user_id: string;
 
   @Column()
   phone_number: string;
@@ -12,10 +12,10 @@ export class User {
   role_key: string;
 
   @Column()
-  created_token_id: string;
+  created_token: string;
 
-  @Column()
-  upgrade_token_id: string;
+  @Column({ default: null })
+  upgrade_token: string;
 
   @Column()
   created_at: string;

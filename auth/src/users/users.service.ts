@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/invitation/invitation.entity';
 
 @Injectable()
 export class UsersService {
@@ -30,9 +31,20 @@ export class UsersService {
       phone_number,
       role_key,
       password_hash,
-      created_token_id: invitation_token,
+      created_token: invitation_token,
     });
 
     await this.usersRepository.save(user);
+  }
+
+  async EditCreatedToken(id: string, tokenValue: string, role: Role) {
+    const result = await this.usersRepository.update(
+      { user_id: id },
+      { created_token: tokenValue, role_key: role },
+    );
+
+    if (result.affected === 0) {
+      throw new Error('User was not found');
+    }
   }
 }
