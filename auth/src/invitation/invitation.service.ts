@@ -21,6 +21,7 @@ export class InvitationService {
     });
 
     await this.invitationRepository.save(invitation);
+    return { invitationToken: token, role };
   }
 
   async redeemInvitationToken(invitationToken: string) {
