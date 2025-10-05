@@ -13,7 +13,6 @@ export class InvitationService {
 
   async generateInvitation(role: Role, userId: string) {
     const token = crypto.randomBytes(16).toString('hex');
-    console.log(token);
     const invitation = this.invitationRepository.create({
       token_value: token,
       role_key: role,
