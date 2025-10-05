@@ -20,8 +20,6 @@ export class InvitationService {
       usage_limit: 1,
     });
 
-    console.log(userId);
-
     await this.invitationRepository.save(invitation);
   }
 
