@@ -1,8 +1,8 @@
 import {
-  CallHandler,
-  ExecutionContext,
   Injectable,
   NestInterceptor,
+  ExecutionContext,
+  CallHandler,
 } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
 import { ApiResponse } from '../dto/response.dto';
@@ -16,10 +16,34 @@ export class ResponseInterceptor<T>
     next: CallHandler<T>,
   ): Observable<ApiResponse<T>> {
     return next.handle().pipe(
-      map((data) => {
-        // If already formatted, don't double-wrap
-        if (data instanceof ApiResponse) return data;
-        return ApiResponse.success(data);
+      map((response: T | ApiResponse<T> | { message: string; data: T }) => {
+        if (
+          typeof response === 'object' &&
+          response !== null &&
+          'success' in response
+        ) {
+          return response;
+        }
+
+        if (
+          typeof response === 'object' &&
+          response !== null &&
+          'message' in response &&
+          'data' in response
+        ) {
+          const { message, data } = response as { message: string; data: T };
+          return {
+            success: true,
+            message,
+            data,
+          } satisfies ApiResponse<T>;
+        }
+
+        return {
+          success: true,
+          message: '',
+          data: response,
+        } satisfies ApiResponse<T>;
       }),
     );
   }
