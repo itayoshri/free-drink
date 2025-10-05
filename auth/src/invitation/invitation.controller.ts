@@ -15,7 +15,10 @@ export class InvitationController {
   @Post('generate')
   async generateToken(@Body() data: GenerateInvitationDto) {
     const { role, userId } = data;
-    await this.invitationService.generateInvitation(role as Role, userId);
+    return await this.invitationService.generateInvitation(
+      role as Role,
+      userId,
+    );
   }
 
   @Post('redeem')
