@@ -12,10 +12,49 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async signIn(
+  async generateTokens(user) {
+    const expirationMs = parseInt(
+      this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
+    );
+    const refreshExpirationMs = parseInt(
+      this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
+    );
+
+    const expiresAccessToken = new Date(Date.now() + expirationMs);
+    const expiresRefreshToken = new Date(Date.now() + refreshExpirationMs);
+
+    const payload = {
+      sub: user.user_id,
+      phone_number: user.phone_number,
+      role: user.role_key,
+    };
+
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: expirationMs,
+    });
+
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      expiresIn: refreshExpirationMs,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+      expiresAccessToken,
+      expiresRefreshToken,
+    };
+  }
+
+  async validateUser(
     phoneNumber: string,
     password: string,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{
+    user;
+    accessToken: string;
+    refreshToken: string;
+    expiresAccessToken: Date;
+    expiresRefreshToken: Date;
+  }> {
     const user = await this.usersService.findOne(phoneNumber);
 
     if (!user) {
@@ -31,13 +70,21 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = {
-      sub: user.user_id,
-      phone_number: user.phone_number,
-      role: user.role_key,
-    };
+    const {
+      accessToken,
+      refreshToken,
+      expiresAccessToken,
+      expiresRefreshToken,
+    } = await this.generateTokens(user);
+
+    const { password_hash, ...noPassUser } = user;
+
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      user: noPassUser,
+      accessToken,
+      refreshToken,
+      expiresAccessToken,
+      expiresRefreshToken,
     };
   }
 }
