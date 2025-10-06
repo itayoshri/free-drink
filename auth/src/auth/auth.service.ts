@@ -12,30 +12,48 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async generateTokens(user) {
-    const expirationMs = parseInt(
-      this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
-    );
-    const refreshExpirationMs = parseInt(
-      this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
-    );
-
-    const expiresAccessToken = new Date(Date.now() + expirationMs);
-    const expiresRefreshToken = new Date(Date.now() + refreshExpirationMs);
-
-    const payload = {
+  generatePayload(user) {
+    return {
       sub: user.user_id,
       phone_number: user.phone_number,
       role: user.role_key,
     };
+  }
+
+  async generateAccessToken(payload) {
+    const expirationMs = parseInt(
+      this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
+    );
+    const expiresAccessToken = new Date(Date.now() + expirationMs);
 
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: expirationMs,
     });
 
+    return { accessToken, expiresAccessToken };
+  }
+
+  async generateRefreshToken(payload) {
+    const refreshExpirationMs = parseInt(
+      this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
+    );
+
+    const expiresRefreshToken = new Date(Date.now() + refreshExpirationMs);
+
     const refreshToken = await this.jwtService.signAsync(payload, {
       expiresIn: refreshExpirationMs,
     });
+
+    return { refreshToken, expiresRefreshToken };
+  }
+
+  async generateTokens(user) {
+    const payload = this.generatePayload(user);
+
+    const { accessToken, expiresAccessToken } =
+      await this.generateAccessToken(payload);
+    const { refreshToken, expiresRefreshToken } =
+      await this.generateRefreshToken(payload);
 
     return {
       accessToken,
