@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/user.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Token } from './auth.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -39,9 +39,33 @@ export class AuthService {
     };
   }
 
-  async PushRefreshToken(user: User, newToken: string, expiresDate: Date) {
-    //TODO: hash tokens
-    const hashedToken = newToken;
+  async validateRefreshToken(refreshToken: string, user: User) {
+    const token = await this.TokensRepository.findOneBy({
+      user_id: user.user_id,
+      revoked_at: IsNull(),
+    });
+    if (!token) return false;
+    const expiresDate = token.expires_at;
+    const isExpired = expiresDate <= new Date();
+    console.log(token);
+    const isRevoked = token.revoked_at != null;
+    const isValidToken = await bcrypt.compare(refreshToken, token.token_hash);
+
+    console.log(isExpired, isRevoked, isValidToken);
+
+    return !isExpired && !isRevoked && isValidToken;
+  }
+
+  async getNewAccessToken(refreshToken: string, user: User) {
+    if (!(await this.validateRefreshToken(refreshToken, user)))
+      throw new UnauthorizedException();
+
+    const payload = this.generatePayload(user);
+    return await this.generateToken(payload, 'access');
+  }
+
+  async pushRefreshToken(user: User, newToken: string, expiresDate: Date) {
+    const hashedToken = await bcrypt.hash(newToken, 12);
 
     // revoke old refresh tokens
     await this.TokensRepository.createQueryBuilder()
@@ -73,7 +97,7 @@ export class AuthService {
     );
 
     if (type === 'refresh' && user) {
-      await this.PushRefreshToken(user, token, expiresToken);
+      await this.pushRefreshToken(user, token, expiresToken);
     }
 
     return { token, expiresToken };

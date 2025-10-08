@@ -14,6 +14,7 @@ import { AuthGuard } from './auth.guard';
 import { LoginDto } from './dto/login.dto';
 import type { Response } from 'express';
 import { ApiResponse } from 'src/common/dto/response.dto';
+import { RefreshDto } from './dto/refresh.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -51,6 +52,37 @@ export class AuthController {
       data: user,
     };
   }
+
+  @Post('refresh')
+  async getNewAccessToken(
+    @Body() data: RefreshDto,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<ApiResponse> {
+    try {
+      const { token: accessToken, expiresToken: expiresAccessToken } =
+        await this.authService.getNewAccessToken(data.refreshToken, data.user);
+
+      res.cookie('Authentication', accessToken, {
+        httpOnly: true,
+        secure: true,
+        expires: expiresAccessToken,
+      });
+
+      return {
+        message: 'Refresh Access token successfully',
+        success: true,
+        data: {},
+      };
+    } catch {
+      //TODO: reset tokens
+      return {
+        message: '',
+        success: false,
+        data: {},
+      };
+    }
+  }
+
   @UseGuards(AuthGuard)
   @Get('profile')
   getProfile(@Request() req: Record<string, string>) {
