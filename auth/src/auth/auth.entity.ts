@@ -2,14 +2,11 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('refresh_tokens')
 export class Token {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   user_id: string;
-
-  @Column()
-  role_key: string;
 
   @Column()
   token_hash: string;
@@ -20,6 +17,6 @@ export class Token {
   @Column()
   expires_at: Date;
 
-  @Column()
+  @Column({ default: null })
   revoked_at: Date;
 }
