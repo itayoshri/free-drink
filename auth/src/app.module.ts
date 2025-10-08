@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { InvitationModule } from './invitation/invitation.module';
 import { Invitation } from './invitation/invitation.entity';
+import { Token } from './auth/auth.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Invitation } from './invitation/invitation.entity';
         port: configService.get<number>('DATABASE_PORT'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         username: configService.get<string>('DATABASE_USER'),
-        entities: [User, Invitation],
+        entities: [User, Invitation, Token],
         ssl: { rejectUnauthorized: false },
         database: configService.get<string>('DATABASE_NAME'),
         logging: true,
