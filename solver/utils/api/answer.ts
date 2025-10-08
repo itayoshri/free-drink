@@ -10,9 +10,15 @@ export default function formatAnswerRequest(
   const firstBrace = modelAnswer.indexOf("{");
   const lastBrace = modelAnswer.lastIndexOf("}");
   let jsonString = modelAnswer.slice(firstBrace, lastBrace + 1);
-  jsonString = jsonString.replace(/[“”„]/g, '"'); // double quotes
-  jsonString = jsonString.replace(/[‘’‚‛]/g, "'"); // single quotes
-  jsonString = jsonString.replace(/[\u0000-\u001F\u007F]/g, "");
+  jsonString = jsonString
+    .replace(/[“”„]/g, '"')
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[\u0000-\u001F\u007F]/g, "");
+
+  jsonString = jsonString.replace(
+    /,\s*"explanation"\s*:\s*"[^"]*"(?=\s*})/,
+    ""
+  );
 
   const JsonModelAnswer = JSON.parse(jsonString).result as ModelSchema;
   console.log(JsonModelAnswer);
