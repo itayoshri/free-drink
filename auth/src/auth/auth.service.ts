@@ -46,7 +46,7 @@ export class AuthService {
     // revoke old refresh tokens
     await this.TokensRepository.createQueryBuilder()
       .update()
-      .set({ revoked_at: Date.now() })
+      .set({ revoked_at: new Date() })
       .where('user_id = :userId', {
         userId: user.user_id,
       })
