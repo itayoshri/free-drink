@@ -24,7 +24,7 @@ export class AuthController {
   async Login(
     @Body() data: LoginDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<ApiResponse<{ token: string }>> {
+  ): Promise<ApiResponse> {
     const {
       user,
       accessToken,
