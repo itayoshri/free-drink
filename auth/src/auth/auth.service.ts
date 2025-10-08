@@ -4,6 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/user.entity';
+import { Repository } from 'typeorm';
+import { Token } from './auth.entity';
 
 type TokenType = 'refresh' | 'access';
 interface JWTPayload {
@@ -24,6 +26,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private TokensRepository: Repository<Token>,
   ) {}
 
   generatePayload(user: User): JWTPayload {
@@ -34,19 +37,42 @@ export class AuthService {
     };
   }
 
-  async generateToken(payload: JWTPayload, type: TokenType) {
+  async PushRefreshToken(user: User, newToken: string, expiresDate: Date) {
+    const hashedToken = newToken;
+    //TODO: hash tokens
+    await this.TokensRepository.createQueryBuilder()
+      .update()
+      .set({ revoked_at: Date.now() })
+      .where('user_id = :userId', {
+        userId: user.user_id,
+      })
+      .execute();
+
+    const token = this.TokensRepository.create({
+      user_id: user.user_id,
+      token_hash: hashedToken,
+      expires_at: expiresDate,
+    });
+
+    await this.TokensRepository.save(token);
+  }
+
+  async generateToken(payload: JWTPayload, type: TokenType, user?: User) {
     const expiration = parseInt(
       this.configService.getOrThrow(expiresTokenVars[type]),
     );
-
     const expiresToken = new Date(Date.now() + expiration);
-
     const token = await this.jwtService.signAsync(
       { ...payload, type },
       {
         expiresIn: expiration,
       },
     );
+
+    // revoke old refresh tokens
+    if (type === 'refresh' && user) {
+      await this.PushRefreshToken(user, token, expiresToken);
+    }
 
     return { token, expiresToken };
   }
@@ -81,7 +107,7 @@ export class AuthService {
     const { token: accessToken, expiresToken: expiresAccessToken } =
       await this.generateToken(payload, 'access');
     const { token: refreshToken, expiresToken: expiresRefreshToken } =
-      await this.generateToken(payload, 'refresh');
+      await this.generateToken(payload, 'refresh', user);
 
     const { password_hash, ...noPassUser } = user;
 
