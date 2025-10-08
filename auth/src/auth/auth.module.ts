@@ -4,6 +4,8 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Token } from './auth.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         verifyOptions: { algorithms: ['RS256'] },
       }),
     }),
+    TypeOrmModule.forFeature([Token]),
   ],
   providers: [AuthService],
   controllers: [AuthController],

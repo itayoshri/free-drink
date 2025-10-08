@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { Token } from './auth.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 type TokenType = 'refresh' | 'access';
 interface JWTPayload {
@@ -26,6 +27,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    @InjectRepository(Token)
     private TokensRepository: Repository<Token>,
   ) {}
 
