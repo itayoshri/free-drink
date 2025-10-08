@@ -17,8 +17,8 @@ interface JWTPayload {
 }
 
 const expiresTokenVars = {
-  refresh: 'JWT_REFRESH_TOKEN_EXPIRATION',
-  access: 'JWT_ACCESS_TOKEN_EXPIRATION',
+  refresh: 'JWT_REFRESH_TOKEN_EXPIRATION_MS',
+  access: 'JWT_ACCESS_TOKEN_EXPIRATION_MS',
 };
 
 @Injectable()
