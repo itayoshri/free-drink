@@ -3,6 +3,15 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { User } from 'src/users/user.entity';
+
+type PayloadType = 'refresh' | 'access';
+interface JWTPayload {
+  sub: string;
+  phone_number: string;
+  role: string;
+  type?: PayloadType;
+}
 
 @Injectable()
 export class AuthService {
@@ -12,7 +21,7 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  generatePayload(user) {
+  generatePayload(user: User): JWTPayload {
     return {
       sub: user.user_id,
       phone_number: user.phone_number,
@@ -20,7 +29,7 @@ export class AuthService {
     };
   }
 
-  async generateAccessToken(payload) {
+  async generateAccessToken(payload: JWTPayload) {
     const expirationMs = parseInt(
       this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
     );
@@ -33,7 +42,7 @@ export class AuthService {
     return { accessToken, expiresAccessToken };
   }
 
-  async generateRefreshToken(payload) {
+  async generateRefreshToken(payload: JWTPayload) {
     const refreshExpirationMs = parseInt(
       this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
     );
@@ -47,13 +56,18 @@ export class AuthService {
     return { refreshToken, expiresRefreshToken };
   }
 
-  async generateTokens(user) {
+  async generateTokens(user: User) {
     const payload = this.generatePayload(user);
 
-    const { accessToken, expiresAccessToken } =
-      await this.generateAccessToken(payload);
+    const { accessToken, expiresAccessToken } = await this.generateAccessToken({
+      ...payload,
+      type: 'access',
+    });
     const { refreshToken, expiresRefreshToken } =
-      await this.generateRefreshToken(payload);
+      await this.generateRefreshToken({
+        ...payload,
+        type: 'refresh',
+      });
 
     return {
       accessToken,
