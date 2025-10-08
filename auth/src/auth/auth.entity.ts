@@ -17,6 +17,6 @@ export class Token {
   @Column()
   expires_at: Date;
 
-  @Column({ default: null })
-  revoked_at: Date;
+  @Column({ type: 'timestamptz', nullable: true })
+  revoked_at?: Date | null;
 }
