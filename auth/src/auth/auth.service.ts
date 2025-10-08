@@ -51,22 +51,6 @@ export class AuthService {
     return { token, expiresToken };
   }
 
-  async generateTokens(user: User) {
-    const payload = this.generatePayload(user);
-
-    const { token: accessToken, expiresToken: expiresAccessToken } =
-      await this.generateToken(payload, 'access');
-    const { token: refreshToken, expiresToken: expiresRefreshToken } =
-      await this.generateToken(payload, 'refresh');
-
-    return {
-      accessToken,
-      refreshToken,
-      expiresAccessToken,
-      expiresRefreshToken,
-    };
-  }
-
   async validateUser(
     phoneNumber: string,
     password: string,
@@ -92,12 +76,12 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const {
-      accessToken,
-      refreshToken,
-      expiresAccessToken,
-      expiresRefreshToken,
-    } = await this.generateTokens(user);
+    const payload = this.generatePayload(user);
+
+    const { token: accessToken, expiresToken: expiresAccessToken } =
+      await this.generateToken(payload, 'access');
+    const { token: refreshToken, expiresToken: expiresRefreshToken } =
+      await this.generateToken(payload, 'refresh');
 
     const { password_hash, ...noPassUser } = user;
 
