@@ -5,13 +5,18 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/user.entity';
 
-type PayloadType = 'refresh' | 'access';
+type TokenType = 'refresh' | 'access';
 interface JWTPayload {
   sub: string;
   phone_number: string;
   role: string;
-  type?: PayloadType;
+  type?: TokenType;
 }
+
+const expiresTokenVars = {
+  refresh: 'JWT_REFRESH_TOKEN_EXPIRATION',
+  access: 'JWT_ACCESS_TOKEN_EXPIRATION',
+};
 
 @Injectable()
 export class AuthService {
@@ -29,45 +34,30 @@ export class AuthService {
     };
   }
 
-  async generateAccessToken(payload: JWTPayload) {
-    const expirationMs = parseInt(
-      this.configService.getOrThrow('JWT_ACCESS_TOKEN_EXPIRATION_MS'),
-    );
-    const expiresAccessToken = new Date(Date.now() + expirationMs);
-
-    const accessToken = await this.jwtService.signAsync(payload, {
-      expiresIn: expirationMs,
-    });
-
-    return { accessToken, expiresAccessToken };
-  }
-
-  async generateRefreshToken(payload: JWTPayload) {
-    const refreshExpirationMs = parseInt(
-      this.configService.getOrThrow('JWT_REFRESH_TOKEN_EXPIRATION_MS'),
+  async generateToken(payload: JWTPayload, type: TokenType) {
+    const expiration = parseInt(
+      this.configService.getOrThrow(expiresTokenVars[type]),
     );
 
-    const expiresRefreshToken = new Date(Date.now() + refreshExpirationMs);
+    const expiresToken = new Date(Date.now() + expiration);
 
-    const refreshToken = await this.jwtService.signAsync(payload, {
-      expiresIn: refreshExpirationMs,
-    });
+    const token = await this.jwtService.signAsync(
+      { ...payload, type },
+      {
+        expiresIn: expiration,
+      },
+    );
 
-    return { refreshToken, expiresRefreshToken };
+    return { token, expiresToken };
   }
 
   async generateTokens(user: User) {
     const payload = this.generatePayload(user);
 
-    const { accessToken, expiresAccessToken } = await this.generateAccessToken({
-      ...payload,
-      type: 'access',
-    });
-    const { refreshToken, expiresRefreshToken } =
-      await this.generateRefreshToken({
-        ...payload,
-        type: 'refresh',
-      });
+    const { token: accessToken, expiresToken: expiresAccessToken } =
+      await this.generateToken(payload, 'access');
+    const { token: refreshToken, expiresToken: expiresRefreshToken } =
+      await this.generateToken(payload, 'refresh');
 
     return {
       accessToken,
