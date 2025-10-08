@@ -38,8 +38,10 @@ export class AuthService {
   }
 
   async PushRefreshToken(user: User, newToken: string, expiresDate: Date) {
-    const hashedToken = newToken;
     //TODO: hash tokens
+    const hashedToken = newToken;
+
+    // revoke old refresh tokens
     await this.TokensRepository.createQueryBuilder()
       .update()
       .set({ revoked_at: Date.now() })
@@ -53,7 +55,6 @@ export class AuthService {
       token_hash: hashedToken,
       expires_at: expiresDate,
     });
-
     await this.TokensRepository.save(token);
   }
 
@@ -69,7 +70,6 @@ export class AuthService {
       },
     );
 
-    // revoke old refresh tokens
     if (type === 'refresh' && user) {
       await this.PushRefreshToken(user, token, expiresToken);
     }
@@ -81,7 +81,7 @@ export class AuthService {
     phoneNumber: string,
     password: string,
   ): Promise<{
-    user;
+    user: Partial<User>;
     accessToken: string;
     refreshToken: string;
     expiresAccessToken: Date;
