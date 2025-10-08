@@ -47,11 +47,8 @@ export class AuthService {
     if (!token) return false;
     const expiresDate = token.expires_at;
     const isExpired = expiresDate <= new Date();
-    console.log(token);
     const isRevoked = token.revoked_at != null;
     const isValidToken = await bcrypt.compare(refreshToken, token.token_hash);
-
-    console.log(isExpired, isRevoked, isValidToken);
 
     return !isExpired && !isRevoked && isValidToken;
   }
