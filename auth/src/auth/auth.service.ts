@@ -65,7 +65,7 @@ export class AuthService {
   }
 
   async pushRefreshToken(user: User, newToken: string, expiresDate: Date) {
-    const hashedToken = await bcrypt.hash(newToken, 12);
+    const hashedToken = await bcrypt.hash(newToken, 10);
 
     // revoke old refresh tokens
     await this.TokensRepository.createQueryBuilder()
@@ -74,14 +74,18 @@ export class AuthService {
       .where('user_id = :userId', {
         userId: user.user_id,
       })
+      .andWhere('revoked_at IS NULL')
       .execute();
 
-    const token = this.TokensRepository.create({
-      user_id: user.user_id,
-      token_hash: hashedToken,
-      expires_at: expiresDate,
-    });
-    await this.TokensRepository.save(token);
+    await this.TokensRepository.createQueryBuilder()
+      .insert()
+      .into(Token)
+      .values({
+        user_id: user.user_id,
+        token_hash: hashedToken,
+        expires_at: expiresDate,
+      })
+      .execute();
   }
 
   async generateToken(payload: JWTPayload, type: TokenType, user?: User) {
