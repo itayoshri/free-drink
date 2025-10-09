@@ -48,15 +48,13 @@ export class AuthService {
     if (!token) return false;
     const expiresDate = token.expires_at;
     const isExpired = expiresDate <= new Date();
-    const isRevoked = token.revoked_at != null;
-
     const sha256 = crypto
       .createHash('sha256')
       .update(refreshToken)
       .digest('hex');
     const isValidToken = await bcrypt.compare(sha256, token.token_hash);
 
-    return !isExpired && !isRevoked && isValidToken;
+    return !isExpired && isValidToken;
   }
 
   async getNewAccessToken(refreshToken: string, user: User) {
