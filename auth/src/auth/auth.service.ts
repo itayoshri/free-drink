@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import * as crypto from 'crypto';
 import { User } from 'src/users/user.entity';
 import { IsNull, Repository } from 'typeorm';
 import { Token } from './auth.entity';
@@ -48,7 +49,12 @@ export class AuthService {
     const expiresDate = token.expires_at;
     const isExpired = expiresDate <= new Date();
     const isRevoked = token.revoked_at != null;
-    const isValidToken = await bcrypt.compare(refreshToken, token.token_hash);
+
+    const sha256 = crypto
+      .createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
+    const isValidToken = await bcrypt.compare(sha256, token.token_hash);
 
     return !isExpired && !isRevoked && isValidToken;
   }
@@ -62,7 +68,8 @@ export class AuthService {
   }
 
   async pushRefreshToken(user: User, newToken: string, expiresDate: Date) {
-    const hashedToken = await bcrypt.hash(newToken, 10);
+    const sha256 = crypto.createHash('sha256').update(newToken).digest('hex');
+    const hashedToken = await bcrypt.hash(sha256, 10);
 
     // revoke old refresh tokens
     await this.TokensRepository.createQueryBuilder()
