@@ -74,7 +74,16 @@ export class AuthController {
         data: {},
       };
     } catch {
-      //TODO: reset tokens
+      res.clearCookie('Authentication', {
+        httpOnly: true,
+        secure: true,
+      });
+
+      res.clearCookie('Refresh', {
+        httpOnly: true,
+        secure: true,
+      });
+
       return {
         message: '',
         success: false,

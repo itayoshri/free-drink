@@ -3,8 +3,9 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError, throwError } from 'rxjs';
 import { ApiResponse } from '../dto/response.dto';
 
 @Injectable()
@@ -44,6 +45,22 @@ export class ResponseInterceptor<T>
           message: '',
           data: response,
         } satisfies ApiResponse<T>;
+      }),
+      catchError((err) => {
+        // Handle UnauthorizedException
+        if (err instanceof UnauthorizedException) {
+          return new Observable<ApiResponse<T>>((observer) => {
+            observer.next({
+              success: false,
+              message: err.message || 'Unauthorized',
+              data: null,
+            });
+            observer.complete();
+          });
+        }
+
+        // Rethrow other errors
+        return throwError(() => err);
       }),
     );
   }
