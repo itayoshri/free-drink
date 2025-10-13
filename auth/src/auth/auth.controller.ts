@@ -15,6 +15,8 @@ import { LoginDto } from './dto/login.dto';
 import type { Response } from 'express';
 import { ApiResponse } from 'src/common/dto/response.dto';
 import { RefreshDto } from './dto/refresh.dto';
+import { RolesGuard } from './rules.guard';
+import { Roles } from './roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -92,7 +94,8 @@ export class AuthController {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @Roles(['premium_user', 'admin'])
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('profile')
   getProfile(@Request() req: Record<string, string>) {
     return req.user;
