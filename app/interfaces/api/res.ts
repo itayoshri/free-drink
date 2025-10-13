@@ -44,10 +44,34 @@ export interface ResExpendedContent {
       name: string;
       title: string;
       questions: question[];
+      numberOfAnswersToSuccess: number;
     };
     answerContent: null;
   };
 }
+
+export interface ResHomePage {
+  errorCode: number;
+  body: {
+    contents: content[];
+  };
+}
+
+export interface ResGetUserPoints {
+  body: {
+    userId: number;
+    corks: number;
+    angels: number;
+    message: string | null;
+  };
+}
+
+export type content = {
+  id: number;
+  targetType: string;
+  formatType: string;
+  rewardingCaps: number;
+};
 
 type answer = {
   id: number;
