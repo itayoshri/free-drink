@@ -9,6 +9,7 @@ import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/rules.guard';
 
 @Controller('invitation')
+@UseGuards(AuthGuard)
 export class InvitationController {
   constructor(
     private readonly invitationService: InvitationService,
@@ -16,7 +17,7 @@ export class InvitationController {
   ) {}
 
   @Roles(['admin'])
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Post('generate')
   async generateToken(
     @Req() request: Request,
@@ -29,7 +30,6 @@ export class InvitationController {
     );
   }
 
-  @UseGuards(AuthGuard)
   @Post('redeem')
   async redeemToken(
     @Req() request: Request,
