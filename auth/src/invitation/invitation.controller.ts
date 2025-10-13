@@ -29,6 +29,7 @@ export class InvitationController {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Post('redeem')
   async redeemToken(
     @Req() request: Request,
