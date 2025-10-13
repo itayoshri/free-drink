@@ -44,7 +44,7 @@ export class UsersService {
     await this.usersRepository.save(user);
   }
 
-  async EditCreatedToken(id: string, tokenValue: string, role: Role) {
+  async EditUserRole(id: string, tokenValue: string, role: Role) {
     const result = await this.usersRepository.update(
       { user_id: id },
       { created_token: tokenValue, role_key: role },

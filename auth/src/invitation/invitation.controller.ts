@@ -30,11 +30,18 @@ export class InvitationController {
   }
 
   @Post('redeem')
-  async redeemToken(@Body() data: RedeemInvitationDto) {
-    const { invitationToken, userId } = data;
+  async redeemToken(
+    @Req() request: Request,
+    @Body() data: RedeemInvitationDto,
+  ) {
+    const { invitationToken } = data;
     const { role } =
       await this.invitationService.redeemInvitationToken(invitationToken);
 
-    await this.usersService.EditCreatedToken(userId, invitationToken, role);
+    await this.usersService.EditUserRole(
+      request['user'].sub,
+      invitationToken,
+      role,
+    );
   }
 }
