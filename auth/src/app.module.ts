@@ -9,6 +9,8 @@ import { User } from './users/user.entity';
 import { InvitationModule } from './invitation/invitation.module';
 import { Invitation } from './invitation/invitation.entity';
 import { Token } from './auth/auth.entity';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/rules.guard';
 
 @Module({
   imports: [
@@ -33,6 +35,12 @@ import { Token } from './auth/auth.entity';
     InvitationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

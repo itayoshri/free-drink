@@ -8,6 +8,7 @@ import { User } from 'src/users/user.entity';
 import { IsNull, Repository } from 'typeorm';
 import { Token } from './auth.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from 'src/invitation/invitation.entity';
 
 type TokenType = 'refresh' | 'access';
 interface JWTPayload {
@@ -150,5 +151,9 @@ export class AuthService {
       expiresAccessToken,
       expiresRefreshToken,
     };
+  }
+
+  matchRoles(roles: Role[], userRole: Role) {
+    return roles.includes(userRole);
   }
 }
