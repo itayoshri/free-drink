@@ -1,9 +1,12 @@
-import { Body, Controller, Post, Request } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { InvitationService } from './invitation.service';
 import { GenerateInvitationDto } from './dto/generate-invitation.dto';
 import { Role } from './invitation.entity';
 import { RedeemInvitationDto } from './dto/redeem-invitation.dto';
 import { UsersService } from 'src/users/users.service';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/rules.guard';
 
 @Controller('invitation')
 export class InvitationController {
@@ -12,12 +15,17 @@ export class InvitationController {
     private readonly usersService: UsersService,
   ) {}
 
+  @Roles(['admin'])
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('generate')
-  async generateToken(@Body() data: GenerateInvitationDto) {
-    const { role, userId } = data;
+  async generateToken(
+    @Req() request: Request,
+    @Body() data: GenerateInvitationDto,
+  ) {
+    const { role } = data;
     return await this.invitationService.generateInvitation(
       role as Role,
-      userId,
+      request['user'].sub,
     );
   }
 
