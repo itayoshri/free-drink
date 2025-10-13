@@ -25,7 +25,7 @@ export class InvitationController {
     const { role } = data;
     return await this.invitationService.generateInvitation(
       role as Role,
-      request['user'].sub,
+      request['user'].sub as string,
     );
   }
 
@@ -40,7 +40,7 @@ export class InvitationController {
       await this.invitationService.redeemInvitationToken(invitationToken);
 
     await this.usersService.EditUserRole(
-      request['user'].sub,
+      request['user'].sub as string,
       invitationToken,
       role,
     );

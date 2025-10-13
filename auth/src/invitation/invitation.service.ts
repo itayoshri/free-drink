@@ -24,7 +24,10 @@ export class InvitationService {
     return { invitationToken: token, role };
   }
 
-  async redeemInvitationToken(invitationToken: string) {
+  async redeemInvitationToken(invitationToken: string): Promise<{
+    invitationCode: string;
+    role: Role;
+  }> {
     const result = await this.invitationRepository
       .createQueryBuilder()
       .update()
