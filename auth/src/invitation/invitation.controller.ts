@@ -75,7 +75,7 @@ export class InvitationController {
       }
     } catch (error) {
       return {
-        message: error,
+        message: error.message,
         success: false,
         data: {},
       };
