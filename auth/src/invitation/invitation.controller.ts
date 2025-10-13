@@ -64,11 +64,11 @@ export class InvitationController {
             role,
           },
         };
-      } catch {
+      } catch (error) {
         this.authService.clearAuthCookies(res);
 
         return {
-          message: '',
+          message: error.message,
           success: false,
           data: {},
         };
