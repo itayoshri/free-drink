@@ -45,13 +45,18 @@ export class UsersService {
   }
 
   async EditUserRole(id: string, tokenValue: string, role: Role) {
-    const result = await this.usersRepository.update(
-      { user_id: id },
-      { created_token: tokenValue, role_key: role },
-    );
+    const result = await this.usersRepository
+      .createQueryBuilder()
+      .update()
+      .set({ created_token: tokenValue, role_key: role })
+      .where('user_id = :id', { id })
+      .returning('*')
+      .execute();
 
-    if (result.affected === 0) {
+    if (!result.raw || result.raw.length === 0) {
       throw new Error('User was not found');
     }
+
+    return result.raw[0] as User;
   }
 }
