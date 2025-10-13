@@ -36,17 +36,8 @@ export class AuthController {
       expiresRefreshToken,
     } = await this.authService.validateUser(data.phoneNumber, data.password);
 
-    res.cookie('Authentication', accessToken, {
-      httpOnly: true,
-      secure: true,
-      expires: expiresAccessToken,
-    });
-
-    res.cookie('Refresh', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      expires: expiresRefreshToken,
-    });
+    this.authService.setAuthCookie(res, accessToken, expiresAccessToken);
+    this.authService.setRefreshCookie(res, refreshToken, expiresRefreshToken);
 
     return {
       message: 'Logged in successfully',
@@ -64,11 +55,7 @@ export class AuthController {
       const { token: accessToken, expiresToken: expiresAccessToken } =
         await this.authService.getNewAccessToken(data.refreshToken, data.user);
 
-      res.cookie('Authentication', accessToken, {
-        httpOnly: true,
-        secure: true,
-        expires: expiresAccessToken,
-      });
+      this.authService.setAuthCookie(res, accessToken, expiresAccessToken);
 
       return {
         message: 'Refresh Access token successfully',
@@ -76,15 +63,7 @@ export class AuthController {
         data: {},
       };
     } catch {
-      res.clearCookie('Authentication', {
-        httpOnly: true,
-        secure: true,
-      });
-
-      res.clearCookie('Refresh', {
-        httpOnly: true,
-        secure: true,
-      });
+      this.authService.clearAuthCookies(res);
 
       return {
         message: '',

@@ -9,6 +9,7 @@ import { IsNull, Repository } from 'typeorm';
 import { Token } from './auth.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/invitation/invitation.entity';
+import type { Response } from 'express';
 
 type TokenType = 'refresh' | 'access';
 interface JWTPayload {
@@ -56,6 +57,33 @@ export class AuthService {
     const isValidToken = await bcrypt.compare(sha256, token.token_hash);
 
     return !isExpired && isValidToken;
+  }
+
+  setAuthCookie(res: Response, token: string, expires: Date) {
+    res.cookie('Authentication', token, {
+      httpOnly: true,
+      secure: true,
+      expires,
+    });
+  }
+
+  setRefreshCookie(res: Response, token: string, expires: Date) {
+    res.cookie('Refresh', token, {
+      httpOnly: true,
+      secure: true,
+      expires,
+    });
+  }
+
+  clearAuthCookies(res: Response) {
+    res.clearCookie('Authentication', {
+      httpOnly: true,
+      secure: true,
+    });
+    res.clearCookie('Refresh', {
+      httpOnly: true,
+      secure: true,
+    });
   }
 
   async getNewAccessToken(refreshToken: string, user: User) {
