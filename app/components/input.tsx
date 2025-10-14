@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-type InputProps = {
+export type InputProps = {
   onChange(newValue: ChangeEvent<HTMLInputElement>): unknown;
   placeholder: string;
   className?: string;
