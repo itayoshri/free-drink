@@ -53,7 +53,7 @@ export class AuthController {
   ): Promise<ApiResponse> {
     try {
       const { token: accessToken, expiresToken: expiresAccessToken } =
-        await this.authService.getNewAccessToken(data.refreshToken, data.user);
+        await this.authService.getNewAccessToken(data.refreshToken);
 
       this.authService.setAuthCookie(res, accessToken, expiresAccessToken);
 

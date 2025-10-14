@@ -42,9 +42,9 @@ export class AuthService {
     };
   }
 
-  async validateRefreshToken(refreshToken: string, user: User) {
+  async validateRefreshToken(refreshToken: string, userId: string) {
     const token = await this.TokensRepository.findOneBy({
-      user_id: user.user_id,
+      user_id: userId,
       revoked_at: IsNull(),
     });
     if (!token) return false;
@@ -86,11 +86,18 @@ export class AuthService {
     });
   }
 
-  async getNewAccessToken(refreshToken: string, user: User) {
-    if (!(await this.validateRefreshToken(refreshToken, user)))
+  async getNewAccessToken(refreshToken: string, user?: User) {
+    const { sub, phone_number, role } =
+      await this.jwtService.verifyAsync<JWTPayload>(refreshToken);
+
+    if (!(await this.validateRefreshToken(refreshToken, sub)))
       throw new UnauthorizedException();
 
-    const payload = this.generatePayload(user);
+    const payload = {
+      sub,
+      phone_number,
+      role: user ? user.role_key : role,
+    };
     return await this.generateToken(payload, 'access');
   }
 
