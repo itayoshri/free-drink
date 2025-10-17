@@ -29,7 +29,7 @@ export default function AccountForm() {
   );
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col text-black items-center gap-2">
+      <div className="flex flex-col text-black items-center">
         <h1 className="font-bold text-3xl">{TITLE}</h1>
         <h4>{SUBTITLE}</h4>
       </div>
