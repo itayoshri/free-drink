@@ -14,7 +14,7 @@ export class UsersController {
 
   @Get('exists')
   async checkUserExists(@Query('phoneNumber') phoneNumber: string) {
-    const user = await this.usersService.findOne(phoneNumber);
+    const user = await this.usersService.exists(phoneNumber);
     return { exists: !!user };
   }
 }

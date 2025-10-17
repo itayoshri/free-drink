@@ -22,6 +22,12 @@ export class UsersService {
     return this.usersRepository.findOneBy({ phone_number: phoneNumber });
   }
 
+  exists(phoneNumber: string): Promise<boolean> {
+    return this.usersRepository.exists({
+      where: { phone_number: phoneNumber },
+    });
+  }
+
   async createUser(
     phone_number: string,
     password: string,
