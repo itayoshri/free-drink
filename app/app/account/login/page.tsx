@@ -33,7 +33,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full gap-6 items-center">
+      <h2 className="text-black text-2xl font-bold">התחברות</h2>
       <form className="flex flex-col w-full gap-form" onSubmit={handleSubmit}>
         <Input
           name="phone"
