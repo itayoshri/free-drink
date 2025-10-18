@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 
 export type InputProps = {
-  onChange(newValue: ChangeEvent<HTMLInputElement>): unknown;
+  onChange(newValue: string): unknown;
   placeholder: string;
   className?: string;
   type?: string;
@@ -15,7 +15,7 @@ export default function Input({
 }: InputProps) {
   return (
     <input
-      onChange={(newValue) => onChange(newValue)}
+      onChange={(newValue) => onChange(newValue.currentTarget.value)}
       type={type}
       placeholder={placeholder}
       className={`text-black border-[1px] border-gray-300 w-full text-xl font-medium outline-primary py-3 px-4 rounded-xl ${className}`}

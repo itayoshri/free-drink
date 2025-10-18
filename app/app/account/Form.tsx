@@ -34,7 +34,7 @@ export default function AccountForm() {
         <h4>{SUBTITLE}</h4>
       </div>
       <PhoneNumberInput
-        onChange={(newValue) => setPhoneNumber(newValue.currentTarget.value)}
+        onChange={(newValue) => setPhoneNumber(newValue)}
         onClick={() => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
       >
