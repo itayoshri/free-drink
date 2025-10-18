@@ -6,7 +6,7 @@ export default function Navbar() {
       <button className=" bg-primary text-white rounded-full p-3 py-1 text-sm">
         כניסה
       </button>
-      <Logo className="h-4 fill-primary" />
+      <Logo className="h-4 fill-primary" version="short" />
     </div>
   );
 }
