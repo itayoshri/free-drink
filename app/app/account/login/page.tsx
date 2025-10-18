@@ -5,10 +5,13 @@ import { useSearchParams } from "next/navigation";
 import { AUTH_SERVER_URL } from "../Form";
 import axios from "axios";
 import React from "react";
+import LoggedInSuccesfuly from "../completed";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const phoneNumber = searchParams.get("phoneNumber") || "";
+  const router = useRouter();
 
   const onSubmit = async (phoneNumber: string, password: string) => {
     try {
@@ -20,7 +23,7 @@ export default function LoginPage() {
         },
         { withCredentials: true }
       );
-
+      router.push("/");
       console.log(res.data);
     } catch (error) {}
   };
