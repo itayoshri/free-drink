@@ -11,7 +11,7 @@ export interface ButtonProps {
 
 export default function Button({
   children,
-  onClick = () => null,
+  onClick = undefined,
   ref = undefined,
   className = "",
   disabled = false,
