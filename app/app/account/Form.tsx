@@ -6,7 +6,7 @@ import { useCallback } from "react";
 
 const TITLE = "התחברו או צרו משתמש";
 const SUBTITLE = "עם משתמש רשום ניתן לקבל 80 פקיים ויותר";
-const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+export const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
 
 export default function AccountForm() {
   const router = useRouter();
@@ -16,11 +16,12 @@ export default function AccountForm() {
       axios
         .get(`${AUTH_SERVER_URL}/users/exists?phoneNumber=${phoneNumber}`)
         .then((res) => {
-          router.push(
-            `/account/${
-              res.status == 200 ? "login" : "register"
-            }?phoneNumber=${phoneNumber}`
-          );
+          if (res.status == 200)
+            router.push(
+              `/account/${
+                res.data.data.exists ? "login" : "register"
+              }?phoneNumber=${phoneNumber}`
+            );
         });
     },
     [router]
