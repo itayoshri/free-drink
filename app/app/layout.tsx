@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context";
-import { NoKey } from "@/components/Icons";
-import ClientAuth from "@/components/Auth";
 import Navbar from "@/components/UI/Navbar";
 
 export const metadata: Metadata = {
@@ -21,10 +19,7 @@ export default function RootLayout({
         <body className={`antialiased !bg-white`}>
           <body className="antialiased !bg-white">
             <div className="flex flex-col min-h-screen w-screen">
-              <Navbar />
-              <main className="flex-1 flex flex-col justify-center items-center px-6">
-                {children}
-              </main>
+              {children}
             </div>
           </body>
         </body>

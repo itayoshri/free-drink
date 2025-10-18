@@ -1,9 +1,8 @@
 "use client";
 import { useAuth } from "@/context";
-import PhoneInputPage from "./PhoneInput";
-import VerifyPage from "./VerificationCode";
-import LoadingPage from "./Loading";
-import CompletedPage from "./Completed";
+import PhoneInputPage from "../PhoneInput";
+import VerifyPage from "../VerificationCode";
+import CompletedPage from "../Completed";
 import { JSX } from "react";
 
 const steps: Record<string, JSX.Element> = {
@@ -13,9 +12,7 @@ const steps: Record<string, JSX.Element> = {
 };
 
 export default function Home() {
-  const { step, loading } = useAuth();
-
-  if (loading) return <LoadingPage />;
+  const { step } = useAuth();
 
   return steps[step] ?? null;
 }
