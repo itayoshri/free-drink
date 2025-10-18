@@ -20,5 +20,5 @@ export default function NoLayout({ children }: { children: React.ReactNode }) {
         </>
       )}
     </>
-  ); // <- this disables the parent layout
+  );
 }
