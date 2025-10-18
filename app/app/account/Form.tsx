@@ -2,7 +2,7 @@
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 const TITLE = "התחברו או צרו משתמש";
 const SUBTITLE = "עם משתמש רשום ניתן לקבל 80 פקיים ויותר";
@@ -10,9 +10,11 @@ export const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
 
 export default function AccountForm() {
   const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
 
   const checkIfUserExists = useCallback(
     (phoneNumber: string) => {
+      setDisabled(true);
       axios
         .get(`${AUTH_SERVER_URL}/users/exists?phoneNumber=${phoneNumber}`)
         .then((res) => {
@@ -22,6 +24,7 @@ export default function AccountForm() {
                 res.data.data.exists ? "login" : "register"
               }?phoneNumber=${phoneNumber}`
             );
+          else setDisabled(false);
         });
     },
     [router]
@@ -36,6 +39,7 @@ export default function AccountForm() {
         onSubmit={(phoneNumber) => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
         buttonLabel="המשיכו"
+        disabled={disabled}
       />
     </div>
   );
