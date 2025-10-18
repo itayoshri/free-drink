@@ -1,7 +1,7 @@
 import { ReactNode, Ref } from "react";
 
 export interface ButtonProps {
-  children: ReactNode;
+  children?: ReactNode;
   onClick?(): unknown;
   className?: string;
   ref?: Ref<HTMLButtonElement>;

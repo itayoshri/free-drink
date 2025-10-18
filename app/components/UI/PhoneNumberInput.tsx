@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 import Button, { ButtonProps } from "../button";
 import Input, { InputProps } from "../input";
 
-interface PhoneNumberInputProps extends InputProps, ButtonProps {}
+interface PhoneNumberInputProps extends InputProps, ButtonProps {
+  buttonLabel: string;
+}
 
 export default function PhoneNumberInput({
-  children,
   placeholder,
+  buttonLabel,
   onChange,
   onClick,
 }: PhoneNumberInputProps) {
@@ -43,7 +45,7 @@ export default function PhoneNumberInput({
         className="bg-gray-400"
         ref={phoneButtonRef}
       >
-        {children}
+        {buttonLabel}
       </Button>
     </div>
   );

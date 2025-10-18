@@ -1,5 +1,4 @@
 "use client";
-import Input from "@/components/input";
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -7,6 +6,8 @@ import { useCallback, useState } from "react";
 
 const TITLE = "התחברו או צרו משתמש";
 const SUBTITLE = "עם משתמש רשום ניתן לקבל 80 פקיים ויותר";
+const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+
 export default function AccountForm() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
@@ -14,15 +15,13 @@ export default function AccountForm() {
   const checkIfUserExists = useCallback(
     (phoneNumber: string) => {
       axios
-        .get(
-          `${process.env.NEXT_PUBLIC_AUTH_SERVER_URL}/users/exists?phoneNumber=${phoneNumber}`
-        )
+        .get(`${AUTH_SERVER_URL}/users/exists?phoneNumber=${phoneNumber}`)
         .then((res) => {
-          if (res.status == 200) {
-            if (res.data.data.exists) {
-              router.push("/account/login");
-            } else router.push("/account/register");
-          }
+          router.push(
+            `/account/${
+              res.status == 200 ? "login" : "register"
+            }?phoneNumber=${phoneNumber}`
+          );
         });
     },
     [router]
@@ -37,9 +36,8 @@ export default function AccountForm() {
         onChange={(newValue) => setPhoneNumber(newValue)}
         onClick={() => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
-      >
-        המשיכו
-      </PhoneNumberInput>
+        buttonLabel="המשיכו"
+      />
     </div>
   );
 }

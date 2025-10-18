@@ -29,9 +29,8 @@ export default function PhoneInputPage() {
         onChange={(newValue) => setMobilePhone(newValue)}
         onClick={() => sendVerificationCode()}
         placeholder="מספר טלפון"
-      >
-        הבא
-      </PhoneNumberInput>
+        buttonLabel="הבא"
+      />
     </div>
   );
 }
