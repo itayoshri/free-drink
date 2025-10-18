@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context";
 import { NoKey } from "@/components/Icons";
 import ClientAuth from "@/components/Auth";
+import Navbar from "@/components/UI/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,11 +19,14 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body className={`antialiased !bg-white`}>
-          <div className="bg-white flex flex-col gap-4 justify-center items-center h-[100dvh] w-screen px-6">
-            <NoKey width={24} className="text-black absolute top-5 left-5" />
-
-            {children}
-          </div>
+          <body className="antialiased !bg-white">
+            <div className="flex flex-col min-h-screen w-screen">
+              <Navbar />
+              <main className="flex-1 flex flex-col justify-center items-center px-6">
+                {children}
+              </main>
+            </div>
+          </body>
         </body>
       </html>
     </AuthProvider>
