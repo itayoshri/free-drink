@@ -2,14 +2,13 @@
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 const TITLE = "התחברו או צרו משתמש";
 const SUBTITLE = "עם משתמש רשום ניתן לקבל 80 פקיים ויותר";
 const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
 
 export default function AccountForm() {
-  const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
 
   const checkIfUserExists = useCallback(
@@ -33,8 +32,7 @@ export default function AccountForm() {
         <h4>{SUBTITLE}</h4>
       </div>
       <PhoneNumberInput
-        onChange={(newValue) => setPhoneNumber(newValue)}
-        onClick={() => checkIfUserExists(phoneNumber)}
+        onSubmit={(phoneNumber) => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
         buttonLabel="המשיכו"
       />

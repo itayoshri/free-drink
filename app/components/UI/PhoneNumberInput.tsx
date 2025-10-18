@@ -1,52 +1,33 @@
-import { useEffect, useRef } from "react";
-import Button, { ButtonProps } from "../button";
-import Input, { InputProps } from "../input";
+import Button from "../button";
+import Input from "../input";
 
-interface PhoneNumberInputProps extends InputProps, ButtonProps {
+interface PhoneNumberInputProps {
+  placeholder: string;
   buttonLabel: string;
+  onSubmit: (phoneNumber: string) => void;
 }
 
 export default function PhoneNumberInput({
   placeholder,
   buttonLabel,
-  onChange,
-  onClick,
+  onSubmit,
 }: PhoneNumberInputProps) {
-  const phoneButtonRef = useRef<HTMLButtonElement>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const phoneNumber = formData.get("phone") as string;
+    onSubmit(phoneNumber);
+  };
 
-  useEffect(() => {
-    const handleKeyDown = (event: { key: string }) => {
-      const buttonRef = phoneButtonRef;
-      if (event.key === "Enter") {
-        // Trigger click if button exists
-        if (buttonRef.current) {
-          buttonRef.current.click();
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
   return (
-    <div className="flex flex-col items-start w-full gap-4">
-      <Input
-        onChange={(newValue) => onChange(newValue)}
-        placeholder={placeholder}
-        type="tel"
-        key={0}
-      />
-      <Button
-        onClick={onClick ? () => onClick() : () => null}
-        className="bg-gray-400"
-        ref={phoneButtonRef}
-      >
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-start w-full gap-4"
+    >
+      <Input placeholder={placeholder} name="phone" type="tel" />
+      <Button type="submit" className="bg-gray-400">
         {buttonLabel}
       </Button>
-    </div>
+    </form>
   );
 }
