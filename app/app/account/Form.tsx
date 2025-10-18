@@ -1,5 +1,6 @@
 "use client";
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
+import TextBlock from "@/components/UI/Text";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -31,10 +32,11 @@ export default function AccountForm() {
   );
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col text-black items-center">
-        <h1 className="font-bold text-3xl">{TITLE}</h1>
-        <h4>{SUBTITLE}</h4>
-      </div>
+      <TextBlock
+        title={TITLE}
+        text={SUBTITLE}
+        className="flex flex-col items-center"
+      />
       <PhoneNumberInput
         onSubmit={(phoneNumber) => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
