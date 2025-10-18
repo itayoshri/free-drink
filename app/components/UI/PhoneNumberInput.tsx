@@ -22,7 +22,7 @@ export default function PhoneNumberInput({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col items-start w-full gap-4"
+      className="flex flex-col items-start w-full gap-form"
     >
       <Input placeholder={placeholder} name="phone" type="tel" />
       <Button type="submit" className="bg-gray-400">

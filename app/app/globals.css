@@ -13,6 +13,7 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--color-red-600);
   --space-page: 1.5rem;
+  --space-form: 1rem;
   --font-sans: "Assistant", sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-inter: "Inter", sans-serif;
@@ -23,6 +24,9 @@
   .px-page {
     padding-left: var(--space-page);
     padding-right: var(--space-page);
+  }
+  .gap-form {
+    gap: var(--space-form);
   }
 }
 
