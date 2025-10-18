@@ -18,7 +18,7 @@ export default function Button({
   return (
     <button
       className={`${
-        disabled ? "bg-red-300" : "bg-red-600"
+        disabled ? "bg-red-300" : "bg-primary"
       } py-3 rounded-xl w-full text-xl text-white font-medium flex justify-center items-center ${className}`}
       onClick={onClick}
       ref={ref}
