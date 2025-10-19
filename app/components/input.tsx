@@ -6,6 +6,7 @@ export type InputProps = {
   className?: string;
   type?: HTMLInputTypeAttribute;
   name?: string;
+  leftToRight?: boolean;
 };
 
 export default function Input({
@@ -14,6 +15,7 @@ export default function Input({
   type = "text",
   className = "",
   name = "",
+  leftToRight = false,
 }: InputProps) {
   return (
     <input
@@ -21,7 +23,9 @@ export default function Input({
       name={name}
       placeholder={placeholder}
       defaultValue={defaultValue}
-      className={`text-black border-[1px] border-gray-300 w-full text-xl font-medium outline-primary py-3 px-4 rounded-xl ${className}`}
+      className={`text-black border-[1px] border-gray-300 w-full text-xl font-medium outline-primary py-3 px-4 rounded-xl ${className} ${
+        leftToRight ? "ltr" : ""
+      }`}
     />
   );
 }
