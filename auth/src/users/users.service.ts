@@ -44,7 +44,7 @@ export class UsersService {
           await this.invitationService.redeemInvitationToken(invitation_token)
         ).role;
       } catch (error) {
-        throw new HttpException(error.message, HttpStatus.CONFLICT);
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
 
     if (!(await this.exists(phone_number))) {
