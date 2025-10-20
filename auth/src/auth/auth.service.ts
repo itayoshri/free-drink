@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   setAuthCookie(res: Response, token: string, expires: Date) {
-    res.cookie('Authentication', token, {
+    res.cookie('access_token', token, {
       httpOnly: true,
       secure: true,
       expires,
@@ -78,7 +78,7 @@ export class AuthService {
   }
 
   setRefreshCookie(res: Response, token: string, expires: Date) {
-    res.cookie('Refresh', token, {
+    res.cookie('refresh_token', token, {
       httpOnly: true,
       secure: true,
       expires,
