@@ -33,7 +33,6 @@ export class UsersService {
     password: string,
     invitation_token?: string,
   ) {
-    const password_hash = await bcrypt.hash(password, 12);
     if (await this.exists(phone_number))
       throw new HttpException('User already exsists', HttpStatus.CONFLICT);
 
@@ -47,17 +46,16 @@ export class UsersService {
         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
       }
 
-    if (!(await this.exists(phone_number))) {
-      const user = this.usersRepository.create({
-        phone_number,
-        password_hash,
-        role_key: role,
-        created_token: invitation_token,
-      });
+    const password_hash = await bcrypt.hash(password, 12);
+    const user = this.usersRepository.create({
+      phone_number,
+      password_hash,
+      role_key: role,
+      created_token: invitation_token,
+    });
 
-      await this.usersRepository.save(user);
-      return user;
-    }
+    await this.usersRepository.save(user);
+    return user;
   }
 
   async EditUserRole(id: string, tokenValue: string, role: Role) {
