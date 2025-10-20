@@ -9,7 +9,17 @@ export class UsersController {
   @Post('create')
   async CreateUser(@Body() data: CreateUserDto) {
     const { phoneNumber, password, invitationToken } = data;
-    await this.usersService.createUser(phoneNumber, password, invitationToken);
+    const user = await this.usersService.createUser(
+      phoneNumber,
+      password,
+      invitationToken,
+    );
+
+    return {
+      message: 'user has been created',
+      success: true,
+      data: { user },
+    };
   }
 
   @Get('exists')

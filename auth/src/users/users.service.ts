@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -34,20 +34,30 @@ export class UsersService {
     invitation_token?: string,
   ) {
     const password_hash = await bcrypt.hash(password, 12);
+    if (await this.exists(phone_number))
+      throw new HttpException('User already exsists', HttpStatus.CONFLICT);
+
     let role: Role = 'guest';
     if (invitation_token)
-      role = (
-        await this.invitationService.redeemInvitationToken(invitation_token)
-      ).role;
+      try {
+        role = (
+          await this.invitationService.redeemInvitationToken(invitation_token)
+        ).role;
+      } catch (error) {
+        throw new HttpException(error.message, HttpStatus.CONFLICT);
+      }
 
-    const user = this.usersRepository.create({
-      phone_number,
-      password_hash,
-      role_key: role,
-      created_token: invitation_token,
-    });
+    if (!(await this.exists(phone_number))) {
+      const user = this.usersRepository.create({
+        phone_number,
+        password_hash,
+        role_key: role,
+        created_token: invitation_token,
+      });
 
-    await this.usersRepository.save(user);
+      await this.usersRepository.save(user);
+      return user;
+    }
   }
 
   async EditUserRole(id: string, tokenValue: string, role: Role) {
