@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type AuthContextType = {
   user: object;
@@ -9,11 +15,38 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<object>({});
-  useEffect(() => {
+  const [user, setUserVar] = useState(() => {
     const localStorageUser = localStorage.getItem("user");
-    if (localStorageUser) setUser(JSON.parse(localStorageUser));
+    return localStorageUser ? JSON.parse(localStorageUser) : {};
+  });
+
+  const setUser = useCallback((newUserObj: object) => {
+    localStorage.setItem("user", JSON.stringify(newUserObj));
+    setUserVar(newUserObj);
   }, []);
+
+  useEffect(() => {
+    const refreshAccessToken = async () => {
+      const cookieStore = await cookies();
+      const token = cookieStore.get("Authentication")?.value;
+
+      if (!token) {
+        console.log(1);
+        const refreshToken = cookieStore.get("Refresh")?.value;
+        if (refreshToken) {
+          try {
+            await axios.post(
+              `${process.env.NEXT_PUBLIC_AUTH_URL}/auth/refresh`,
+              { refreshToken },
+              {
+                withCredentials: true,
+              }
+            );
+          } catch {}
+        }
+      }
+    };
+  });
 
   return (
     <AuthContext.Provider

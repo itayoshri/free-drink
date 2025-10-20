@@ -64,6 +64,16 @@ export class AuthService {
       httpOnly: true,
       secure: true,
       expires,
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    res.cookie('access_token_expires', expires.toString(), {
+      httpOnly: false,
+      secure: true,
+      expires,
+      sameSite: 'lax',
+      path: '/',
     });
   }
 
@@ -72,6 +82,8 @@ export class AuthService {
       httpOnly: true,
       secure: true,
       expires,
+      sameSite: 'strict',
+      path: '/',
     });
   }
 
