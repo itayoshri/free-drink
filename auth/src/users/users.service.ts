@@ -68,7 +68,7 @@ export class UsersService {
       .execute();
 
     if (!result.raw || result.raw.length === 0) {
-      throw new Error('User was not found');
+      throw new HttpException('User was not found', HttpStatus.NOT_FOUND);
     }
 
     return result.raw[0] as User;

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
@@ -91,7 +91,10 @@ export class AuthService {
       await this.jwtService.verifyAsync<JWTPayload>(refreshToken);
 
     if (!(await this.validateRefreshToken(refreshToken, sub)))
-      throw new UnauthorizedException();
+      throw new HttpException(
+        'Authorization token missing',
+        HttpStatus.UNAUTHORIZED,
+      );
 
     const payload = {
       sub,
@@ -174,7 +177,7 @@ export class AuthService {
     const user = await this.usersService.findOne(phoneNumber);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new HttpException("User doesn't exists", HttpStatus.NOT_FOUND);
     }
 
     const isCorrectPassword = await bcrypt.compare(
@@ -183,7 +186,10 @@ export class AuthService {
     );
 
     if (!isCorrectPassword) {
-      throw new UnauthorizedException();
+      throw new HttpException(
+        'Incorrect phone number or password',
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const payload = this.generatePayload(user);
