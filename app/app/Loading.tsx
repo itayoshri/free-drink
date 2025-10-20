@@ -1,14 +1,14 @@
 "use client";
 import LoadingSpinner from "@/components/UI/Loading";
 import Logo from "@/components/UI/Logo";
-import { useAuth } from "@/context";
+import { useApp } from "@/context";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function LoadingPage() {
   const TEXTS = ["מתחבר למשתמש", "מעבד תשובות מ-DB", "עונה על חידונים"];
   const [index, setIndex] = useState(0);
-  const { step } = useAuth();
+  const { step } = useApp();
 
   useEffect(() => {
     if (step === "verificationCode")

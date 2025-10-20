@@ -2,7 +2,7 @@
 import Button from "@/components/button";
 import OtpInput from "@/components/UI/OTP";
 import EditPhoneNumber from "@/components/UI/OTP/Edit";
-import { useAuth } from "@/context";
+import { useApp } from "@/context";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -13,7 +13,7 @@ export default function VerifyPage() {
     setStep,
     setgetPointsResData,
     setLoading,
-  } = useAuth();
+  } = useApp();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);

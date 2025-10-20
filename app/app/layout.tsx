@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/context";
+import { AppProvider } from "@/context";
 import Navbar from "@/components/UI/Navbar";
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
+    <AppProvider>
       <html lang="en">
         <body className={`antialiased !bg-white`}>
           <body className="antialiased !bg-white">
@@ -24,6 +24,6 @@ export default function RootLayout({
           </body>
         </body>
       </html>
-    </AuthProvider>
+    </AppProvider>
   );
 }

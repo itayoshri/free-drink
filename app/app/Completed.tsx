@@ -4,11 +4,11 @@ import RequestActionCard, {
   Action,
   actionInfo,
 } from "@/components/UI/RequestActionCard";
-import { useAuth } from "@/context";
+import { useApp } from "@/context";
 import ScreenConfetti from "./Confetti";
 
 export default function CompletedPage() {
-  const { getPointsResData, setStep } = useAuth();
+  const { getPointsResData, setStep } = useApp();
 
   // TODO: Get in better way from req data
   // TODO: Get if user already had corks

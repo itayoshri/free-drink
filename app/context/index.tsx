@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
 
-type AuthContextType = {
+type AppContextType = {
   accessToken: string | null;
   mobilePhone: string | null;
   step: Step;
@@ -16,9 +16,9 @@ type AuthContextType = {
 
 type Step = "phoneNumber" | "verificationCode" | "loading" | "completed";
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [mobilePhone, setMobilePhone] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("phoneNumber");
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [getPointsResData, setgetPointsResData] = useState({});
 
   return (
-    <AuthContext.Provider
+    <AppContext.Provider
       value={{
         accessToken,
         mobilePhone,
@@ -41,12 +41,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
+export const useApp = () => {
+  const context = useContext(AppContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };

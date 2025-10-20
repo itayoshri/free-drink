@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/context";
+import { useApp } from "@/context";
 import PhoneInputPage from "../PhoneInput";
 import VerifyPage from "../VerificationCode";
 import CompletedPage from "../Completed";
@@ -12,7 +12,7 @@ const steps: Record<string, JSX.Element> = {
 };
 
 export default function Home() {
-  const { step } = useAuth();
+  const { step } = useApp();
 
   return steps[step] ?? null;
 }
