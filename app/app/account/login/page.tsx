@@ -7,11 +7,13 @@ import axios from "axios";
 import React from "react";
 import LoggedInSuccesfuly from "../completed";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const phoneNumber = searchParams.get("phoneNumber") || "";
   const router = useRouter();
+  const { setUser } = useAuth();
 
   const onSubmit = async (phoneNumber: string, password: string) => {
     try {
@@ -23,6 +25,8 @@ export default function LoginPage() {
         },
         { withCredentials: true }
       );
+      setUser(res.data.data.user);
+
       router.push("/");
       console.log(res.data);
     } catch (error) {}

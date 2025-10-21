@@ -42,7 +42,7 @@ export class AuthController {
     return {
       message: 'Logged in successfully',
       success: true,
-      data: user,
+      data: { user },
     };
   }
 

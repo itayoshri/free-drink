@@ -1,58 +1,52 @@
 "use client";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
-  user: object;
-  setUser: (user: object) => void;
+  user: object | null;
+  setUser: (user: User) => void;
+  isAuth: boolean;
+  setIsAuth: (authed: boolean) => void;
 };
+
+export type User = object;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUserVar] = useState(() => {
-    const localStorageUser = localStorage.getItem("user");
-    return localStorageUser ? JSON.parse(localStorageUser) : {};
-  });
+export const AuthProvider = ({
+  children,
+  isAuth: initialValue,
+}: {
+  children: React.ReactNode;
+  isAuth: boolean;
+}) => {
+  const [isAuth, setIsAuth] = useState(initialValue);
+  const [user, setUserVar] = useState<User | null>(null);
 
-  const setUser = useCallback((newUserObj: object) => {
-    localStorage.setItem("user", JSON.stringify(newUserObj));
-    setUserVar(newUserObj);
-  }, []);
+  const setUser = (newUser: User) => {
+    try {
+      if (typeof window !== "undefined") {
+        console.log(newUser);
+        if (newUser) localStorage.setItem("user", JSON.stringify(newUser));
+        else {
+          localStorage.removeItem("user");
+        }
+        setUserVar(newUser);
+      }
+    } catch {}
+  };
 
   useEffect(() => {
-    const refreshAccessToken = async () => {
-      const cookieStore = await cookies();
-      const token = cookieStore.get("Authentication")?.value;
-
-      if (!token) {
-        console.log(1);
-        const refreshToken = cookieStore.get("Refresh")?.value;
-        if (refreshToken) {
-          try {
-            await axios.post(
-              `${process.env.NEXT_PUBLIC_AUTH_URL}/auth/refresh`,
-              { refreshToken },
-              {
-                withCredentials: true,
-              }
-            );
-          } catch {}
-        }
-      }
-    };
-  });
+    const localStorageUser = localStorage.getItem("user");
+    if (localStorageUser) setUserVar(JSON.parse(localStorageUser as string));
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        isAuth,
+        setIsAuth,
       }}
     >
       {children}
