@@ -46,7 +46,7 @@ export class AuthController {
     };
   }
 
-  @Post('refresh')
+  @Get('refresh')
   async getNewAccessToken(
     @Req() request: Request,
     @Res({ passthrough: true }) res: Response,
