@@ -4,7 +4,7 @@ import Input from "@/components/input";
 import { useSearchParams } from "next/navigation";
 import { AUTH_SERVER_URL } from "../Form";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import LoggedInSuccesfuly from "../completed";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth";
@@ -14,8 +14,10 @@ export default function LoginPage() {
   const phoneNumber = searchParams.get("phoneNumber") || "";
   const router = useRouter();
   const { setUser } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (phoneNumber: string, password: string) => {
+    setLoading(true);
     try {
       const res = await axios.post(
         `${AUTH_SERVER_URL}/auth/login`,
@@ -26,10 +28,10 @@ export default function LoginPage() {
         { withCredentials: true }
       );
       setUser(res.data.data.user);
-
       router.push("/");
-      console.log(res.data);
-    } catch (error) {}
+    } catch (error) {
+      setLoading(false);
+    }
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,7 +52,9 @@ export default function LoginPage() {
           defaultValue={phoneNumber}
         />
         <Input name="password" placeholder="סיסמה" type="password" />
-        <Button type="submit">התחברו</Button>
+        <Button type="submit" disabled={loading}>
+          התחברו
+        </Button>
       </form>
     </div>
   );
