@@ -105,7 +105,7 @@ export class AuthService {
 
     if (!(await this.validateRefreshToken(refreshToken, sub)))
       throw new HttpException(
-        'Authorization token missing',
+        'Refresh token is invalid or has expired',
         HttpStatus.UNAUTHORIZED,
       );
 

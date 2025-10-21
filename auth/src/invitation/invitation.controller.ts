@@ -1,4 +1,13 @@
-import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { InvitationService } from './invitation.service';
 import { GenerateInvitationDto } from './dto/generate-invitation.dto';
 import { Role } from './invitation.entity';
@@ -44,6 +53,20 @@ export class InvitationController {
       request,
       'refresh_token',
     ) as string;
+
+    if (
+      !(await this.authService.validateRefreshToken(
+        refreshToken,
+        request['user'].sub as string,
+      ))
+    ) {
+      this.authService.clearAuthCookies(res);
+      throw new HttpException(
+        'Refresh token is invalid or has expired',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
     try {
       const { role } =
         await this.invitationService.redeemInvitationToken(invitationToken);
@@ -54,35 +77,30 @@ export class InvitationController {
         role,
       );
 
-      try {
-        const { token: accessToken, expiresToken: expiresAccessToken } =
-          await this.authService.getNewAccessToken(refreshToken, updatedUser);
+      const {
+        accessToken,
+        expiresAccessToken,
+        refreshToken: newRefreshToken,
+        expiresRefreshToken,
+      } = await this.authService.generateTokens(updatedUser);
 
-        this.authService.setAuthCookie(res, accessToken, expiresAccessToken);
+      this.authService.setAuthCookie(res, accessToken, expiresAccessToken);
+      this.authService.setRefreshCookie(
+        res,
+        newRefreshToken,
+        expiresRefreshToken,
+      );
 
-        return {
-          message:
-            'Invitation token successfully redeemed and the corresponding role has been applied to the user',
-          success: true,
-          data: {
-            role,
-          },
-        };
-      } catch (error) {
-        this.authService.clearAuthCookies(res);
-
-        return {
-          message: error.message,
-          success: false,
-          data: {},
-        };
-      }
-    } catch (error) {
       return {
-        message: error.message,
-        success: false,
-        data: {},
+        message:
+          'Invitation token successfully redeemed and the corresponding role has been applied to the user',
+        success: true,
+        data: {
+          role,
+        },
       };
+    } catch (error) {
+      throw new HttpException(error.message as string, HttpStatus.NOT_FOUND);
     }
   }
 }
