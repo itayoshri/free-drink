@@ -11,11 +11,11 @@ export const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
 
 export default function AccountForm() {
   const router = useRouter();
-  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const checkIfUserExists = useCallback(
     (phoneNumber: string) => {
-      setDisabled(true);
+      setLoading(true);
       axios
         .get(`${AUTH_SERVER_URL}/users/exists?phoneNumber=${phoneNumber}`)
         .then((res) => {
@@ -25,7 +25,7 @@ export default function AccountForm() {
                 res.data.data.exists ? "login" : "register"
               }?phoneNumber=${phoneNumber}`
             );
-          else setDisabled(false);
+          else setLoading(false);
         });
     },
     [router]
@@ -41,7 +41,7 @@ export default function AccountForm() {
         onSubmit={(phoneNumber) => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
         buttonLabel="המשיכו"
-        disabled={disabled}
+        disabled={loading}
       />
     </div>
   );
