@@ -42,7 +42,6 @@ export const AuthProvider = ({
 
   useEffect(() => {
     const localStorageUser = localStorage.getItem("user");
-    console.log(localStorageUser);
     if (localStorageUser) setUserVar(JSON.parse(localStorageUser as string));
     setLoading(false);
   }, []);
