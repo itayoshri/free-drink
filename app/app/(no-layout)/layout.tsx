@@ -1,11 +1,11 @@
 "use client";
-import "../globals.css";
-import { useApp } from "@/context";
-import LoadingPage from "../Loading";
 import Navbar from "@/components/UI/Navbar";
+import "../globals.css";
+import LoadingPage from "../Loading";
+import { useAuth } from "@/context/auth";
 
 export default function NoLayout({ children }: { children: React.ReactNode }) {
-  const { loading } = useApp();
+  const { loading } = useAuth();
 
   return loading ? (
     <LoadingPage />

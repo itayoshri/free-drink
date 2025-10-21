@@ -6,6 +6,8 @@ type AuthContextType = {
   setUser: (user: User) => void;
   isAuth: boolean;
   setIsAuth: (authed: boolean) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 };
 
 export type User = object;
@@ -21,6 +23,7 @@ export const AuthProvider = ({
 }) => {
   const [isAuth, setIsAuth] = useState(initialValue);
   const [user, setUserVar] = useState<User | null>(null);
+  const [loading, setLoading] = useState(!Boolean(user));
 
   const setUser = (newUser: User) => {
     try {
@@ -39,7 +42,9 @@ export const AuthProvider = ({
 
   useEffect(() => {
     const localStorageUser = localStorage.getItem("user");
+    console.log(localStorageUser);
     if (localStorageUser) setUserVar(JSON.parse(localStorageUser as string));
+    setLoading(false);
   }, []);
 
   return (
@@ -49,6 +54,8 @@ export const AuthProvider = ({
         setUser,
         isAuth,
         setIsAuth,
+        loading,
+        setLoading,
       }}
     >
       {children}
