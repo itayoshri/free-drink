@@ -8,7 +8,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/rules.guard';
 import { AuthService } from 'src/auth/auth.service';
-import type { Response } from 'express';
+import type { Response, Request } from 'express';
 
 @Controller('invitation')
 @UseGuards(AuthGuard)
@@ -39,7 +39,11 @@ export class InvitationController {
     @Res({ passthrough: true }) res: Response,
     @Body() data: RedeemInvitationDto,
   ) {
-    const { invitationToken, refreshToken } = data;
+    const { invitationToken } = data;
+    const refreshToken = this.authService.extractTokenFromHeader(
+      request,
+      'refresh_token',
+    ) as string;
     try {
       const { role } =
         await this.invitationService.redeemInvitationToken(invitationToken);

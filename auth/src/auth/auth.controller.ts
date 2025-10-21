@@ -6,15 +6,15 @@ import {
   HttpStatus,
   Post,
   UseGuards,
-  Request,
   Res,
+  Req,
+  HttpException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { LoginDto } from './dto/login.dto';
-import type { Response } from 'express';
+import type { Request, Response } from 'express';
 import { ApiResponse } from 'src/common/dto/response.dto';
-import { RefreshDto } from './dto/refresh.dto';
 import { RolesGuard } from './rules.guard';
 import { Roles } from './roles.decorator';
 
@@ -48,12 +48,17 @@ export class AuthController {
 
   @Post('refresh')
   async getNewAccessToken(
-    @Body() data: RefreshDto,
+    @Req() request: Request,
     @Res({ passthrough: true }) res: Response,
   ): Promise<ApiResponse> {
+    const refreshToken = this.authService.extractTokenFromHeader(
+      request,
+      'refresh_token',
+    );
+
     try {
       const { token: accessToken, expiresToken: expiresAccessToken } =
-        await this.authService.getNewAccessToken(data.refreshToken);
+        await this.authService.getNewAccessToken(refreshToken as string);
 
       this.authService.setAuthCookie(res, accessToken, expiresAccessToken);
 
@@ -64,6 +69,7 @@ export class AuthController {
       };
     } catch {
       this.authService.clearAuthCookies(res);
+      throw new HttpException('', HttpStatus.UNAUTHORIZED);
 
       return {
         message: '',
@@ -76,7 +82,7 @@ export class AuthController {
   @Roles(['premium_user', 'admin'])
   @UseGuards(AuthGuard, RolesGuard)
   @Get('profile')
-  getProfile(@Request() req: Record<string, string>) {
+  getProfile(@Req() req: Record<string, string>) {
     return req.user;
   }
 }

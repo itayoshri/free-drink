@@ -10,6 +10,7 @@ import { Token } from './auth.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/invitation/invitation.entity';
 import type { Response } from 'express';
+import { Request } from 'express';
 
 type TokenType = 'refresh' | 'access';
 interface JWTPayload {
@@ -227,5 +228,15 @@ export class AuthService {
 
   matchRoles(roles: Role[], userRole: Role) {
     return roles.includes(userRole);
+  }
+
+  extractTokenFromHeader(
+    request: Request,
+    type: 'access_token' | 'refresh_token',
+  ): string | undefined {
+    if (request.cookies[type]) {
+      return request.cookies[type] as string;
+    }
+    return undefined;
   }
 }
