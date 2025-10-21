@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/invitation/invitation.entity';
 import type { Response } from 'express';
 import { Request } from 'express';
+import { isDev } from 'src/utils/env.utils';
 
 type TokenType = 'refresh' | 'access';
 interface JWTPayload {
@@ -63,7 +64,7 @@ export class AuthService {
   setAuthCookie(res: Response, token: string, expires: Date) {
     res.cookie('access_token', token, {
       httpOnly: true,
-      secure: true,
+      secure: !isDev(),
       expires,
       sameSite: 'lax',
       path: '/',
@@ -71,7 +72,7 @@ export class AuthService {
 
     res.cookie('access_token_expires', expires.toString(), {
       httpOnly: false,
-      secure: true,
+      secure: false,
       expires,
       sameSite: 'lax',
       path: '/',
@@ -81,9 +82,9 @@ export class AuthService {
   setRefreshCookie(res: Response, token: string, expires: Date) {
     res.cookie('refresh_token', token, {
       httpOnly: true,
-      secure: true,
+      secure: !isDev(),
       expires,
-      sameSite: 'strict',
+      sameSite: 'lax',
       path: '/',
     });
   }
