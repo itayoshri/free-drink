@@ -25,10 +25,12 @@ export const AuthProvider = ({
   const setUser = (newUser: User) => {
     try {
       if (typeof window !== "undefined") {
-        console.log(newUser);
-        if (newUser) localStorage.setItem("user", JSON.stringify(newUser));
-        else {
+        if (newUser) {
+          localStorage.setItem("user", JSON.stringify(newUser));
+          setIsAuth(true);
+        } else {
           localStorage.removeItem("user");
+          setIsAuth(false);
         }
         setUserVar(newUser);
       }
