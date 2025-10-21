@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
     });
 
     const setCookieHeader = refreshRes.headers.get("set-cookie");
-    const res = NextResponse.next();
+    const res = NextResponse.redirect(req.url);
 
     if (setCookieHeader) res.headers.set("set-cookie", setCookieHeader);
 
