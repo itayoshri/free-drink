@@ -16,7 +16,7 @@ export default function formatAnswerRequest(
     .replace(/[\u0000-\u001F\u007F]/g, "");
 
   jsonString = jsonString.replace(
-    /,\s*"explanation"\s*:\s*"[^"]*"(?=\s*})/,
+    /,\s*"explanation"\s*:\s*"[\s\S]*?"(?=\s*})/,
     ""
   );
 
