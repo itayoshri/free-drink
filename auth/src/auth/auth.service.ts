@@ -90,14 +90,9 @@ export class AuthService {
   }
 
   clearAuthCookies(res: Response) {
-    res.clearCookie('Authentication', {
-      httpOnly: true,
-      secure: true,
-    });
-    res.clearCookie('Refresh', {
-      httpOnly: true,
-      secure: true,
-    });
+    res.clearCookie('access_token');
+    res.clearCookie('access_token_expires');
+    res.clearCookie('refresh_token');
   }
 
   async getNewAccessToken(refreshToken: string, user?: User) {
