@@ -7,14 +7,21 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private authService: AuthService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const token = this.authService.extractTokenFromHeader(
+      request,
+      'access_token',
+    );
 
     if (!token) {
       throw new HttpException(
@@ -33,12 +40,5 @@ export class AuthGuard implements CanActivate {
       );
     }
     return true;
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    if (request.cookies?.auth_token) {
-      return request.cookies.auth_token as string;
-    }
-    return undefined;
   }
 }
