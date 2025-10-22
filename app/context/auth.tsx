@@ -1,4 +1,6 @@
 "use client";
+import { AUTH_SERVER_URL } from "@/app/account/Form";
+import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
@@ -32,17 +34,23 @@ export const AuthProvider = ({
   const [user, setUserVar] = useState<User | null>(null);
   const [loading, setLoading] = useState(!Boolean(user));
 
-  const setUser = (newUser: User) => {
+  const logout = async () => {
+    await axios.post(`${AUTH_SERVER_URL}/auth/logout`);
+    setUser();
+  };
+
+  const setUser = (newUser?: User) => {
     try {
       if (typeof window !== "undefined") {
         if (newUser) {
           localStorage.setItem("user", JSON.stringify(newUser));
           setIsAuth(true);
+          setUserVar(newUser);
         } else {
-          localStorage.removeItem("user");
+          setUserVar(null);
           setIsAuth(false);
+          localStorage.removeItem("user");
         }
-        setUserVar(newUser);
       }
     } catch {}
   };
