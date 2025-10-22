@@ -118,20 +118,21 @@ export class AuthService {
     return await this.generateToken(payload, 'access');
   }
 
-  async pushRefreshToken(user: User, newToken: string, expiresDate: Date) {
-    const sha256 = crypto.createHash('sha256').update(newToken).digest('hex');
-    const hashedToken = await bcrypt.hash(sha256, 10);
-
-    // revoke old refresh tokens
+  async RevokeRefreshTokens(userId: string) {
     await this.TokensRepository.createQueryBuilder()
       .update()
       .set({ revoked_at: new Date() })
       .where('user_id = :userId', {
-        userId: user.user_id,
+        userId,
       })
       .andWhere('revoked_at IS NULL')
       .execute();
+  }
 
+  async pushRefreshToken(user: User, newToken: string, expiresDate: Date) {
+    const sha256 = crypto.createHash('sha256').update(newToken).digest('hex');
+    const hashedToken = await bcrypt.hash(sha256, 10);
+    await this.RevokeRefreshTokens(user.user_id);
     await this.TokensRepository.createQueryBuilder()
       .insert()
       .into(Token)
