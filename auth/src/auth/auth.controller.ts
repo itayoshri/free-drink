@@ -46,6 +46,21 @@ export class AuthController {
     };
   }
 
+  @UseGuards(AuthGuard)
+  @Post('logout')
+  async logout(
+    @Req() request: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    await this.authService.RevokeRefreshTokens(request['user'].sub as string);
+    this.authService.clearAuthCookies(res);
+    return {
+      message: 'Logged out successfully',
+      success: true,
+      data: {},
+    };
+  }
+
   @Get('refresh')
   async getNewAccessToken(
     @Req() request: Request,
