@@ -5,7 +5,7 @@ import { useApp } from "@/context";
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
 
 export default function PhoneInputPage() {
-  const { setMobilePhone, setStep, setLoading } = useApp();
+  const { mobilePhone, setMobilePhone, setStep, setLoading } = useApp();
   const sendVerificationCode = useCallback(
     (phoneNumber: string) => {
       if (phoneNumber) {
@@ -33,6 +33,7 @@ export default function PhoneInputPage() {
         onSubmit={(phoneNumber) => sendVerificationCode(phoneNumber)}
         placeholder="מספר טלפון"
         buttonLabel="הבא"
+        defaultValue={mobilePhone as string}
       />
     </div>
   );

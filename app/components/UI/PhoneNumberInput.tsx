@@ -6,6 +6,7 @@ interface PhoneNumberInputProps {
   buttonLabel: string;
   onSubmit: (phoneNumber: string) => void;
   disabled?: boolean;
+  defaultValue?: string;
 }
 
 export default function PhoneNumberInput({
@@ -13,6 +14,7 @@ export default function PhoneNumberInput({
   buttonLabel,
   onSubmit,
   disabled = false,
+  defaultValue = "",
 }: PhoneNumberInputProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +28,12 @@ export default function PhoneNumberInput({
       onSubmit={handleSubmit}
       className="flex flex-col items-start w-full gap-form"
     >
-      <Input placeholder={placeholder} name="phone" type="tel" />
+      <Input
+        placeholder={placeholder}
+        name="phone"
+        type="tel"
+        defaultValue={defaultValue}
+      />
       <Button type="submit" className="bg-gray-400" disabled={disabled}>
         {buttonLabel}
       </Button>

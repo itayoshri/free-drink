@@ -2,6 +2,7 @@
 import { AUTH_SERVER_URL } from "@/app/account/Form";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useAuth, User } from "./auth";
 
 type AppContextType = {
   accessToken: string | null;
@@ -28,12 +29,17 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [getPointsResData, setgetPointsResData] = useState({});
   const [rolesMap, setRolesMap] = useState({});
+  const { user } = useAuth();
 
   useEffect(() => {
     axios.get(`${AUTH_SERVER_URL}/invitation/roles`).then((res) => {
       setRolesMap(res.data.data.roles);
     });
-  });
+  }, []);
+
+  useEffect(() => {
+    if (user) setMobilePhone((user as User).phone_number);
+  }, [user]);
 
   return (
     <AppContext.Provider
