@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpException,
   HttpStatus,
   Post,
@@ -10,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { InvitationService } from './invitation.service';
 import { GenerateInvitationDto } from './dto/generate-invitation.dto';
-import { Role } from './invitation.entity';
+import { UserRole } from './invitation.entity';
 import { RedeemInvitationDto } from './dto/redeem-invitation.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -18,6 +19,7 @@ import { Roles } from 'src/auth/roles.decorator';
 import { RolesGuard } from 'src/auth/rules.guard';
 import { AuthService } from 'src/auth/auth.service';
 import type { Response, Request } from 'express';
+import { Public } from 'src/auth/public.decorator';
 
 @Controller('invitation')
 @UseGuards(AuthGuard)
@@ -37,7 +39,7 @@ export class InvitationController {
   ) {
     const { role } = data;
     return await this.invitationService.generateInvitation(
-      role as Role,
+      role as UserRole,
       request['user'].sub as string,
     );
   }
@@ -102,5 +104,11 @@ export class InvitationController {
     } catch (error) {
       throw new HttpException(error.message as string, HttpStatus.NOT_FOUND);
     }
+  }
+
+  @Public()
+  @Get('roles')
+  async getRoles() {
+    return await this.invitationService.getRolesMap();
   }
 }

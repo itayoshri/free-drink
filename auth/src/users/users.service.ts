@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Role } from 'src/invitation/invitation.entity';
+import { UserRole } from 'src/invitation/invitation.entity';
 import { InvitationService } from 'src/invitation/invitation.service';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class UsersService {
     if (await this.exists(phone_number))
       throw new HttpException('User already exsists', HttpStatus.CONFLICT);
 
-    let role: Role = 'guest';
+    let role: UserRole = 'guest';
     if (invitation_token)
       try {
         role = (
@@ -58,7 +58,7 @@ export class UsersService {
     return user;
   }
 
-  async EditUserRole(id: string, tokenValue: string, role: Role) {
+  async EditUserRole(id: string, tokenValue: string, role: UserRole) {
     const result = await this.usersRepository
       .createQueryBuilder()
       .update()

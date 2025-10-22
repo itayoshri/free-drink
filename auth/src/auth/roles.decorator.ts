@@ -1,4 +1,4 @@
 import { Reflector } from '@nestjs/core';
-import { Role } from 'src/invitation/invitation.entity';
+import { UserRole } from 'src/invitation/invitation.entity';
 
-export const Roles = Reflector.createDecorator<Role[]>();
+export const Roles = Reflector.createDecorator<UserRole[]>();

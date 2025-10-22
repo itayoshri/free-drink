@@ -8,7 +8,7 @@ import { User } from 'src/users/user.entity';
 import { IsNull, Repository } from 'typeorm';
 import { Token } from './auth.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Role } from 'src/invitation/invitation.entity';
+import { UserRole } from 'src/invitation/invitation.entity';
 import type { Response } from 'express';
 import { Request } from 'express';
 import { isDev } from 'src/utils/env.utils';
@@ -223,7 +223,7 @@ export class AuthService {
     };
   }
 
-  matchRoles(roles: Role[], userRole: Role) {
+  matchRoles(roles: UserRole[], userRole: UserRole) {
     return roles.includes(userRole);
   }
 

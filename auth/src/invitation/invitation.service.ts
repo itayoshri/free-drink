@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { Invitation, Role } from './invitation.entity';
+import { Invitation, UserRole } from './invitation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as crypto from 'crypto';
+import { Role } from './roles.entity';
 
 @Injectable()
 export class InvitationService {
   constructor(
     @InjectRepository(Invitation)
     private invitationRepository: Repository<Invitation>,
+    @InjectRepository(Role)
+    private rolesRepository: Repository<Role>,
   ) {}
 
-  async generateInvitation(role: Role, userId: string) {
+  async generateInvitation(role: UserRole, userId: string) {
     const token = crypto.randomBytes(16).toString('hex');
     const invitation = this.invitationRepository.create({
       token_value: token,
@@ -26,7 +29,7 @@ export class InvitationService {
 
   async redeemInvitationToken(invitationToken: string): Promise<{
     invitationCode: string;
-    role: Role;
+    role: UserRole;
   }> {
     const result = await this.invitationRepository
       .createQueryBuilder()
@@ -44,5 +47,15 @@ export class InvitationService {
 
     const updated = result.raw[0];
     return { invitationCode: updated.token_value, role: updated.role_key };
+  }
+
+  async getRolesMap(): Promise<Record<UserRole, string>> {
+    const roles = await this.rolesRepository.find({
+      select: ['role_key', 'display_name'],
+    });
+
+    return Object.fromEntries(
+      roles.map((r) => [r.role_key, r.display_name]),
+    ) as Record<UserRole, string>;
   }
 }

@@ -6,7 +6,7 @@ export class Invitation {
   token_value: string;
 
   @Column()
-  role_key: Role;
+  role_key: UserRole;
 
   @Column({ default: 1 })
   usage_limit: number;
@@ -24,4 +24,4 @@ export class Invitation {
   expires_at: Date;
 }
 
-export type Role = 'admin' | 'guest' | 'premium_user' | 'standard_user';
+export type UserRole = 'admin' | 'guest' | 'premium_user' | 'standard_user';
