@@ -1,13 +1,12 @@
 "use client";
-import Button from "@/components/button";
-import { Account } from "@/components/Icons";
-import { Icon } from "@/components/Icons/svgFactory";
-import { User } from "@/context/auth";
+import { Account, Logout } from "@/components/Icons";
+import { useAuth, User } from "@/context/auth";
 import { ReactElement } from "react";
 
 export default function AccountPopup({ user }: { user: User }) {
+  const { logout } = useAuth();
   return (
-    <div className="flex flex-col gap-2 absolute top-full h-fit bg-white rounded-xl border-[1px] p-4 border-gray-300 pl-20">
+    <div className="flex flex-col gap-4 absolute top-full h-fit bg-white rounded-xl border-[1px] p-4 border-gray-300 pl-20">
       <div className="flex items-center gap-2">
         <Account className="text-black" height={35} />
         <div className="flex flex-col font-inter">
@@ -16,8 +15,13 @@ export default function AccountPopup({ user }: { user: User }) {
         </div>
       </div>
       <div className="flex flex-col">
-        <PopupButton text="הזנת קוד הצטרפות" icon={<Account width={20} />} />
-        <PopupButton text="התנתקות" warning icon={<Account width={20} />} />
+        {/*<PopupButton text="הזנת קוד הצטרפות" icon={<Add width={20} />} />*/}
+        <PopupButton
+          text="התנתקות"
+          warning
+          icon={<Logout width={20} />}
+          onClick={() => logout()}
+        />
       </div>
     </div>
   );
