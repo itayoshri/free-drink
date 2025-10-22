@@ -10,6 +10,7 @@ type AuthContextType = {
   setIsAuth: (authed: boolean) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  logout: () => unknown;
 };
 
 export type User = {
@@ -35,7 +36,11 @@ export const AuthProvider = ({
   const [loading, setLoading] = useState(!Boolean(user));
 
   const logout = async () => {
-    await axios.post(`${AUTH_SERVER_URL}/auth/logout`);
+    await axios.post(
+      `${AUTH_SERVER_URL}/auth/logout`,
+      {},
+      { withCredentials: true }
+    );
     setUser();
   };
 
@@ -70,6 +75,7 @@ export const AuthProvider = ({
         setIsAuth,
         loading,
         setLoading,
+        logout,
       }}
     >
       {children}
