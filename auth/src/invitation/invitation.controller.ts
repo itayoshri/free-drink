@@ -109,6 +109,6 @@ export class InvitationController {
   @Public()
   @Get('roles')
   async getRoles() {
-    return await this.invitationService.getRolesMap();
+    return { roles: await this.invitationService.getRolesMap() };
   }
 }

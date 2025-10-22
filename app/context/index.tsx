@@ -1,5 +1,7 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import { AUTH_SERVER_URL } from "@/app/account/Form";
+import axios from "axios";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type AppContextType = {
   accessToken: string | null;
@@ -7,6 +9,7 @@ type AppContextType = {
   step: Step;
   loading: boolean;
   getPointsResData: Record<string, unknown>;
+  rolesMap: Record<string, string>;
   setAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
   setStep: (step: Step) => void;
@@ -24,6 +27,13 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [step, setStep] = useState<Step>("phoneNumber");
   const [loading, setLoading] = useState(false);
   const [getPointsResData, setgetPointsResData] = useState({});
+  const [rolesMap, setRolesMap] = useState({});
+
+  useEffect(() => {
+    axios.get(`${AUTH_SERVER_URL}/invitation/roles`).then((res) => {
+      setRolesMap(res.data.data.roles);
+    });
+  });
 
   return (
     <AppContext.Provider
@@ -33,6 +43,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         step,
         loading,
         getPointsResData,
+        rolesMap,
         setAccessToken,
         setMobilePhone,
         setStep,
