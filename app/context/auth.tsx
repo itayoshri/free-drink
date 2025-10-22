@@ -10,7 +10,14 @@ type AuthContextType = {
   setLoading: (loading: boolean) => void;
 };
 
-export type User = object;
+export type User = {
+  user_id: string;
+  phone_number: string;
+  role_key: string;
+  created_token: string;
+  upgrade_token: string;
+  //created_at: string;
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
