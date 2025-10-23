@@ -12,6 +12,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--color-red-600);
+  --color-primary-500: var(--color-red-500);
   --space-page: 1.5rem;
   --space-form: 1rem;
   --font-sans: "Assistant", sans-serif;
