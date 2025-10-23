@@ -9,7 +9,7 @@ export default function PopupUserInfo({ user }: { user: User }) {
       <div className="flex flex-col">
         <h3 className="font-bold font-inter"> {user.phone_number}</h3>
         <a className="text-sm text-zinc-400 font-medium">
-          {rolesMap[user.role_key]}
+          {rolesMap[user.role_key].displayName}
         </a>
       </div>
     </div>

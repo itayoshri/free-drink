@@ -11,7 +11,7 @@ type AuthContextType = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   logout: () => unknown;
-  rolesMap: Record<string, string>;
+  rolesMap: Record<string, Record<string, string>>;
 };
 
 export type User = {

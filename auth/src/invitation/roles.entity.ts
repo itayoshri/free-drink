@@ -10,4 +10,7 @@ export class Role {
 
   @Column()
   description: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  permissions: Record<string, Record<string, string>>;
 }

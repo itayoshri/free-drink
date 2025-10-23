@@ -49,13 +49,16 @@ export class InvitationService {
     return { invitationCode: updated.token_value, role: updated.role_key };
   }
 
-  async getRolesMap(): Promise<Record<UserRole, string>> {
+  async getRolesMap(): Promise<Record<UserRole, any>> {
     const roles = await this.rolesRepository.find({
-      select: ['role_key', 'display_name'],
+      select: ['role_key', 'display_name', 'permissions'],
     });
 
     return Object.fromEntries(
-      roles.map((r) => [r.role_key, r.display_name]),
-    ) as Record<UserRole, string>;
+      roles.map((r) => [
+        r.role_key,
+        { displayName: r.display_name, permissions: r.permissions },
+      ]),
+    ) as Record<UserRole, any>;
   }
 }
