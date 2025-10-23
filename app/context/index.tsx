@@ -10,7 +10,6 @@ type AppContextType = {
   step: Step;
   loading: boolean;
   getPointsResData: Record<string, unknown>;
-  rolesMap: Record<string, string>;
   setAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
   setStep: (step: Step) => void;
@@ -28,14 +27,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [step, setStep] = useState<Step>("phoneNumber");
   const [loading, setLoading] = useState(false);
   const [getPointsResData, setgetPointsResData] = useState({});
-  const [rolesMap, setRolesMap] = useState({});
   const { user } = useAuth();
-
-  useEffect(() => {
-    axios.get(`${AUTH_SERVER_URL}/invitation/roles`).then((res) => {
-      setRolesMap(res.data.data.roles);
-    });
-  }, []);
 
   useEffect(() => {
     if (user) setMobilePhone((user as User).phone_number);
@@ -49,7 +41,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         step,
         loading,
         getPointsResData,
-        rolesMap,
         setAccessToken,
         setMobilePhone,
         setStep,

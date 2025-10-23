@@ -11,6 +11,7 @@ type AuthContextType = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   logout: () => unknown;
+  rolesMap: Record<string, string>;
 };
 
 export type User = {
@@ -34,6 +35,7 @@ export const AuthProvider = ({
   const [isAuth, setIsAuth] = useState(initialValue);
   const [user, setUserVar] = useState<User | null>(null);
   const [loading, setLoading] = useState(!Boolean(user));
+  const [rolesMap, setRolesMap] = useState({});
 
   const logout = async () => {
     await axios.post(
@@ -61,11 +63,19 @@ export const AuthProvider = ({
   };
 
   useEffect(() => {
-    if(!isAuth) setUser()
+    if (!isAuth) setUser();
     const localStorageUser = localStorage.getItem("user");
     if (localStorageUser) setUserVar(JSON.parse(localStorageUser as string));
-    setLoading(false);
-  }, []);
+
+    axios
+      .get(`${AUTH_SERVER_URL}/invitation/roles`)
+      .then((res) => {
+        setRolesMap(res.data.data.roles);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [isAuth]);
 
   return (
     <AuthContext.Provider
@@ -77,6 +87,7 @@ export const AuthProvider = ({
         loading,
         setLoading,
         logout,
+        rolesMap,
       }}
     >
       {children}

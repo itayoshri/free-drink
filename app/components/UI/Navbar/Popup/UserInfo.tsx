@@ -1,9 +1,8 @@
 import { Account } from "@/components/Icons";
-import { useApp } from "@/context";
-import { User } from "@/context/auth";
+import { useAuth, User } from "@/context/auth";
 
 export default function PopupUserInfo({ user }: { user: User }) {
-  const { rolesMap } = useApp();
+  const { rolesMap } = useAuth();
   return (
     <div className="flex items-center gap-2">
       <Account className="text-black" height={35} />
