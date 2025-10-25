@@ -21,12 +21,8 @@ export default async function RootLayout({
     <AuthProvider isAuth={isAuth}>
       <AppProvider>
         <html lang="en">
-          <body className={`antialiased !bg-white`}>
-            <body className="antialiased !bg-white">
-              <div className="flex flex-col min-h-screen w-screen">
-                {children}
-              </div>
-            </body>
+          <body className={`antialiased  h-dvh w-screen flex flex-col`}>
+            {children}
           </body>
         </html>
       </AppProvider>
