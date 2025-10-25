@@ -1,5 +1,4 @@
 import Logo from "@/components/UI/Logo";
-import TextBlock from "@/components/UI/Text";
 
 export default function UnauthrizedPage() {
   return (
