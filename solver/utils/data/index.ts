@@ -31,11 +31,10 @@ const BASE_PROMPT = `
 {
   "result": {
     "questionId": number,
-    "answerId": number|null
+    "answerId": number
   },
   "explanation": string
 }
-אם אינך בטוח – כתוב answerId=null
 החזר אך ורק JSON. אל תוסיף טקסט, כותרות או סימוני json.  
 INPUT:
 
