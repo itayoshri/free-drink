@@ -3,6 +3,7 @@ import { useAuth, User } from "@/context/auth";
 import Logo from "../Logo";
 import SignedUser from "./SignedUser";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Navbar() {
   const { isAuth, user } = useAuth();
@@ -19,7 +20,9 @@ export default function Navbar() {
           כניסה
         </button>
       )}
-      <Logo className="h-4 fill-primary" version="short" />
+      <Link href={"/"}>
+        <Logo className="h-4 fill-primary" version="short" />
+      </Link>
     </div>
   );
 }

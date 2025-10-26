@@ -18,7 +18,7 @@ export default function RefillClientLayout({
 
   return (
     <>
-      {isAdmin && <Navbar />}
+      {isAdmin && !loading && <Navbar />}
       <main className="refill-route bg-zinc-900 flex-1 h-full flex flex-col justify-center items-center px-6">
         {loading ? (
           <RefillLoadingPage />
