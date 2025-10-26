@@ -14,7 +14,7 @@ export default function PopupButton({
   return (
     <button
       className={`flex w-full py-1 font-semibold gap-3 items-center ${
-        warning ? "text-primary" : "text-black"
+        warning ? "text-primary" : ""
       }`}
       onClick={onClick}
     >
