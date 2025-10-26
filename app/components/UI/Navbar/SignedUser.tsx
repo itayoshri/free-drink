@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function SignedUser({ user }: { user: User }) {
   const [isPopupOpened, setPopupOpened] = useState(false);
   return (
-    <div className="flex text-black gap-3">
+    <div className="flex gap-3">
       <button onClick={() => setPopupOpened((current) => !current)}>
         <Account width={30} />
       </button>
