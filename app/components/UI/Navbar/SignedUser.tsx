@@ -10,10 +10,10 @@ export default function SignedUser({ user }: { user: User }) {
   return (
     <div className="flex gap-3">
       <button onClick={() => setPopupOpened((current) => !current)}>
-        <Account width={30} />
+        <Account width={28} />
       </button>
       <Link href={"/refill"}>
-        <SupervisorAccount width={30} />
+        <SupervisorAccount width={28} />
       </Link>
       {isPopupOpened ? <AccountPopup user={user} /> : null}
     </div>
