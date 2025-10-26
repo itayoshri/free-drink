@@ -32,12 +32,13 @@
   }
 }
 
+/*
 @media (prefers-color-scheme: dark) {
   :root {
     --background: var(--color-zinc-900);
     --foreground: #fff;
   }
-}
+}*/
 
 body {
   background: var(--background);
