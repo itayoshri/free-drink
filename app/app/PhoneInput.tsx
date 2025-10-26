@@ -3,9 +3,11 @@ import axios from "axios";
 import { useCallback } from "react";
 import { useApp } from "@/context";
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
+import { useAuth } from "@/context/auth";
 
 export default function PhoneInputPage() {
-  const { mobilePhone, setMobilePhone, setStep, setLoading } = useApp();
+  const { mobilePhone, setMobilePhone, setStep } = useApp();
+  const { setLoading } = useAuth();
   const sendVerificationCode = useCallback(
     (phoneNumber: string) => {
       if (phoneNumber) {

@@ -1,6 +1,4 @@
 "use client";
-import { AUTH_SERVER_URL } from "@/app/account/Form";
-import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth, User } from "./auth";
 
@@ -8,12 +6,10 @@ type AppContextType = {
   accessToken: string | null;
   mobilePhone: string | null;
   step: Step;
-  loading: boolean;
   getPointsResData: Record<string, unknown>;
   setAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
   setStep: (step: Step) => void;
-  setLoading: (loading: boolean) => void;
   setgetPointsResData: (data: Record<string, unknown>) => void;
 };
 
@@ -25,7 +21,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [mobilePhone, setMobilePhone] = useState<string | null>(null);
   const [step, setStep] = useState<Step>("phoneNumber");
-  const [loading, setLoading] = useState(false);
   const [getPointsResData, setgetPointsResData] = useState({});
   const { user } = useAuth();
 
@@ -39,12 +34,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         accessToken,
         mobilePhone,
         step,
-        loading,
         getPointsResData,
         setAccessToken,
         setMobilePhone,
         setStep,
-        setLoading,
         setgetPointsResData,
       }}
     >

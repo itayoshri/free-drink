@@ -3,17 +3,14 @@ import Button from "@/components/button";
 import OtpInput from "@/components/UI/OTP";
 import EditPhoneNumber from "@/components/UI/OTP/Edit";
 import { useApp } from "@/context";
+import { useAuth } from "@/context/auth";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const {
-    mobilePhone,
-    setMobilePhone,
-    setStep,
-    setgetPointsResData,
-    setLoading,
-  } = useApp();
+  const { mobilePhone, setMobilePhone, setStep, setgetPointsResData } =
+    useApp();
+  const { setLoading } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
