@@ -4,7 +4,6 @@ import RefillLayoutClient from "./RefillLayoutClient";
 export const metadata: Metadata = {
   title: "Refill Admin Panel",
   description: "Administrative section for Refill system",
-  themeColor: "#000000",
 };
 
 export default function RefillLayout({
