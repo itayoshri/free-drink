@@ -1,5 +1,6 @@
 "use client";
 import { AUTH_SERVER_URL } from "@/app/account/Form";
+import { User } from "@/interfaces/db/auth";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -12,15 +13,6 @@ type AuthContextType = {
   setLoading: (loading: boolean) => void;
   logout: () => unknown;
   rolesMap: Record<string, Record<string, string>>;
-};
-
-export type User = {
-  user_id: string;
-  phone_number: string;
-  role_key: string;
-  created_token: string;
-  upgrade_token: string;
-  //created_at: string;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

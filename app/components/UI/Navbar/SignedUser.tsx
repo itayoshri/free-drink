@@ -1,9 +1,9 @@
 "use client";
 import { Account, SupervisorAccount } from "@/components/Icons";
-import { User } from "@/context/auth";
 import AccountPopup from "./Popup";
 import { useState } from "react";
 import Link from "next/link";
+import { User } from "@/interfaces/db/auth";
 
 export default function SignedUser({ user }: { user: User }) {
   const [isPopupOpened, setPopupOpened] = useState(false);
