@@ -13,10 +13,12 @@ export default function RefillClientLayout({
   children: React.ReactNode;
 }>) {
   const { user, loading, rolesMap } = useAuth();
-  const canAccess =
-    user &&
-    rolesMap &&
-    hasPermission(user as User, "invitation.generate", rolesMap);
+  const canAccess = useMemo(() => {
+    if (loading) {
+      return false;
+    }
+    return hasPermission(user as User, "invitation.generate", rolesMap);
+  }, [loading, user, rolesMap]);
 
   return (
     <>

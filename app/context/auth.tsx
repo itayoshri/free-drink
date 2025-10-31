@@ -5,7 +5,7 @@ import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type AuthContextType = {
-  user: object | null;
+  user: User | object;
   setUser: (user: User) => void;
   isAuth: boolean;
   setIsAuth: (authed: boolean) => void;
@@ -25,8 +25,8 @@ export const AuthProvider = ({
   isAuth: boolean;
 }) => {
   const [isAuth, setIsAuth] = useState(initialValue);
-  const [user, setUserVar] = useState<User | null>(null);
-  const [loading, setLoading] = useState(!Boolean(user));
+  const [user, setUserVar] = useState<User | object>({});
+  const [loading, setLoading] = useState(true);
   const [rolesMap, setRolesMap] = useState({});
 
   const logout = async () => {
@@ -46,7 +46,7 @@ export const AuthProvider = ({
           setIsAuth(true);
           setUserVar(newUser);
         } else {
-          setUserVar(null);
+          setUserVar({});
           setIsAuth(false);
           localStorage.removeItem("user");
         }
