@@ -1,6 +1,7 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useAuth, User } from "./auth";
+import { useAuth } from "./auth";
+import { User } from "@/interfaces/db/auth";
 
 type AppContextType = {
   accessToken: string | null;
@@ -25,8 +26,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) setMobilePhone((user as User).phone_number);
-  }, [user]);
+    if (user && !mobilePhone) setMobilePhone((user as User).phone_number);
+  }, [mobilePhone, user]);
 
   return (
     <AppContext.Provider

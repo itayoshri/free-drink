@@ -4,13 +4,15 @@ import OtpInput from "@/components/UI/OTP";
 import EditPhoneNumber from "@/components/UI/OTP/Edit";
 import { useApp } from "@/context";
 import { useAuth } from "@/context/auth";
+import { User } from "@/interfaces/db/auth";
+import hasPermission from "@/utils/auth/permissions";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
   const { mobilePhone, setMobilePhone, setStep, setgetPointsResData } =
     useApp();
-  const { setLoading } = useAuth();
+  const { setLoading, user, rolesMap } = useAuth();
 
   const codeButtonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
@@ -49,6 +51,8 @@ export default function VerifyPage() {
     }
   }, [digits, mobilePhone, setLoading, setStep, setgetPointsResData]);
 
+  const amountOfCorks = hasPermission(user as User, "points.amount", rolesMap);
+
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
       const buttonRef = codeButtonRef;
@@ -81,7 +85,7 @@ export default function VerifyPage() {
           <OtpInput changeDigit={changeDigit} length={4} />
         </div>
         <Button onClick={() => getPoints()} className="">
-          קבלו 80 פקקים
+          קבלו {amountOfCorks} פקקים
         </Button>
       </div>
     </>
