@@ -14,7 +14,7 @@ export default function VerifyPage() {
     useApp();
   const { setLoading, user, rolesMap } = useAuth();
 
-  const codeButtonRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
 
   const changeDigit = useCallback((index: number, digit: number) => {
@@ -55,11 +55,8 @@ export default function VerifyPage() {
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
-      const buttonRef = codeButtonRef;
       if (event.key === "Enter") {
-        if (buttonRef.current) {
-          //buttonRef.current.click();
-        }
+        buttonRef.current?.click();
       }
     };
 
@@ -84,7 +81,7 @@ export default function VerifyPage() {
         <div className="flex flex-col items-center w-full gap-4">
           <OtpInput changeDigit={changeDigit} length={4} />
         </div>
-        <Button onClick={() => getPoints()} className="">
+        <Button onClick={() => getPoints()} className="" ref={buttonRef}>
           קבלו {amountOfCorks} פקקים
         </Button>
       </div>
