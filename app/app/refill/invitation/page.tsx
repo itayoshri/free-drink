@@ -46,7 +46,7 @@ export default function InvitationGenerator() {
   }, []);
 
   return (
-    <div className="flex flex-col w-full gap-8">
+    <div className="flex flex-col w-full gap-form-2">
       <TextBlock subTitle={TITLE} className="flex flex-col items-center" />
       <div className="flex flex-col gap-form w-full">
         <TitledComponent title="רמת משתמש">

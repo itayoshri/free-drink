@@ -36,6 +36,9 @@
   .gap-form {
     gap: var(--space-form);
   }
+  .gap-form-2 {
+    gap: calc(var(--space-form) * 2);
+  }
 }
 
 body {
