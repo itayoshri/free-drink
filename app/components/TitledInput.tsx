@@ -1,5 +1,6 @@
 import { HTMLInputTypeAttribute } from "react";
 import Input, { InputProps } from "./input";
+import TitledComponent from "./UI/Titled";
 
 interface TitledInputProps extends InputProps {
   title: string;
@@ -15,9 +16,8 @@ export default function TitledInput({
   defaultValue = "",
 }: TitledInputProps) {
   return (
-    <div className="flex flex-col gap-1">
-      <a className="text-black font-semibold">{title}</a>
+    <TitledComponent title={title}>
       <Input name={name} type={type} defaultValue={defaultValue} leftToRight />
-    </div>
+    </TitledComponent>
   );
 }
