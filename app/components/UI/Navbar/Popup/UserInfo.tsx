@@ -1,5 +1,6 @@
 import { Account } from "@/components/Icons";
-import { useAuth, User } from "@/context/auth";
+import { useAuth } from "@/context/auth";
+import { User } from "@/interfaces/db/auth";
 
 export default function PopupUserInfo({ user }: { user: User }) {
   const { rolesMap } = useAuth();
