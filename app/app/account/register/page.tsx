@@ -4,13 +4,14 @@ import SignedUpSuccesfuly from "../completed";
 import TitledInput from "@/components/TitledInput";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
-import router from "next/router";
 import { AUTH_SERVER_URL } from "../Form";
 import Button from "@/components/button";
+import { useAuth } from "@/context/auth";
 
 export default function RegisterPage() {
   const searchParams = useSearchParams();
   const phoneNumber = searchParams.get("phoneNumber") || "";
+  const { setUser } = useAuth();
 
   const [completed, setCompleted] = useState(false);
   const onSubmit = async (
@@ -19,17 +20,21 @@ export default function RegisterPage() {
     invitationToken: string
   ) => {
     try {
-      const res = await axios.post(
-        `${AUTH_SERVER_URL}/users/create`,
-        {
-          phoneNumber,
-          password,
-          invitationToken,
-        },
-        { withCredentials: true }
-      );
-      router.push("/");
-      console.log(res.data);
+      axios
+        .post(
+          `${AUTH_SERVER_URL}/users/create`,
+          {
+            phoneNumber,
+            password,
+            invitationToken,
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          const { user } = res.data.data;
+          setUser(user);
+          setCompleted(true);
+        });
     } catch (error) {}
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
