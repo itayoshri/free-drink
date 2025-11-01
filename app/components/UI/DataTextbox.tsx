@@ -27,7 +27,7 @@ export default function DataTextbox({ data }: { data: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="bg-white font-code justify-between cursor-pointer ltr dark:bg-zinc-800 text-black flex dark:text-white border border-gray-300 dark:border-zinc-500 w-full text-lg font-medium py-3 px-4 rounded-xl"
+      className="bg-white font-code justify-between cursor-pointer ltr dark:bg-zinc-700 text-black flex dark:text-white border border-gray-300 dark:border-zinc-500 w-full text-lg font-medium py-3 px-4 rounded-xl"
     >
       <span className="truncate w-full pr-4">{data}</span>
       {copied ? (
