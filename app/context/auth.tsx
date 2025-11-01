@@ -1,6 +1,7 @@
 "use client";
 import { AUTH_SERVER_URL } from "@/app/account/Form";
 import { User } from "@/interfaces/db/auth";
+import { PermissionData } from "@/utils/auth/permissions";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -12,7 +13,7 @@ type AuthContextType = {
   loading: boolean;
   setLoading: (loading: boolean) => void;
   logout: () => unknown;
-  rolesMap: Record<string, Record<string, string>>;
+  rolesMap: PermissionData;
   setUserRole: (newRole: string) => void;
 };
 

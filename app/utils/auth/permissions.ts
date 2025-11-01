@@ -1,8 +1,9 @@
 import { User } from "@/interfaces/db/auth";
 
 //TODO: refactor
-interface PermissionData {
+export interface PermissionData {
   [role: string]: {
+    displayName: string;
     permissions: {
       [section: string]: {
         [key: string]: boolean;
