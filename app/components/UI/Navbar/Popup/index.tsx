@@ -1,9 +1,9 @@
 "use client";
-import { Account, Logout } from "@/components/Icons";
-import { useAuth, User } from "@/context/auth";
-import { ReactElement } from "react";
+import { Logout } from "@/components/Icons";
+import { useAuth } from "@/context/auth";
 import PopupButton from "./Button";
 import PopupUserInfo from "./UserInfo";
+import { User } from "@/interfaces/db/auth";
 
 export default function AccountPopup({ user }: { user: User }) {
   const { logout } = useAuth();
