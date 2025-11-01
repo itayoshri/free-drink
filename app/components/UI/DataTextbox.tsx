@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Check, Copy } from "../Icons";
 
-export default function DataView({ data }: { data: string }) {
+export default function DataTextbox({ data }: { data: string }) {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
