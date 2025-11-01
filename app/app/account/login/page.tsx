@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { AUTH_SERVER_URL } from "../Form";
 import axios from "axios";
 import React, { useState } from "react";
-import LoggedInSuccesfuly from "../completed";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth";
 

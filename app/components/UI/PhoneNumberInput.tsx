@@ -6,7 +6,7 @@ interface PhoneNumberInputProps {
   buttonLabel: string;
   onSubmit: (phoneNumber: string) => void;
   disabled?: boolean;
-  changable: boolean;
+  changable?: boolean;
   defaultValue?: string;
 }
 

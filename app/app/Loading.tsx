@@ -2,7 +2,6 @@
 import LoadingSpinner from "@/components/UI/Loading";
 import Logo from "@/components/UI/Logo";
 import { useApp } from "@/context";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function LoadingPage() {

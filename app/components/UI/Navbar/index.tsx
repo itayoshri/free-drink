@@ -1,12 +1,12 @@
 "use client";
-import { useAuth, User } from "@/context/auth";
+import { useAuth } from "@/context/auth";
 import Logo from "../Logo";
 import SignedUser from "./SignedUser";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/context";
+import { User } from "@/interfaces/db/auth";
 
 export default function Navbar() {
   const { isAuth, user } = useAuth();

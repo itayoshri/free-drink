@@ -6,7 +6,6 @@ import Dropdown from "@/components/UI/Dropdown";
 import TextBlock from "@/components/UI/Text";
 import TitledComponent from "@/components/UI/Titled";
 import { useAuth } from "@/context/auth";
-import { User } from "@/interfaces/db/auth";
 import axios from "axios";
 import { useCallback, useMemo, useState } from "react";
 
