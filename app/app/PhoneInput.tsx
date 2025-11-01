@@ -4,10 +4,12 @@ import { useCallback } from "react";
 import { useApp } from "@/context";
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
 import { useAuth } from "@/context/auth";
+import hasPermission from "@/utils/auth/permissions";
+import { User } from "@/interfaces/db/auth";
 
 export default function PhoneInputPage() {
   const { mobilePhone, setMobilePhone, setStep } = useApp();
-  const { setLoading } = useAuth();
+  const { setLoading, user, rolesMap } = useAuth();
   const sendVerificationCode = useCallback(
     (phoneNumber: string) => {
       if (phoneNumber) {
@@ -26,6 +28,12 @@ export default function PhoneInputPage() {
     [setLoading, setMobilePhone, setStep]
   );
 
+  const changablePhoneNumber = hasPermission(
+    user as User,
+    "points.otherPhoneNumber",
+    rolesMap
+  );
+
   return (
     <div className="flex flex-col w-full gap-8">
       <h1 className="text-5xl text-black font-bold">
@@ -36,6 +44,7 @@ export default function PhoneInputPage() {
         placeholder="מספר טלפון"
         buttonLabel="הבא"
         defaultValue={mobilePhone as string}
+        changable={changablePhoneNumber}
       />
     </div>
   );
