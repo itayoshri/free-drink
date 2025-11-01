@@ -1,7 +1,7 @@
 "use client";
 import { AUTH_SERVER_URL } from "@/app/account/Form";
 import Button from "@/components/button";
-import DataTextbox from "@/components/UI/DataView";
+import DataTextbox from "@/components/UI/DataTextbox";
 import Dropdown from "@/components/UI/Dropdown";
 import TextBlock from "@/components/UI/Text";
 import TitledComponent from "@/components/UI/Titled";
