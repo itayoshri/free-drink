@@ -45,7 +45,7 @@ jobs:
             docker pull $DOCKER_REPO:$IMAGE_TAG
             docker stop freed >/dev/null 2>&1 || true
             docker rm freed >/dev/null 2>&1 || true
-            docker run -d --name freed -p 80:3000 \
+            docker run -d --name freed -p 3000:3000 \
               -e DB_USERNAME="${DB_USERNAME}" \
               -e DB_PASSWORD="${DB_PASSWORD}" \
               $DOCKER_REPO:$IMAGE_TAG
