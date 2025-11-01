@@ -13,6 +13,7 @@ type AuthContextType = {
   setLoading: (loading: boolean) => void;
   logout: () => unknown;
   rolesMap: Record<string, Record<string, string>>;
+  setUserRole: (newRole: string) => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -54,6 +55,13 @@ export const AuthProvider = ({
     } catch {}
   };
 
+  const setUserRole = (newRole: string) => {
+    if (user) {
+      const { role_key, ...noRoleUser } = user;
+      setUser({ ...noRoleUser, role_key: newRole });
+    }
+  };
+
   useEffect(() => {
     if (!isAuth) setUser();
     const localStorageUser = localStorage.getItem("user");
@@ -80,6 +88,7 @@ export const AuthProvider = ({
         setLoading,
         logout,
         rolesMap,
+        setUserRole,
       }}
     >
       {children}
