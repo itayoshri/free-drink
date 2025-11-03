@@ -6,13 +6,13 @@ import { NextRequest } from "next/server";
 export interface PermissionData {
   [role: string]: {
     displayName: string;
-    permissions: {
-      [section: string]: {
-        [key: string]: boolean;
-      };
-    };
+    permissions: Permissions;
   };
 }
+
+type Permissions = {
+  [section: string]: any;
+};
 
 interface JWTPayload {
   sub: string;
