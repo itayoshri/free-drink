@@ -10,6 +10,7 @@ jobs:
     with:
       branch: feature/client_auth
       docker_repo: ${{ vars.DOCKER_REPO }}
+      service: app
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
