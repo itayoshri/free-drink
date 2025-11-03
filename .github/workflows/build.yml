@@ -9,6 +9,9 @@ on:
       docker_repo:
         required: true
         type: string
+      service:
+        required: true
+        type: string
       image_tag:
         required: false
         default: latest
@@ -29,23 +32,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ env.BRANCH }}
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
         run: |
-          cd app
-          docker build -t $DOCKER_REPO:$GITHUB_SHA .
-          docker tag $DOCKER_REPO:$GITHUB_SHA $DOCKER_REPO:$IMAGE_TAG
+          cd $SERVICE
+          docker build -t $DOCKER_REPO:$SERVICE-$GITHUB_SHA .
+          docker tag $DOCKER_REPO:$SERVICE-$GITHUB_SHA $DOCKER_REPO:$SERVICE-$IMAGE_TAG
 
       - name: Push Docker image
         run: |
-          docker push $DOCKER_REPO:$GITHUB_SHA
-          docker push $DOCKER_REPO:$IMAGE_TAG
+          docker push $DOCKER_REPO:$SERVICE-$GITHUB_SHA
+          docker push $DOCKER_REPO:$SERVICE-$IMAGE_TAG
