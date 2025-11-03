@@ -23,11 +23,13 @@ export async function POST(request: NextRequest) {
   const { role: role_key, phone_number } = getUserPermissions(
     accesToken as string
   );
-  const { amount, otherPhoneNumber } = hasPermission(
-    { role_key },
-    "points",
-    permissions
-  );
+  const { amount, otherPhoneNumber } = hasPermission<{
+    amount: number;
+    otherPhoneNumber: boolean;
+  }>({ role_key }, "points", permissions) as {
+    amount: number;
+    otherPhoneNumber: boolean;
+  };
   const targetNumberOfCorks = amount;
 
   if (!otherPhoneNumber && phone_number != mobilePhone)

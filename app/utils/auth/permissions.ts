@@ -3,15 +3,14 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 import { NextRequest } from "next/server";
 //TODO: refactor
-export interface PermissionData {
+type PermissionData = {
   [role: string]: {
-    displayName: string;
-    permissions: Permissions;
+    permissions: {
+      [section: string]: {
+        [key: string]: string | number | boolean;
+      };
+    };
   };
-}
-
-type Permissions = {
-  [section: string]: any;
 };
 
 interface JWTPayload {
@@ -20,11 +19,17 @@ interface JWTPayload {
   role: string;
 }
 
-export default function hasPermission(
+type PermissionsObject =
+  | Record<string, string | number | boolean>
+  | string
+  | number
+  | boolean;
+
+export default function hasPermission<T = PermissionsObject>(
   user: User | { role_key: string },
   permissionPath: string,
   permissionsData: PermissionData
-) {
+): T | undefined {
   const role = user ? user.role_key : "guest";
 
   const parts = permissionPath.split(".");
@@ -36,9 +41,9 @@ export default function hasPermission(
   if (!rolePermissions) return undefined;
 
   if (key) {
-    return rolePermissions[section]?.[key];
+    return rolePermissions[section]?.[key] as T;
   } else {
-    return rolePermissions[section];
+    return rolePermissions[section] as T;
   }
 }
 
