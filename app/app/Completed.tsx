@@ -19,6 +19,8 @@ export default function CompletedPage() {
       ? Action.TWO_QUESTIONS_OR_MORE
       : userCorks >= 70
       ? Action.ONE_QUESTION
+      : getPointsResData.points == 60
+      ? Action.RESET_ACCOUNT
       : Action.FAILED;
 
   return (

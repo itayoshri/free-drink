@@ -29,6 +29,12 @@ export default function VerifyPage() {
     setStep("phoneNumber");
   }, [setMobilePhone, setStep]);
 
+  const amountOfCorks = hasPermission<number>(
+    user as User,
+    "points.amount",
+    rolesMap
+  );
+
   const getPoints = useCallback(async () => {
     const startTime = performance.now();
     setLoading(true);
@@ -42,16 +48,21 @@ export default function VerifyPage() {
           const endTime = performance.now();
           const duration = ((endTime - startTime) / 1000).toFixed(2);
           setStep("completed");
-          setgetPointsResData({ ...res.data, duration });
+          setgetPointsResData({ ...res.data, duration, points: amountOfCorks });
         });
     } catch {
       // TODO: add toast error
     } finally {
       setLoading(false);
     }
-  }, [digits, mobilePhone, setLoading, setStep, setgetPointsResData]);
-
-  const amountOfCorks = hasPermission(user as User, "points.amount", rolesMap);
+  }, [
+    amountOfCorks,
+    digits,
+    mobilePhone,
+    setLoading,
+    setStep,
+    setgetPointsResData,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = (event: { key: string }) => {
