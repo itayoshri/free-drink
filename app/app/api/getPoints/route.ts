@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   );
   const targetNumberOfCorks = amount;
 
-  if (!otherPhoneNumber && phone_number == mobilePhone)
+  if (!otherPhoneNumber && phone_number != mobilePhone)
     return NextResponse.json(
       {
         success: false,
