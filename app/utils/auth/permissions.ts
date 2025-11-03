@@ -71,7 +71,7 @@ export function getUserPermissions(token: string): JWTPayload {
     });
     return payload as JWTPayload;
   } catch {
-    return {} as JWTPayload;
+    return { role: "guest" } as JWTPayload;
   }
 }
 
