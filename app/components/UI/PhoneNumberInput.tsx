@@ -35,7 +35,7 @@ export default function PhoneNumberInput({
         name="phone"
         type="tel"
         defaultValue={defaultValue}
-        disabled={!changable}
+        disabled={!changable || disabled}
       />
       <Button type="submit" className="bg-gray-400" disabled={disabled}>
         {buttonLabel}
