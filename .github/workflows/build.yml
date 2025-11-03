@@ -29,6 +29,7 @@ jobs:
       IMAGE_TAG: ${{ inputs.image_tag }}
       GITHUB_SHA: ${{ github.sha }}
       BRANCH: ${{ inputs.branch }}
+      SERVICE: ${{ inputs.service }}
 
     steps:
       - name: Checkout code
