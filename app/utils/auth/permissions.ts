@@ -10,6 +10,7 @@ export type PermissionData = {
         [key: string]: string | number | boolean;
       };
     };
+    displayName: string;
   };
 };
 
