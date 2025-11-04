@@ -3,7 +3,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 import { NextRequest } from "next/server";
 //TODO: refactor
-type PermissionData = {
+export type PermissionData = {
   [role: string]: {
     permissions: {
       [section: string]: {
