@@ -28,7 +28,7 @@ export default function PhoneInputPage() {
     [setLoading, setMobilePhone, setStep]
   );
 
-  const changablePhoneNumber = hasPermission(
+  const changablePhoneNumber = hasPermission<boolean>(
     user as User,
     "points.otherPhoneNumber",
     rolesMap
