@@ -8,6 +8,10 @@ on:
         required: false
         default: latest
         type: string
+      service:
+        required: false
+        type: string
+        default: app
     secrets:
       SERVER_IP:
         required: true
@@ -27,6 +31,7 @@ jobs:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       DOCKER_REPO: ${{ inputs.docker_repo }}
       IMAGE_TAG: ${{ inputs.image_tag }}
+      SERVICE: ${{ inputs.service }}
     steps:
       - name: Set up SSH
         run: |
@@ -42,11 +47,11 @@ jobs:
         run: |
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
-            docker pull $DOCKER_REPO:$IMAGE_TAG
-            docker stop freed >/dev/null 2>&1 || true
-            docker rm freed >/dev/null 2>&1 || true
-            docker run -d --name freed -p 3000:3000 \
+            docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
+            docker stop freed-$SERVICE >/dev/null 2>&1 || true
+            docker rm freed-$SERVICE >/dev/null 2>&1 || true
+            docker run -d --name freed-$SERVICE -p 3000:3000 \
               -e DB_USERNAME="${DB_USERNAME}" \
               -e DB_PASSWORD="${DB_PASSWORD}" \
-              $DOCKER_REPO:$IMAGE_TAG
+              $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
