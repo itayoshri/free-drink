@@ -27,13 +27,13 @@ on:
         required: true
       DATABASE_NAME:
         required: true
-      PRIVATE_KEY:
-        required: true
-      PUBLIC_KEY:
-        required: true
       JWT_REFRESH_TOKEN_EXPIRATION_MS:
         required: true
       JWT_ACCESS_TOKEN_EXPIRATION_MS:
+        required: true
+      JWT_PUBLIC_KEY:
+        required: true
+      JWT_PRIVATE_KEY:
         required: true
 
 jobs:
@@ -61,10 +61,10 @@ jobs:
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
           DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
           JWT_REFRESH_TOKEN_EXPIRATION_MS: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRATION_MS }}
           JWT_ACCESS_TOKEN_EXPIRATION_MS: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRATION_MS }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
         run: |
           ssh itayo@$SERVER_IP <<'EOF'
             sudo docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
@@ -76,8 +76,8 @@ jobs:
               -e DATABASE_NAME="${DATABASE_NAME}" \
               -e DATABASE_USER="${DATABASE_USER}" \
               -e DATABASE_PASSWORD="${DATABASE_PASSWORD}" \
-              -e PRIVATE_KEY="${PRIVATE_KEY}" \
-              -e PUBLIC_KEY="${PUBLIC_KEY}" \
+              -e PRIVATE_KEY="${JWT_PRIVATE_KEY}" \
+              -e PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
               -e JWT_REFRESH_TOKEN_EXPIRATION_MS="${JWT_REFRESH_TOKEN_EXPIRATION_MS}" \
               -e JWT_ACCESS_TOKEN_EXPIRATION_MS="${JWT_ACCESS_TOKEN_EXPIRATION_MS}" \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
