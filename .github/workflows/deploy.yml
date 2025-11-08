@@ -32,6 +32,7 @@ jobs:
       DOCKER_REPO: ${{ inputs.docker_repo }}
       IMAGE_TAG: ${{ inputs.image_tag }}
       SERVICE: ${{ inputs.service }}
+      JWT_PUBLIC_KEY: ${{ inputs.JWT_PUBLIC_KEY }}
     steps:
       - name: Set up SSH
         run: |
@@ -53,5 +54,6 @@ jobs:
             docker run -d --name freed-$SERVICE -p 3000:3000 \
               -e DB_USERNAME="${DB_USERNAME}" \
               -e DB_PASSWORD="${DB_PASSWORD}" \
+              -e JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
