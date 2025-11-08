@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL || "";
 
 export default async function middleware(req: NextRequest) {
   const accessToken = req.cookies.get("access_token");

@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 
 const TITLE = "התחברו או צרו משתמש";
 const SUBTITLE = "עם משתמש רשום ניתן לקבל 80 פקיים ויותר";
-export const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+export const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL || "";
 
 export default function AccountForm() {
   const router = useRouter();

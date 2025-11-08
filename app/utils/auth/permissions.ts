@@ -48,7 +48,7 @@ export default function hasPermission<T = PermissionsObject>(
   }
 }
 
-const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL;
+const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL || "";
 let cachedPermissions: PermissionData = {};
 let lastFetched = 0;
 const CACHE_TTL = 1000 * 60 * 30;
