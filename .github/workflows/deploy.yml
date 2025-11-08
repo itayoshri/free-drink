@@ -21,6 +21,8 @@ on:
         required: true
       DB_PASSWORD:
         required: true
+      JWT_PUBLIC_KEY:
+        required: true
 
 jobs:
   deploy:
