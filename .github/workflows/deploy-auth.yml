@@ -66,7 +66,7 @@ jobs:
           JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
         run: |
-          ssh itayo@$SERVER_IP <<'EOF'
+          ssh itayo@$SERVER_IP <<EOF
             sudo docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
             sudo docker stop freed-$SERVICE >/dev/null 2>&1 || true
             sudo docker rm freed-$SERVICE >/dev/null 2>&1 || true
