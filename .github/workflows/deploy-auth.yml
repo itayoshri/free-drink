@@ -72,7 +72,7 @@ jobs:
             sudo docker rm freed-$SERVICE >/dev/null 2>&1 || true
             sudo docker run -d --name freed-$SERVICE -p 3002:3002 \
               -e DATABASE_HOST="${DATABASE_HOST}" \
-              -e DATABASE_PORT="${DATABASE_PORT}" \
+              -e DATABASE_PORT="${DATABASE_PORT:-5432}" \
               -e DATABASE_NAME="${DATABASE_NAME}" \
               -e DATABASE_USER="${DATABASE_USER}" \
               -e DATABASE_PASSWORD="${DATABASE_PASSWORD}" \
