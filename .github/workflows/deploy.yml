@@ -12,6 +12,9 @@ on:
         required: false
         type: string
         default: app
+      app_url:
+        type: string
+        default: https://itayoshri.com
     secrets:
       SERVER_IP:
         required: true
@@ -23,7 +26,6 @@ on:
         required: true
       JWT_PUBLIC_KEY:
         required: true
-
 jobs:
   deploy:
     name: Pull Docker image on the app server and run it
@@ -34,7 +36,8 @@ jobs:
       DOCKER_REPO: ${{ inputs.docker_repo }}
       IMAGE_TAG: ${{ inputs.image_tag }}
       SERVICE: ${{ inputs.service }}
-      JWT_PUBLIC_KEY: ${{ inputs.JWT_PUBLIC_KEY }}
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      NEXT_PUBLIC_AUTH_SERVER_URL: ${{ inputs.app_url }}
     steps:
       - name: Set up SSH
         run: |
@@ -56,6 +59,7 @@ jobs:
             docker run -d --name freed-$SERVICE -p 3000:3000 \
               -e DB_USERNAME="${DB_USERNAME}" \
               -e DB_PASSWORD="${DB_PASSWORD}" \
+              -e NEXT_PUBLIC_AUTH_SERVER_URL="${NEXT_PUBLIC_AUTH_SERVER_URL}" \
               -e JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
