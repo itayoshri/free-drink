@@ -12,6 +12,10 @@ on:
         type: string
         required: false
         default: app
+      service_port:
+        type: number
+        required: false
+        default: 3000
       app_url:
         type: string
         required: false
@@ -59,7 +63,7 @@ jobs:
       DOCKER_REPO: ${{ inputs.docker_repo }}
       IMAGE_TAG: ${{ inputs.image_tag }}
       SERVICE: ${{ inputs.service }}
-      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      SERVICE_PORT: ${{ inputs.service_port }}
       NEXT_PUBLIC_AUTH_SERVER_URL: ${{ inputs.app_url }}
     steps:
       - name: Set up SSH
@@ -91,10 +95,13 @@ jobs:
               EXTRA_ENV="$EXTRA_ENV -e DB_HOST=\"${DB_HOST}\""
             fi
 
-            docker run -d --name freed-$SERVICE -p 3000:3000 \
+            if [ "$SERVICE" = "app" ]; then
+              EXTRA_ENV="$EXTRA_ENV -e NEXT_PUBLIC_AUTH_SERVER_URL=\"${NEXT_PUBLIC_AUTH_SERVER_URL}\""
+            fi
+
+            docker run -d --name freed-$SERVICE -p $SERVICE_PORT:3000 \
               -e DB_USERNAME="${DB_USERNAME}" \
               -e DB_PASSWORD="${DB_PASSWORD}" \
-              -e NEXT_PUBLIC_AUTH_SERVER_URL="${NEXT_PUBLIC_AUTH_SERVER_URL}" \
               -e JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
               $EXTRA_ENV \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
