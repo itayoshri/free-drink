@@ -1,18 +1,19 @@
 import { BoolString, ReqQuestionData } from "@/interfaces/api/requests";
-import { fetchDataSource } from "../datasource";
+import { apiAction, apiNamespace, fetchDataSource } from "../datasource";
 import crypto from "crypto";
 
 const SECRET = process.env.SECRET;
 
 export default function AnswerQuestion(
+  reqRoute: [apiNamespace, apiAction],
   data: object,
   isLastQuestion: BoolString,
   token: string
 ) {
   return fetchDataSource({
     method: "POST",
-    namespace: "questionnaire",
-    action: "answer",
+    namespace: reqRoute[0],
+    action: reqRoute[1],
     token,
     data: {
       ...data,

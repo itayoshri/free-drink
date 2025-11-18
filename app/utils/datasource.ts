@@ -2,14 +2,14 @@ import axios, { Method } from "axios";
 
 const BASE_URL = "https://cocacola-app.co.il/api";
 
-type apiNamespace =
+export type apiNamespace =
   | "account"
   | "locations"
   | "content"
   | "questionnaire"
   | "hotspot"
   | "homePage";
-type apiAction =
+export type apiAction =
   | "getUserInfo"
   | "register"
   | "getBranchesByLocation"
