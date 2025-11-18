@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "./auth/**"
   workflow_dispatch:
 
 jobs:
@@ -19,15 +21,16 @@ jobs:
     needs: build-and-push
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
+      service: auth
+      service_port: 3002
+      jwt_access_token_expiration_ms: ${{ vars.JWT_ACCESS_TOKEN_EXPIRATION_MS }}
+      jwt_refresh_token_expiration_ms: ${{ vars.JWT_REFRESH_TOKEN_EXPIRATION_MS }}
+
     secrets:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       DB_USERNAME: ${{ secrets.AUTH_DATABASE_USER }}
       DB_PASSWORD: ${{ secrets.AUTH_DATABASE_PASSWORD }}
-      DATABASE_HOST: ${{ secrets.AUTH_DATABASE_HOST }}
-      DATABASE_PORT: ${{ secrets.AUTH_DATABASE_PORT }}
-      DATABASE_NAME: ${{ secrets.AUTH_DATABASE_NAME }}
+      DB_HOST: ${{ secrets.AUTH_DATABASE_HOST }}
       JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-      JWT_PUBLIC_KEY: ${{ vars.JWT_PUBLIC_KEY }}
-      JWT_REFRESH_TOKEN_EXPIRATION_MS: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRATION_MS }}
-      JWT_ACCESS_TOKEN_EXPIRATION_MS: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRATION_MS }}
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}

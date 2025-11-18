@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "./app/**"
   workflow_dispatch:
 
 jobs:
@@ -10,6 +12,7 @@ jobs:
     with:
       branch: main
       docker_repo: ${{ vars.DOCKER_REPO }}
+      username: ${{ vars.DOCKER_USERNAME }}
       service: app
     secrets:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -19,9 +22,12 @@ jobs:
     needs: build-and-push
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
+      service: app
+      service_port: 3000
+      app_url: https://itayoshri.com
     secrets:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      JWT_PUBLIC_KEY: ${{ vars.JWT_PUBLIC_KEY }}
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
