@@ -8,7 +8,7 @@ jobs:
   build-and-push:
     uses: ./.github/workflows/build.yml
     with:
-      branch: feature/client_auth
+      branch: main
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: app
     secrets:
