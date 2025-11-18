@@ -6,6 +6,7 @@ import Link from "next/link";
 import { User } from "@/interfaces/db/auth";
 import hasPermission from "@/utils/auth/permissions";
 import { useAuth } from "@/context/auth";
+import NavbarIcon from "./Icon";
 
 export default function SignedUser({ user }: { user: User }) {
   const [isPopupOpened, setPopupOpened] = useState(false);
@@ -18,13 +19,12 @@ export default function SignedUser({ user }: { user: User }) {
 
   return (
     <div className="flex gap-3">
-      <button onClick={() => setPopupOpened((current) => !current)}>
-        <Account width={28} />
-      </button>
+      <NavbarIcon
+        icon="Account"
+        onClick={() => setPopupOpened((current) => !current)}
+      />
       {canAccessRefill && (
-        <Link href={"/refill"}>
-          <SupervisorAccount width={28} />
-        </Link>
+        <NavbarIcon icon="SupervisorAccount" route="/refill" />
       )}
       {isPopupOpened ? <AccountPopup user={user} /> : null}
     </div>
