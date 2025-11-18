@@ -22,10 +22,10 @@ on:
         default: https://itayoshri.com
       jwt_access_token_expiration_ms:
         required: false
-        type: number
+        type: string
       jwt_refresh_token_expiration_ms:
         required: false
-        type: number
+        type: string
       db_port:
         required: false
         type: number
