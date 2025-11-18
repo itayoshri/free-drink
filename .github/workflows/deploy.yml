@@ -6,15 +6,38 @@ on:
         type: string
       image_tag:
         required: false
-        default: latest
         type: string
+        default: latest
       service:
         required: false
         type: string
         default: app
+      service_port:
+        required: false
+        type: number
+        default: 3000
       app_url:
+        required: false
         type: string
         default: https://itayoshri.com
+      jwt_access_token_expiration_ms:
+        required: false
+        type: number
+      jwt_refresh_token_expiration_ms:
+        required: false
+        type: number
+      db_port:
+        required: false
+        type: number
+        default: 5432
+      db_user:
+        required: false
+        type: string
+        default: postgres
+      db_name:
+        required: false
+        type: string
+        default: postgres
     secrets:
       SERVER_IP:
         required: true
@@ -26,20 +49,26 @@ on:
         required: true
       JWT_PUBLIC_KEY:
         required: true
+      # auth service specific
+      JWT_PRIVATE_KEY:
+        required: false
+      DB_HOST:
+        required: false
 jobs:
   deploy:
     name: Pull Docker image on the app server and run it
     runs-on: ubuntu-latest
     env:
-      PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       SERVER_IP: ${{ secrets.SERVER_IP }}
       DOCKER_REPO: ${{ inputs.docker_repo }}
       IMAGE_TAG: ${{ inputs.image_tag }}
       SERVICE: ${{ inputs.service }}
-      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      SERVICE_PORT: ${{ inputs.service_port }}
       NEXT_PUBLIC_AUTH_SERVER_URL: ${{ inputs.app_url }}
     steps:
       - name: Set up SSH
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
           echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -50,16 +79,30 @@ jobs:
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          DB_HOST: ${{ secrets.DB_HOST }}
         run: |
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
             docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
             docker stop freed-$SERVICE >/dev/null 2>&1 || true
             docker rm freed-$SERVICE >/dev/null 2>&1 || true
-            docker run -d --name freed-$SERVICE -p 3000:3000 \
+            EXTRA_ENV=""
+
+            if [ "$SERVICE" = "auth" ]; then
+              EXTRA_ENV="$EXTRA_ENV -e JWT_PRIVATE_KEY=\"${JWT_PRIVATE_KEY}\""
+              EXTRA_ENV="$EXTRA_ENV -e DB_HOST=\"${DB_HOST}\""
+            fi
+
+            if [ "$SERVICE" = "app" ]; then
+              EXTRA_ENV="$EXTRA_ENV -e NEXT_PUBLIC_AUTH_SERVER_URL=\"${NEXT_PUBLIC_AUTH_SERVER_URL}\""
+            fi
+
+            docker run -d --name freed-$SERVICE -p $SERVICE_PORT:3000 \
               -e DB_USERNAME="${DB_USERNAME}" \
               -e DB_PASSWORD="${DB_PASSWORD}" \
-              -e NEXT_PUBLIC_AUTH_SERVER_URL="${NEXT_PUBLIC_AUTH_SERVER_URL}" \
               -e JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
+              $EXTRA_ENV \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
