@@ -1,4 +1,4 @@
-import { Db, OptionalId } from "mongodb";
+import { Db, OptionalId, WithId } from "mongodb";
 import GetDB from ".";
 import { DBAnswer, DBContent } from "@/interfaces/db";
 
@@ -19,7 +19,7 @@ export async function GetContentsFromDB(contentIds: number[], db: Db) {
  * @returns Array of answers from DB
  */
 export async function GetAnswersFromDB(contentIds: number[], db: Db) {
-  const questions = db.collection<DBAnswer>("questions");
+  const questions = db.collection<DBAnswer>("answers");
   return await questions.find({ contentId: { $in: contentIds } }).toArray();
 }
 
@@ -34,6 +34,22 @@ export async function GetAnswersFromDBByField(
   }[],
   db: Db
 ) {
-  const questions = db.collection<DBAnswer>("questions");
+  const questions = db.collection<DBAnswer>("answers");
   return await questions.find({ $or: fieldsMap }).toArray();
+}
+
+export async function UpdateAnswersWithContentId(
+  answers: WithId<DBAnswer>[],
+  db: Db
+) {
+  const questions = db.collection<DBAnswer>("answers");
+  const operations = answers.map((answer) => ({
+    updateOne: {
+      filter: { _id: answer._id }, // which doc in DB to update
+      update: { $set: answer }, // what to update
+      upsert: false, // don't insert new if not found
+    },
+  }));
+
+  await questions.bulkWrite(operations);
 }

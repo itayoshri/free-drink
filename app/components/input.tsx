@@ -1,24 +1,34 @@
-import { ChangeEvent } from "react";
+import { HTMLInputTypeAttribute } from "react";
 
-type InputProps = {
-  onChange(newValue: ChangeEvent<HTMLInputElement>): unknown;
-  placeholder: string;
+export type InputProps = {
+  placeholder?: string;
+  defaultValue?: string;
   className?: string;
-  type?: string;
+  type?: HTMLInputTypeAttribute;
+  name?: string;
+  leftToRight?: boolean;
+  disabled?: boolean;
 };
 
 export default function Input({
-  onChange,
-  placeholder,
+  placeholder = "",
+  defaultValue = "",
   type = "text",
   className = "",
+  name = "",
+  leftToRight = false,
+  disabled = false,
 }: InputProps) {
   return (
     <input
-      onChange={(newValue) => onChange(newValue)}
       type={type}
+      name={name}
       placeholder={placeholder}
-      className={`text-black border-[1px] border-gray-300 w-full text-xl font-medium outline-red-600 py-3 px-4 rounded-xl ${className}`}
+      defaultValue={defaultValue}
+      readOnly={disabled}
+      className={`text-black border-[1px] border-gray-300 w-full text-xl font-medium outline-primary py-3 px-4 rounded-xl ${className} ${
+        leftToRight ? "ltr" : ""
+      } ${disabled && "opacity-60 bg-gray-200"}`}
     />
   );
 }

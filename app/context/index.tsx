@@ -1,30 +1,54 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./auth";
+import { User } from "@/interfaces/db/auth";
 
-type AuthContextType = {
+type AppContextType = {
   accessToken: string | null;
   mobilePhone: string | null;
+  step: Step;
+  getPointsResData: Record<string, unknown>;
   setAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
+  setStep: (step: Step) => void;
+  setgetPointsResData: (data: Record<string, unknown>) => void;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+type Step = "phoneNumber" | "verificationCode" | "loading" | "completed";
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [mobilePhone, setMobilePhone] = useState<string | null>(null);
+  const [step, setStep] = useState<Step>("phoneNumber");
+  const [getPointsResData, setgetPointsResData] = useState({});
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user && !mobilePhone) setMobilePhone((user as User).phone_number);
+  }, [mobilePhone, user]);
 
   return (
-    <AuthContext.Provider
-      value={{ accessToken, mobilePhone, setAccessToken, setMobilePhone }}
+    <AppContext.Provider
+      value={{
+        accessToken,
+        mobilePhone,
+        step,
+        getPointsResData,
+        setAccessToken,
+        setMobilePhone,
+        setStep,
+        setgetPointsResData,
+      }}
     >
       {children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
+export const useApp = () => {
+  const context = useContext(AppContext);
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
