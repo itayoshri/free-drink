@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          data: { userCorks, accessToken },
+          data: { corks: userCorks, accessToken },
           message: "user already has enough corks",
         },
         { status: 200 }
