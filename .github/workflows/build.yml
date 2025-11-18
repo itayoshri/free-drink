@@ -4,8 +4,9 @@ on:
   workflow_call:
     inputs:
       branch:
-        required: true
+        required: false
         type: string
+        default: main
       docker_repo:
         required: true
         type: string
