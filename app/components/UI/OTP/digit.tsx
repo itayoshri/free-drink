@@ -24,18 +24,16 @@ export default function Digit({ setValue }: DigitProps) {
           }
         }
       }}
-      onKeyDown={(e) => {
+      onKeyUp={(e) => {
         const target = e.target as HTMLInputElement;
         const key = e.key.toLowerCase();
 
         if (key == "backspace" || key == "delete") {
-          if (target.value == "") {
-            const prev = target.nextElementSibling as HTMLInputElement;
-            if (prev) {
-              prev.focus();
-              prev.value = "";
-            }
-          } else target.value = "";
+          target.value = "";
+          const prev = target.nextElementSibling as HTMLInputElement;
+          if (prev) {
+            prev.focus();
+          }
           return;
         }
       }}

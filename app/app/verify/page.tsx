@@ -7,7 +7,7 @@ import { useAuth } from "@/context/auth";
 import { User } from "@/interfaces/db/auth";
 import hasPermission from "@/utils/auth/permissions";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
   const { mobilePhone, setMobilePhone, setStep, setgetPointsResData } =
@@ -16,6 +16,7 @@ export default function VerifyPage() {
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);
+  const [showConfetti, setConfetti] = useState(false);
 
   const changeDigit = useCallback((index: number, digit: number) => {
     setDigits((arr) => {
@@ -96,6 +97,7 @@ export default function VerifyPage() {
           קבלו {amountOfCorks} פקקים
         </Button>
       </div>
+      {showConfetti ? <ScreenConfetti /> : null}
     </>
   );
 }
