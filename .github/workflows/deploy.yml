@@ -2,41 +2,41 @@ on:
   workflow_call:
     inputs:
       docker_repo:
-        type: string
         required: true
-      image_tag:
         type: string
+      image_tag:
         required: false
+        type: string
         default: latest
       service:
-        type: string
         required: false
+        type: string
         default: app
       service_port:
-        type: number
         required: false
+        type: number
         default: 3000
       app_url:
-        type: string
         required: false
+        type: string
         default: https://itayoshri.com
       jwt_access_token_expiration_ms:
-        type: number
         required: false
+        type: number
       jwt_refresh_token_expiration_ms:
-        type: number
         required: false
+        type: number
       db_port:
-        type: number
         required: false
+        type: number
         default: 5432
       db_user:
-        type: string
         required: false
+        type: string
         default: postgres
       db_name:
-        type: string
         required: false
+        type: string
         default: postgres
     secrets:
       SERVER_IP:
