@@ -22,14 +22,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({
   children,
   isAuth: initialValue,
+  rolesMap,
 }: {
   children: React.ReactNode;
   isAuth: boolean;
+  rolesMap: PermissionData;
 }) => {
   const [isAuth, setIsAuth] = useState(initialValue);
   const [user, setUserVar] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [rolesMap, setRolesMap] = useState({});
 
   const logout = async () => {
     await axios.post(
@@ -67,15 +68,7 @@ export const AuthProvider = ({
     if (!isAuth) setUser();
     const localStorageUser = localStorage.getItem("user");
     if (localStorageUser) setUserVar(JSON.parse(localStorageUser as string));
-
-    axios
-      .get(`${AUTH_SERVER_URL}/invitation/roles`)
-      .then((res) => {
-        setRolesMap(res.data.data.roles);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setLoading(false);
   }, [isAuth]);
 
   return (
