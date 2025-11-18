@@ -13,8 +13,9 @@ jobs:
       branch: feature/client_auth
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: auth
+      username: ${{ vars.DOCKER_USERNAME }}
     secrets:
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      password: ${{ secrets.DOCKER_PASSWORD }}
 
   deploy:
     uses: ./.github/workflows/deploy.yml
