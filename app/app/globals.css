@@ -2,32 +2,49 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
 @import "tailwindcss";
+@custom-variant dark (:has(.refill-route) &);
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* Override CSS variables for refill routes */
+:root:has(.refill-route) {
+  --background: #18181b;
+  --foreground: #ffffff;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-primary: var(--color-red-600);
+  --color-primary-500: var(--color-red-500);
+  --space-page: 1.5rem;
+  --space-form: 1rem;
+  --font-sans: "Assistant", sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-inter: "Inter", sans-serif;
   --font-code: "Source Code Pro", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .px-page {
+    padding-left: var(--space-page);
+    padding-right: var(--space-page);
+  }
+  .gap-form {
+    gap: var(--space-form);
+  }
+  .gap-form-2 {
+    gap: calc(var(--space-form) * 2);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Assistant", sans-serif;
+  font-family: var(--font-sans);
 }
 
 @layer base {

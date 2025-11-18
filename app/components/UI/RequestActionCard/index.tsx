@@ -4,6 +4,7 @@ export enum Action {
   FAILED = 0,
   ONE_QUESTION = 1,
   TWO_QUESTIONS_OR_MORE = 2,
+  RESET_ACCOUNT = 3,
 }
 
 type RequestAction = {
@@ -17,6 +18,10 @@ export const actionInfo = [
   {
     action: "פתירת שתי חידות או יותר",
     message: "הפעולה הושלמה בהצלחה!",
+  },
+  {
+    action: "איפוס חשבון",
+    message: "החשבון אופס בהצלחה!",
   },
 ];
 

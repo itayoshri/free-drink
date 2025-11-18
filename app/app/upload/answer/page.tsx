@@ -22,7 +22,7 @@ export default function UploadAnswersPage() {
       <textarea
         onChange={(e) => setAnswer(e.target.value)}
         value={answer}
-        className="text-black font-code ltr text-left h-full border-[1px] border-gray-300 w-full font-medium outline-red-600 py-3 px-4 rounded-xl"
+        className="text-black !font-code ltr text-left h-full border-[1px] border-gray-300 w-full font-medium outline-primary py-3 px-4 rounded-xl"
       ></textarea>
       <Button onClick={() => uploadAnswer(answer)} ref={ref}>
         העלאת תשובה

@@ -1,66 +1,51 @@
 "use client";
-import Button from "@/components/button";
-import Input from "@/components/input";
 import axios from "axios";
-import { useCallback, useEffect, useRef } from "react";
-import { useAuth } from "@/context";
+import { useCallback } from "react";
+import { useApp } from "@/context";
+import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
+import { useAuth } from "@/context/auth";
+import hasPermission from "@/utils/auth/permissions";
+import { User } from "@/interfaces/db/auth";
 
 export default function PhoneInputPage() {
-  const phoneButtonRef = useRef<HTMLButtonElement>(null);
-  const { setMobilePhone, mobilePhone, setStep, setLoading } = useAuth();
-  const sendVerificationCode = useCallback(() => {
-    if (mobilePhone) {
-      setLoading(true);
-      axios
-        .get(`/api/sendVerificationCode?mobilePhone=${mobilePhone}`)
-        .then((res) => {
-          setLoading(false);
-          if (res.status == 200) {
-            setStep("verificationCode");
-          }
-        });
-    }
-  }, [mobilePhone, setLoading, setStep]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: { key: string }) => {
-      const buttonRef = phoneButtonRef;
-      if (event.key === "Enter") {
-        // Trigger click if button exists
-        if (buttonRef.current) {
-          buttonRef.current.click();
-        }
+  const { mobilePhone, setMobilePhone, setStep } = useApp();
+  const { setLoading, user, rolesMap } = useAuth();
+  const sendVerificationCode = useCallback(
+    (phoneNumber: string) => {
+      if (phoneNumber) {
+        setLoading(true);
+        axios
+          .get(`/api/sendVerificationCode?mobilePhone=${phoneNumber}`)
+          .then((res) => {
+            setLoading(false);
+            setMobilePhone(phoneNumber);
+            if (res.status == 200) {
+              setStep("verificationCode");
+            }
+          });
       }
-    };
+    },
+    [setLoading, setMobilePhone, setStep]
+  );
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  const changablePhoneNumber = hasPermission<boolean>(
+    user as User,
+    "points.otherPhoneNumber",
+    rolesMap
+  );
 
   return (
     <div className="flex flex-col w-full gap-8">
       <h1 className="text-5xl text-black font-bold">
         הקלידו את מספר הטלפון שלכם.
       </h1>
-      <div className="flex flex-col items-start w-full gap-4">
-        <Input
-          onChange={(newValue) => setMobilePhone(newValue.currentTarget.value)}
-          placeholder="מספר טלפון"
-          type="tel"
-          key={0}
-        />
-        <Button
-          onClick={() => sendVerificationCode()}
-          className="bg-gray-400"
-          ref={phoneButtonRef}
-        >
-          הבא
-        </Button>
-      </div>
+      <PhoneNumberInput
+        onSubmit={(phoneNumber) => sendVerificationCode(phoneNumber)}
+        placeholder="מספר טלפון"
+        buttonLabel="הבא"
+        defaultValue={mobilePhone as string}
+        changable={changablePhoneNumber}
+      />
     </div>
   );
 }

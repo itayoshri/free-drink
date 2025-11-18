@@ -1,7 +1,12 @@
 import { CORKS_FOR_DRINK, HandleUser } from "@/utils/account";
 import GetUserPoints from "@/utils/account/points";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import HandleAnswers from ".";
+import hasPermission, {
+  getAppPermissions,
+  getAcessTokenFromRequest,
+  getUserPermissions,
+} from "@/utils/auth/permissions";
 
 type reqData = {
   verificationCode: string;
@@ -10,10 +15,33 @@ type reqData = {
 
 // TODO: get number from user
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
-  const targetNumberOfCorks = CORKS_FOR_DRINK;
+  const permissions = await getAppPermissions();
+  const accesToken = getAcessTokenFromRequest(request);
+  const { role: role_key, phone_number } = getUserPermissions(
+    accesToken as string
+  );
+  const { amount, otherPhoneNumber } = hasPermission<{
+    amount: number;
+    otherPhoneNumber: boolean;
+  }>({ role_key }, "points", permissions) as {
+    amount: number;
+    otherPhoneNumber: boolean;
+  };
+  const targetNumberOfCorks = amount;
+
+  if (!otherPhoneNumber && phone_number != mobilePhone)
+    return NextResponse.json(
+      {
+        success: false,
+        data: {},
+        message:
+          "user is only permitted to use the app with his own phone number",
+      },
+      { status: 401 }
+    );
 
   try {
     const { accessToken, userCorks } = await HandleUser(
