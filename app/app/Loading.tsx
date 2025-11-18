@@ -21,7 +21,7 @@ export default function LoadingPage() {
   }, [index, TEXTS.length, step]);
 
   return (
-    <div className="w-screen h-[100dvh] gap-6 z-50 flex flex-col justify-center items-center bg-white">
+    <div className="w-screen h-[100dvh] gap-6 z-50 flex flex-col justify-center items-center ">
       <Logo className="h-6" />
       <div className="flex flex-col items-center gap-3">
         {step === "verificationCode" ? (

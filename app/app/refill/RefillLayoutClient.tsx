@@ -14,24 +14,23 @@ export default function RefillClientLayout({
 }>) {
   const { user, loading, rolesMap } = useAuth();
   const canAccess = useMemo(() => {
-    if (loading) {
-      return false;
-    }
     return hasPermission(user as User, "invitation.generate", rolesMap);
-  }, [loading, user, rolesMap]);
+  }, [user, rolesMap]);
 
   return (
     <>
-      {canAccess && !loading && <Navbar />}
-      <main className="refill-route bg-zinc-900 flex-1 h-full flex flex-col justify-center items-center px-6">
-        {loading ? (
-          <RefillLoadingPage />
-        ) : canAccess ? (
-          children
-        ) : (
-          <UnauthrizedPage />
-        )}
-      </main>
+      {loading ? (
+        <RefillLoadingPage />
+      ) : canAccess ? (
+        <>
+          <Navbar />
+          <main className="refill-route bg-zinc-900 flex-1 h-full flex flex-col items-center justify-center px-6 py-12">
+            {children}
+          </main>
+        </>
+      ) : (
+        <UnauthrizedPage />
+      )}
     </>
   );
 }
