@@ -88,21 +88,22 @@ jobs:
             docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
             docker stop freed-$SERVICE >/dev/null 2>&1 || true
             docker rm freed-$SERVICE >/dev/null 2>&1 || true
+
             EXTRA_ENV=""
 
             if [ "$SERVICE" = "auth" ]; then
-              EXTRA_ENV="$EXTRA_ENV -e JWT_PRIVATE_KEY=\"${JWT_PRIVATE_KEY}\""
-              EXTRA_ENV="$EXTRA_ENV -e DB_HOST=\"${DB_HOST}\""
+              EXTRA_ENV="$EXTRA_ENV -e JWT_PRIVATE_KEY='${JWT_PRIVATE_KEY}'"
+              EXTRA_ENV="$EXTRA_ENV -e DB_HOST='${DB_HOST}'"
             fi
 
             if [ "$SERVICE" = "app" ]; then
-              EXTRA_ENV="$EXTRA_ENV -e NEXT_PUBLIC_AUTH_SERVER_URL=\"${NEXT_PUBLIC_AUTH_SERVER_URL}\""
+              EXTRA_ENV="$EXTRA_ENV -e NEXT_PUBLIC_AUTH_SERVER_URL='${NEXT_PUBLIC_AUTH_SERVER_URL}'"
             fi
 
             docker run -d --name freed-$SERVICE -p $SERVICE_PORT:3000 \
-              -e DB_USERNAME="${DB_USERNAME}" \
-              -e DB_PASSWORD="${DB_PASSWORD}" \
-              -e JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
+              -e DB_USERNAME='${DB_USERNAME}' \
+              -e DB_PASSWORD='${DB_PASSWORD}' \
+              -e JWT_PUBLIC_KEY='${JWT_PUBLIC_KEY}' \
               $EXTRA_ENV \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
