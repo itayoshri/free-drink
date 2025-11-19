@@ -104,6 +104,6 @@ jobs:
               -e DB_USERNAME='${DB_USERNAME}' \
               -e DB_PASSWORD='${DB_PASSWORD}' \
               -e JWT_PUBLIC_KEY='${JWT_PUBLIC_KEY}' \
-              '${EXTRA_ENV}' \
+              $EXTRA_ENV \
               $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
