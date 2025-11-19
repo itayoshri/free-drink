@@ -97,6 +97,7 @@ jobs:
             fi
 
             if [ "$SERVICE" = "app" ]; then
+              echo 1
               EXTRA_ENV="$EXTRA_ENV -e NEXT_PUBLIC_AUTH_SERVER_URL='${NEXT_PUBLIC_AUTH_SERVER_URL}'"
             fi
 
