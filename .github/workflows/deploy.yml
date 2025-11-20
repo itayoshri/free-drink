@@ -100,6 +100,7 @@ jobs:
             fi
 
             CMD="$CMD ${DOCKER_REPO}:${SERVICE}-${IMAGE_TAG}"
+            echo $CMD
             eval $CMD
 
           EOF
