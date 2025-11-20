@@ -85,22 +85,15 @@ jobs:
         run: |
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
-            CMD="sudo docker run -d --name freed-${SERVICE} -p ${SERVICE_PORT}:3000"
-            CMD="$CMD -e DB_USERNAME='${DB_USERNAME}'"
-            CMD="$CMD -e DB_PASSWORD='${DB_PASSWORD}'"
-            CMD="$CMD -e JWT_PUBLIC_KEY='${JWT_PUBLIC_KEY}'"
+            docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
+            docker stop freed-$SERVICE >/dev/null 2>&1 || true
+            docker rm freed-$SERVICE >/dev/null 2>&1 || true
 
-            if [ "${SERVICE}" = "auth" ]; then
-              CMD="$CMD -e JWT_PRIVATE_KEY='${JWT_PRIVATE_KEY}'"
-              CMD="$CMD -e DB_HOST='${DB_HOST}'"
-            fi
-
-            if [ "${SERVICE}" = "app" ]; then
-              CMD="$CMD -e NEXT_PUBLIC_AUTH_SERVER_URL='${NEXT_PUBLIC_AUTH_SERVER_URL}'"
-            fi
-
-            CMD="$CMD ${DOCKER_REPO}:${SERVICE}-${IMAGE_TAG}"
-            echo $CMD
-            eval $CMD
-
+            docker run -d --name freed-$SERVICE -p $SERVICE_PORT:3000 \
+              -e DB_USERNAME="$DB_USERNAME" \
+              -e DB_PASSWORD="$DB_PASSWORD" \
+              -e JWT_PUBLIC_KEY="$JWT_PUBLIC_KEY" \
+              $(if [ "$SERVICE" = "auth" ]; then echo "-e JWT_PRIVATE_KEY=\"$JWT_PRIVATE_KEY\" -e DB_HOST=\"$DB_HOST\""; fi) \
+              $(if [ "$SERVICE" = "app" ]; then echo "-e NEXT_PUBLIC_AUTH_SERVER_URL=\"$NEXT_PUBLIC_AUTH_SERVER_URL\""; fi) \
+              $DOCKER_REPO:$SERVICE-$IMAGE_TAG
           EOF
