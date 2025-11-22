@@ -72,6 +72,13 @@ export interface ResGetUserPoints {
   };
 }
 
+export interface ResAnswer {
+  body: {
+    succeed: boolean;
+    rightAnswerIds: number[];
+  };
+}
+
 export type content = {
   id: number;
   targetType: string;
@@ -79,7 +86,7 @@ export type content = {
   rewardingCaps: number;
 };
 
-type answer = {
+export type Answer = {
   id: number;
   questionId: number;
   answer: string;
@@ -104,5 +111,5 @@ type question = {
   incorrectAnswerFeedback: string;
   mustAnswerOn: number;
   amountOfAnswersGroups: number;
-  answers: answer[];
+  answers: Answer[];
 };
