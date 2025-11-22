@@ -1,3 +1,9 @@
+export type ContentType =
+  | "KnowledgeQuestionnaire"
+  | "PersonalityQuestionnaire"
+  | "Hotspots"
+  | "Campaigns";
+
 type userInfo = {
   accessToken: string;
   id: number;
@@ -69,7 +75,7 @@ export interface ResGetUserPoints {
 export type content = {
   id: number;
   targetType: string;
-  formatType: string;
+  formatType: ContentType;
   rewardingCaps: number;
 };
 
