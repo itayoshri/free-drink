@@ -23,7 +23,7 @@ export class Question {
     this.answerId = answerId || -1;
   }
 
-  private generateAnswerObject({
+  static generateAnswerObject({
     type,
     answerId,
     questionnaireId,
@@ -49,6 +49,7 @@ export class Question {
           questionId,
           answers: [{ id: answerId }],
         };
+        break;
 
       case "Hotspots":
         answer = {
@@ -56,6 +57,7 @@ export class Question {
           hotSpotQuestionnaireId: questionnaireId,
           correctAnswers: answerId,
         };
+        break;
 
       default:
         break;
@@ -64,24 +66,46 @@ export class Question {
     return { ...answer, signedHash, isLastQuestion };
   }
 
-  submitAnswer(isLastQuestion: boolean, answerId?: number) {
-    return fetchDataSource<ResAnswer>({
+  async submitAnswer(
+    isLastQuestion: boolean,
+    accessToken: string,
+    answerId?: number
+  ) {
+    const answerObj = Question.generateAnswerObject({
+      type: this.type,
+      questionnaireId: this.questionnaireId,
+      questionId: this.questionId,
+      answerId: answerId || this.answerId,
+      isLastQuestion,
+    });
+
+    const res = await fetchDataSource<ResAnswer>({
       method: "POST",
       namespace: "questionnaire",
       action: "answer",
-      data: this.generateAnswerObject({
-        type: this.type,
-        questionnaireId: this.questionnaireId,
-        questionId: this.questionId,
-        answerId: answerId || this.answerId,
-        isLastQuestion,
-      }),
+      token: accessToken,
+      data: answerObj,
     });
+
+    return { answerObj, res };
   }
 
-  async getRightAnswerId() {
+  async getObjWithAnswer(accessToken: string) {
     const randomIndex = Math.floor(Math.random() * this.answers.length);
-    const res = await this.submitAnswer(false, this.answers[randomIndex].id);
-    return res.body.rightAnswerIds[0];
+    const { res } = await this.submitAnswer(
+      false,
+      accessToken,
+      this.answers[randomIndex].id
+    );
+
+    const fullAnswerObj = Question.generateAnswerObject({
+      type: this.type,
+      questionnaireId: this.questionnaireId,
+      questionId: this.questionId,
+      answerId: res.body.rightAnswerIds[0],
+      isLastQuestion: false,
+    });
+
+    return fullAnswerObj;
   }
 }

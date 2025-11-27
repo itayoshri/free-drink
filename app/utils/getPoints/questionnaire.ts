@@ -1,16 +1,36 @@
-import { DBAnswer, DBContent } from "@/interfaces/db";
+import { Answer, ContentType } from "@/interfaces/api/res";
 import { Question } from "./question";
 
-class Questionnaire {
+export type QuestionObj = {
+  questionnaireId: number;
+  questionId: number;
+  contentId: number;
+  answers: Answer[];
+};
+
+export class Questionnaire {
   contentId: number;
   questionnaireId: number;
   questions: Question[];
+  type: ContentType;
 
   constructor(
     contentId: number,
     questionnaireId: number,
-    questions: DBAnswer | DBContent
+    questions: QuestionObj[],
+    type: ContentType
   ) {
-    (this.contentId = contentId), (this.questionnaireId = questionnaireId);
+    this.contentId = contentId;
+    this.questionnaireId = questionnaireId;
+    this.type = type;
+    this.questions = questions.map(
+      (question) =>
+        new Question(
+          question.questionId,
+          question.questionnaireId,
+          this.type,
+          question.answers
+        )
+    );
   }
 }
