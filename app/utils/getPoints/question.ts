@@ -90,7 +90,7 @@ export class Question {
     return { answerObj, res };
   }
 
-  async getObjWithAnswer(accessToken: string) {
+  async getObjWithAnswerId(accessToken: string) {
     const randomIndex = Math.floor(Math.random() * this.answers.length);
     const { res } = await this.submitAnswer(
       false,

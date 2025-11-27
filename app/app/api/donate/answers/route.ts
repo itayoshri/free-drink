@@ -32,9 +32,9 @@ export async function POST(request: Request) {
     content.type as ContentType
   );
 
-  console.log(await q.questions[1].getObjWithAnswer(accessToken));
+  const arr = await q.getAnsweredQuestionsArr(accessToken);
 
-  return new Response(JSON.stringify(""), {
+  return new Response(JSON.stringify(arr), {
     headers: { "Content-Type": "application/json" },
   });
 }
