@@ -1,4 +1,4 @@
-import { Answer, ContentType } from "@/interfaces/api/res";
+import { Answer, ContentType, question } from "@/interfaces/api/res";
 import { Question } from "./question";
 
 export type QuestionObj = {
@@ -23,15 +23,17 @@ export class Questionnaire {
     this.contentId = contentId;
     this.questionnaireId = questionnaireId;
     this.type = type;
-    this.questions = questions.map(
-      (question) =>
-        new Question(
-          question.questionId,
-          question.questionnaireId,
-          this.type,
-          question.answers
-        )
-    );
+    this.questions = questions
+      .filter((question) => question.answers.length > 0)
+      .map(
+        (question) =>
+          new Question(
+            question.questionId,
+            question.questionnaireId,
+            this.type,
+            question.answers
+          )
+      );
   }
 
   static submitAnsweredQuestions(questions: object[], accessToken: string) {
@@ -43,13 +45,19 @@ export class Questionnaire {
     );
   }
 
+  static isGeneric(questions: question[]) {
+    const q = questions[0];
+    return !(q.wordsCompletionGame || q.couplesGame || q.freeScreen);
+  }
+
   getAnsweredQuestionsArr(accessToken: string) {
     return Promise.all(
-      this.questions.map((question) =>
-        question.getObjWithAnswerId(accessToken).then((obj) => ({
-          ...obj,
-          contentId: this.contentId,
-        }))
+      this.questions.map(
+        async (question) =>
+          await question.getObjWithAnswerId(accessToken).then((obj) => ({
+            ...obj,
+            contentId: this.contentId,
+          }))
       )
     );
   }

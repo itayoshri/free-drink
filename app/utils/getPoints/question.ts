@@ -34,7 +34,7 @@ export class Question {
       case "KnowledgeQuestionnaire":
         answer = {
           questionnaireId: this.questionnaireId,
-          questionId: this.questionnaireId,
+          questionId: this.questionId,
           answers: [{ id: answerId || this.answerId }],
         };
         break;
@@ -85,12 +85,19 @@ export class Question {
   async getObjWithAnswerId(accessToken: string) {
     const randomIndex = Math.floor(Math.random() * this.answers.length);
 
-    const { res } = await this.submitAnswer(
+    const { res, answerObj } = await this.submitAnswer(
       false,
       accessToken,
       this.answers[randomIndex].id
     );
-    const fullAnswerObj = this.generateAnswerObject(res.body.rightAnswerIds[0]);
-    return fullAnswerObj;
+
+    try {
+      const fullAnswerObj = this.generateAnswerObject(
+        res.body.rightAnswerIds[0]
+      );
+      return fullAnswerObj;
+    } catch (e) {
+      console.log(e, this.questionnaireId, answerObj);
+    }
   }
 }

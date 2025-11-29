@@ -2,7 +2,7 @@ import GetHomePage from "@/utils/content/homePage";
 import GetDB from "@/utils/db";
 import { GetAnswersFromDB } from "@/utils/db/answer";
 import { Questionnaire } from "@/utils/getPoints/questionnaire";
-import { groupAnswers } from "./utils";
+import { getContentIds, groupByContentId } from "./utils";
 
 export default async function getPoints(
   corksForTarget: number,
@@ -11,10 +11,10 @@ export default async function getPoints(
   const { db, client } = GetDB();
 
   const contents = (await GetHomePage()).body.contents;
-  const contentIds = contents.map((c) => c.id);
+  const contentIds = getContentIds(contents);
 
   const answers = await GetAnswersFromDB(contentIds, db);
-  const groupedAnswers = groupAnswers(answers);
+  const groupedAnswers = groupByContentId(answers);
   for (const group of groupedAnswers) {
     await Questionnaire.submitAnsweredQuestions(group, accessToken);
   }

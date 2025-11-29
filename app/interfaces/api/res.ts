@@ -96,7 +96,7 @@ export type Answer = {
   order: number;
 };
 
-type question = {
+export type question = {
   id: number;
   questionnaireId: number;
   questionLayoutId: number;
@@ -112,4 +112,7 @@ type question = {
   mustAnswerOn: number;
   amountOfAnswersGroups: number;
   answers: Answer[];
+  wordsCompletionGame: boolean;
+  couplesGame: boolean;
+  freeScreen: boolean;
 };

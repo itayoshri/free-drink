@@ -1,7 +1,11 @@
+import { content } from "@/interfaces/api/res";
 import { DBAnswer } from "@/interfaces/db";
+import { QuestionObj } from "@/utils/getPoints/questionnaire";
 
-export function groupAnswers(answers: DBAnswer[]) {
-  const questionsMap = new Map<number, DBAnswer[]>();
+export function groupByContentId<T extends DBAnswer | QuestionObj>(
+  answers: T[]
+) {
+  const questionsMap = new Map<number, T[]>();
 
   for (const answer of answers) {
     if (!questionsMap.has(answer.contentId)) {
@@ -11,4 +15,8 @@ export function groupAnswers(answers: DBAnswer[]) {
   }
 
   return Array.from(questionsMap.values());
+}
+
+export function getContentIds(contents: content[]) {
+  return contents.map((c) => c.id);
 }
