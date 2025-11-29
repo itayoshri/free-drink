@@ -1,19 +1,18 @@
-import { CORKS_FOR_DRINK, HandleUser } from "@/utils/account";
+import { HandleUser } from "@/utils/account";
 import GetUserPoints from "@/utils/account/points";
 import { NextRequest, NextResponse } from "next/server";
-import HandleAnswers from ".";
 import hasPermission, {
   getAppPermissions,
   getAcessTokenFromRequest,
   getUserPermissions,
 } from "@/utils/auth/permissions";
+import { HttpStatusCode } from "axios";
+import getPoints from ".";
 
 type reqData = {
   verificationCode: string;
   mobilePhone: string;
 };
-
-// TODO: get number from user
 
 export async function POST(request: NextRequest) {
   const data = (await request.json()) as reqData;
@@ -46,7 +45,8 @@ export async function POST(request: NextRequest) {
   try {
     const { accessToken, userCorks } = await HandleUser(
       mobilePhone,
-      verificationCode
+      verificationCode,
+      true
     );
 
     if (userCorks >= targetNumberOfCorks)
@@ -60,19 +60,22 @@ export async function POST(request: NextRequest) {
       );
 
     const corksForTarget = targetNumberOfCorks - userCorks;
-    await HandleAnswers(corksForTarget, accessToken);
+    await getPoints(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
     const achieved = Boolean(corks >= targetNumberOfCorks);
 
     return NextResponse.json(
       {
-        success: achieved,
         data: { corks, accessToken },
         message: achieved
           ? ""
           : "there aren't enough available solved games on our DB",
       },
-      { status: 200 }
+      {
+        status: achieved
+          ? HttpStatusCode.Ok
+          : HttpStatusCode.InternalServerError,
+      }
     );
   } catch (e) {
     console.log(e);
@@ -82,7 +85,7 @@ export async function POST(request: NextRequest) {
         data: null,
         message: "Invalid verification code",
       },
-      { status: 400 }
+      { status: HttpStatusCode.BadRequest }
     );
   }
 }

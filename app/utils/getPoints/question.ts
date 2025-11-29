@@ -23,37 +23,27 @@ export class Question {
     this.answerId = answerId || -1;
   }
 
-  static generateAnswerObject({
-    type,
-    answerId,
-    questionnaireId,
-    questionId,
-    signedHash,
-  }: {
-    type: ContentType;
-    answerId: number;
-    questionnaireId: number;
-    questionId: number;
-    signedHash?: string;
-  }) {
-    if (!signedHash)
-      signedHash = generateSignedHash(questionId, questionnaireId);
+  generateAnswerObject(answerId?: number) {
+    const signedHash = generateSignedHash(
+      this.questionId,
+      this.questionnaireId
+    );
 
     let answer = {};
-    switch (type) {
+    switch (this.type) {
       case "KnowledgeQuestionnaire":
         answer = {
-          questionnaireId,
-          questionId,
-          answers: [{ id: answerId }],
+          questionnaireId: this.questionnaireId,
+          questionId: this.questionnaireId,
+          answers: [{ id: answerId || this.answerId }],
         };
         break;
 
       case "Hotspots":
         answer = {
-          hptSpotId: questionId,
-          hotSpotQuestionnaireId: questionnaireId,
-          correctAnswers: answerId,
+          hptSpotId: this.questionId,
+          hotSpotQuestionnaireId: this.questionnaireId,
+          correctAnswers: this.answerId,
         };
         break;
 
@@ -69,22 +59,24 @@ export class Question {
     accessToken: string,
     answerId?: number
   ) {
-    const answerObj = {
-      ...Question.generateAnswerObject({
-        type: this.type,
-        questionnaireId: this.questionnaireId,
-        questionId: this.questionId,
-        answerId: answerId || this.answerId,
-      }),
+    return Question.submitAnswer(
+      this.generateAnswerObject(answerId),
       isLastQuestion,
-    };
+      accessToken
+    );
+  }
 
+  static async submitAnswer(
+    answerObj: object,
+    isLastQuestion: boolean,
+    accessToken: string
+  ) {
     const res = await fetchDataSource<ResAnswer>({
       method: "POST",
       namespace: "questionnaire",
       action: "answer",
       token: accessToken,
-      data: answerObj,
+      data: { ...answerObj, isLastQuestion },
     });
 
     return { answerObj, res };
@@ -92,19 +84,13 @@ export class Question {
 
   async getObjWithAnswerId(accessToken: string) {
     const randomIndex = Math.floor(Math.random() * this.answers.length);
+
     const { res } = await this.submitAnswer(
       false,
       accessToken,
       this.answers[randomIndex].id
     );
-
-    const fullAnswerObj = Question.generateAnswerObject({
-      type: this.type,
-      questionnaireId: this.questionnaireId,
-      questionId: this.questionId,
-      answerId: res.body.rightAnswerIds[0],
-    });
-
+    const fullAnswerObj = this.generateAnswerObject(res.body.rightAnswerIds[0]);
     return fullAnswerObj;
   }
 }

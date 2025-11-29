@@ -34,12 +34,11 @@ export class Questionnaire {
     );
   }
 
-  submitAnsweredQuestions(accessToken: string) {
-    const numOfQuestions = this.questions.length;
+  static submitAnsweredQuestions(questions: object[], accessToken: string) {
     return Promise.all(
-      this.questions.map((question, index) => {
-        const isLastQuestion = index + 1 == numOfQuestions;
-        question.submitAnswer(isLastQuestion, accessToken);
+      questions.map(async (question, index) => {
+        const isLastQuestion = index + 1 == questions.length;
+        await Question.submitAnswer(question, isLastQuestion, accessToken);
       })
     );
   }
