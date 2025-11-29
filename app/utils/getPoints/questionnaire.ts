@@ -34,6 +34,16 @@ export class Questionnaire {
     );
   }
 
+  submitAnsweredQuestions(accessToken: string) {
+    const numOfQuestions = this.questions.length;
+    return Promise.all(
+      this.questions.map((question, index) => {
+        const isLastQuestion = index + 1 == numOfQuestions;
+        question.submitAnswer(isLastQuestion, accessToken);
+      })
+    );
+  }
+
   getAnsweredQuestionsArr(accessToken: string) {
     return Promise.all(
       this.questions.map((question) =>
