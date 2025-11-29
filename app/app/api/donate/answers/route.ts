@@ -19,7 +19,15 @@ export async function POST(request: Request) {
 
   const { db, client } = GetDB();
   const currentContents = (await GetHomePage()).body.contents;
-  const contentIds = getContentIds(currentContents);
+  const answeredIds = (
+    await db
+      .collection("answers")
+      .find({}, { projection: { contentId: 1, _id: 0 } })
+      .toArray()
+  ).map((doc) => doc.contentId);
+  const contentIds = getContentIds(currentContents).filter(
+    (c) => !answeredIds.includes(c)
+  );
   const contents = await GetContentsFromDB(contentIds, db);
   client.close();
 
@@ -55,7 +63,8 @@ export async function POST(request: Request) {
     );
   }
 
-  await addAnswersToDB(answeredQuestionsToPush);
+  if (answeredQuestionsToPush.length > 0)
+    await addAnswersToDB(answeredQuestionsToPush);
 
   return new Response(JSON.stringify(""), {
     headers: { "Content-Type": "application/json" },
