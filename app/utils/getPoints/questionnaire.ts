@@ -36,13 +36,18 @@ export class Questionnaire {
       );
   }
 
-  static submitAnsweredQuestions(questions: object[], accessToken: string) {
-    return Promise.all(
-      questions.map(async (question, index) => {
-        const isLastQuestion = index + 1 == questions.length;
-        await Question.submitAnswer(question, isLastQuestion, accessToken);
-      })
-    );
+  static async submitAnsweredQuestions(
+    questions: object[],
+    accessToken: string
+  ): Promise<void> {
+    for (let index = 0; index < questions.length; index++) {
+      const isLastQuestion = index + 1 === questions.length;
+      await Question.submitAnswer(
+        questions[index],
+        isLastQuestion,
+        accessToken
+      );
+    }
   }
 
   static isGeneric(questions: question[]) {
