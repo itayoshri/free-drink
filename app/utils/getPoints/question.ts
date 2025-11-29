@@ -28,14 +28,12 @@ export class Question {
     answerId,
     questionnaireId,
     questionId,
-    isLastQuestion,
     signedHash,
   }: {
     type: ContentType;
     answerId: number;
     questionnaireId: number;
     questionId: number;
-    isLastQuestion: boolean;
     signedHash?: string;
   }) {
     if (!signedHash)
@@ -63,7 +61,7 @@ export class Question {
         break;
     }
 
-    return { ...answer, signedHash, isLastQuestion };
+    return { ...answer, signedHash };
   }
 
   async submitAnswer(
@@ -71,13 +69,15 @@ export class Question {
     accessToken: string,
     answerId?: number
   ) {
-    const answerObj = Question.generateAnswerObject({
-      type: this.type,
-      questionnaireId: this.questionnaireId,
-      questionId: this.questionId,
-      answerId: answerId || this.answerId,
+    const answerObj = {
+      ...Question.generateAnswerObject({
+        type: this.type,
+        questionnaireId: this.questionnaireId,
+        questionId: this.questionId,
+        answerId: answerId || this.answerId,
+      }),
       isLastQuestion,
-    });
+    };
 
     const res = await fetchDataSource<ResAnswer>({
       method: "POST",
@@ -103,7 +103,6 @@ export class Question {
       questionnaireId: this.questionnaireId,
       questionId: this.questionId,
       answerId: res.body.rightAnswerIds[0],
-      isLastQuestion: false,
     });
 
     return fullAnswerObj;

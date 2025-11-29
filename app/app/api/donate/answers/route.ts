@@ -1,7 +1,7 @@
 import { ContentType } from "@/interfaces/api/res";
 import { HandleUser } from "@/utils/account";
 import GetDB from "@/utils/db";
-import { GetContentsFromDB } from "@/utils/db/answer";
+import { addAnswersToDB, GetContentsFromDB } from "@/utils/db/answer";
 import { Questionnaire, QuestionObj } from "@/utils/getPoints/questionnaire";
 
 type reqData = {
@@ -33,6 +33,7 @@ export async function POST(request: Request) {
   );
 
   const arr = await q.getAnsweredQuestionsArr(accessToken);
+  await addAnswersToDB(arr);
 
   return new Response(JSON.stringify(arr), {
     headers: { "Content-Type": "application/json" },

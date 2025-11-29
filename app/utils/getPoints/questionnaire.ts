@@ -36,7 +36,12 @@ export class Questionnaire {
 
   getAnsweredQuestionsArr(accessToken: string) {
     return Promise.all(
-      this.questions.map((question) => question.getObjWithAnswerId(accessToken))
+      this.questions.map((question) =>
+        question.getObjWithAnswerId(accessToken).then((obj) => ({
+          ...obj,
+          contentId: this.contentId,
+        }))
+      )
     );
   }
 }
