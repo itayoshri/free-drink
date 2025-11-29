@@ -51,6 +51,7 @@ export interface ResExpendedContent {
       title: string;
       questions: question[];
       numberOfAnswersToSuccess: number;
+      timeInSeconds: number | null;
     };
     answerContent: null;
   };

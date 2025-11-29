@@ -32,7 +32,8 @@ export async function POST(request: Request) {
       !rawQuestions ||
       rawQuestions.length == 0 ||
       !Questionnaire.isGeneric(rawQuestions) ||
-      content.type !== "KnowledgeQuestionnaire"
+      content.type !== "KnowledgeQuestionnaire" ||
+      content.content.timeInSeconds !== null
     )
       continue;
 
