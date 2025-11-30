@@ -1,33 +1,34 @@
 import GetHomePage from "@/utils/content/homePage";
 import GetDB from "@/utils/db";
 import { GetAnswersFromDB } from "@/utils/db/answer";
-import { GetAnswersByField, GroupAnswers, AnswerQuestions } from "./answer";
-import { DBAnswer } from "@/interfaces/db";
+import { Questionnaire } from "@/utils/getPoints/questionnaire";
+import {
+  getContentIds,
+  groupByContentId,
+} from "../../../utils/getPoints/utils";
 
-/**
- * solve games on coca-cola's app in order to get corks using coca-cola's api and DB of answers
- *
- * @param corksForTarget - corks that need to be achieved
- * @param accessToken - string that is used to verify and authorize against coca-cola's api
- */
-export default async function HandleAnswers(
+const CORKS_PER_QUIZ = 10;
+
+export default async function getPoints(
   corksForTarget: number,
   accessToken: string
 ) {
   const { db, client } = GetDB();
 
   const contents = (await GetHomePage()).body.contents;
-  const contentIds = contents.map((c) => c.id);
-  const answers = (await GetAnswersFromDB(contentIds, db)) as DBAnswer[];
+  const contentIds = getContentIds(contents);
 
-  let questions = GroupAnswers(answers);
+  // get answers from db, group and sort them by the smallest number of questions
+  // in order accelerate answering proccess
+  const answers = await GetAnswersFromDB(contentIds, db);
+  const groupedAnswers = groupByContentId(answers).sort(
+    (a, b) => a.length - b.length
+  );
 
-  if (questions.length * 10 < corksForTarget) {
-    answers.push(...(await GetAnswersByField(answers, contentIds, db)));
-    questions = GroupAnswers(answers);
+  const neededNumOfQuizes = corksForTarget / CORKS_PER_QUIZ;
+  for (const group of groupedAnswers.slice(0, neededNumOfQuizes)) {
+    await Questionnaire.submitAnsweredQuestions(group, accessToken);
   }
 
   client.close();
-
-  await AnswerQuestions(questions, accessToken);
 }
