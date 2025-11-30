@@ -5,7 +5,7 @@ import GetDB from "@/utils/db";
 import { NextResponse } from "next/server";
 import { addAnswersToDB, GetContentsFromDB } from "@/utils/db/answer";
 import { Questionnaire, QuestionObj } from "@/utils/getPoints/questionnaire";
-import { getContentIds } from "../../getPoints/utils";
+import { getContentIds } from "../../../../utils/getPoints/utils";
 
 type reqData = {
   verificationCode: string;

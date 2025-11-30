@@ -2,7 +2,10 @@ import GetHomePage from "@/utils/content/homePage";
 import GetDB from "@/utils/db";
 import { GetAnswersFromDB } from "@/utils/db/answer";
 import { Questionnaire } from "@/utils/getPoints/questionnaire";
-import { getContentIds, groupByContentId } from "./utils";
+import {
+  getContentIds,
+  groupByContentId,
+} from "../../../utils/getPoints/utils";
 
 const CORKS_PER_QUIZ = 10;
 
