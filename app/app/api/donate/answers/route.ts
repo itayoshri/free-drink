@@ -1,10 +1,11 @@
-import { ContentType, question } from "@/interfaces/api/res";
+import { ContentType } from "@/interfaces/api/res";
 import { HandleUser } from "@/utils/account";
 import GetHomePage from "@/utils/content/homePage";
 import GetDB from "@/utils/db";
+import { NextResponse } from "next/server";
 import { addAnswersToDB, GetContentsFromDB } from "@/utils/db/answer";
 import { Questionnaire, QuestionObj } from "@/utils/getPoints/questionnaire";
-import { getContentIds, groupByContentId } from "../../getPoints/utils";
+import { getContentIds } from "../../getPoints/utils";
 
 type reqData = {
   verificationCode: string;
@@ -66,7 +67,11 @@ export async function POST(request: Request) {
   if (answeredQuestionsToPush.length > 0)
     await addAnswersToDB(answeredQuestionsToPush);
 
-  return new Response(JSON.stringify(""), {
-    headers: { "Content-Type": "application/json" },
-  });
+  return NextResponse.json(
+    {
+      data: { solved: answeredQuestionsToPush, accessToken },
+      message: "",
+    },
+    { status: 200 }
+  );
 }
