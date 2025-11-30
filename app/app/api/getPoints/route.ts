@@ -52,7 +52,6 @@ export async function POST(request: NextRequest) {
     if (userCorks >= targetNumberOfCorks)
       return NextResponse.json(
         {
-          success: true,
           data: { corks: userCorks, accessToken },
           message: "user already has enough corks",
         },
@@ -81,7 +80,6 @@ export async function POST(request: NextRequest) {
     console.log(e);
     return NextResponse.json(
       {
-        success: false,
         data: null,
         message: "Invalid verification code",
       },
