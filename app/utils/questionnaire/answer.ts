@@ -22,7 +22,12 @@ export default function AnswerQuestion(
   });
 }
 
-function GenerateSignedHash(questionId: number, questionnaireId: number) {
-  const toHash = `${questionId}|${questionnaireId}|${SECRET}`;
-  return crypto.createHash("md5").update(toHash).digest("hex");
+export function generateSignedHash(
+  questionId: number,
+  questionnaireId: number
+) {
+  // TODO: support Hotspot
+  const SECRET = process.env.SECRET;
+  const input = `${questionId}|${questionnaireId}|${SECRET}`;
+  return crypto.createHash("md5").update(input).digest("hex");
 }

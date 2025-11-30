@@ -7,7 +7,8 @@ export default function Digit({ setValue }: DigitProps) {
     <input
       type="number"
       maxLength={1}
-      className="text-5xl w-full border-[1px] ltr: text-black text-center py-4 rounded-xl font-inter font-bold border-gray-300 outline-primary"
+      className="text-5xl w-full text-black dark:text-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 
+      text-center py-4 rounded-xl font-inter font-bold focus:outline-none focus:ring-2 focus:ring-red-500"
       onInput={(e) => {
         const target = e.target as HTMLInputElement;
         const val = target.value;

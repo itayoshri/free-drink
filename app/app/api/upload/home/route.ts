@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
 
-  const { accessToken } = await HandleUser(mobilePhone, verificationCode);
+  const { accessToken } = await HandleUser(mobilePhone, verificationCode, true);
 
   const contents = (await GetHomePage()).body.contents;
   await UpdateContent(contents, accessToken);
