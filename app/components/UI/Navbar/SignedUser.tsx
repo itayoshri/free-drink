@@ -1,8 +1,6 @@
 "use client";
-import { Account, SupervisorAccount } from "@/components/Icons";
 import AccountPopup from "./Popup";
 import { useState } from "react";
-import Link from "next/link";
 import { User } from "@/interfaces/db/auth";
 import hasPermission from "@/utils/auth/permissions";
 import { useAuth } from "@/context/auth";
@@ -23,7 +21,7 @@ export default function SignedUser({ user }: { user: User }) {
         icon="Account"
         onClick={() => setPopupOpened((current) => !current)}
       />
-      <NavbarIcon icon="ArrowDown" route="/getpoints" />
+      <NavbarIcon icon="Drink" route="/getpoints" />
       {canAccessRefill && (
         <NavbarIcon icon="SupervisorAccount" route="/refill" />
       )}

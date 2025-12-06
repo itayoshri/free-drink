@@ -1,13 +1,8 @@
 import Link from "next/link";
 import * as Icons from "../Icons";
+import { Route } from "@/lib/constants";
 
-type MenuItemProps = {
-  text: string;
-  icon: keyof typeof Icons;
-  route: string;
-};
-
-export default function MenuItem({ text, icon, route }: MenuItemProps) {
+export default function MenuItem({ text, icon, route }: Route) {
   const IconComponent = Icons[icon];
   return (
     <Link

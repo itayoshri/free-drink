@@ -1,13 +1,8 @@
 import Link from "next/link";
 import * as Icons from "../../Icons";
+import { Route } from "@/lib/constants";
 
-type NavbarIconProps = {
-  icon: keyof typeof Icons;
-  route?: string;
-  onClick?(): unknown;
-};
-
-export default function NavbarIcon({ icon, route, onClick }: NavbarIconProps) {
+export default function NavbarIcon({ icon, route, onClick }: Route) {
   const IconComponent = Icons[icon];
   const className = `text-black dark:text-white`;
   const width = 28;
