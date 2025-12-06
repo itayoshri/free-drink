@@ -1,5 +1,5 @@
 import { Add, Wind } from "@/components/Icons";
-import MenuItem from "@/components/refill/MenuItem";
+import MenuItem from "@/components/UI/MenuItem";
 import Logo from "@/components/UI/Logo";
 
 const BASE_PATH = "refill";
@@ -11,14 +11,10 @@ export default function RefillMenu() {
       <div className="flex flex-col w-full gap-form">
         <MenuItem
           text="מחולל קודי הזמנה"
-          icon={<Add width={25} />}
-          page={`${BASE_PATH}/invitation`}
+          icon="Add"
+          route={`${BASE_PATH}/invitation`}
         />
-        <MenuItem
-          text="פותר חידות"
-          icon={<Wind width={25} />}
-          page={`${BASE_PATH}/solver`}
-        />
+        <MenuItem text="פותר חידות" icon="Wind" route={`${BASE_PATH}/solver`} />
       </div>
     </div>
   );

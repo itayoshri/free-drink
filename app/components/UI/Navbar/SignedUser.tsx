@@ -23,6 +23,7 @@ export default function SignedUser({ user }: { user: User }) {
         icon="Account"
         onClick={() => setPopupOpened((current) => !current)}
       />
+      <NavbarIcon icon="ArrowDown" route="/getpoints" />
       {canAccessRefill && (
         <NavbarIcon icon="SupervisorAccount" route="/refill" />
       )}
