@@ -6,7 +6,7 @@ const BASE_PATH = "refill";
 
 export default function RefillMenu() {
   return (
-    <div className="flex flex-col w-full gap-8">
+    <div className="flex flex-col w-full items-center gap-8">
       <Logo version="refill" className="h-6 fill-primary-500" />
       <div className="flex flex-col w-full gap-form">
         <MenuItem
