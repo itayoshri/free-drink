@@ -20,7 +20,7 @@ export default function Navbar() {
   }, [pathname, router, setStep]);
 
   return (
-    <div className="flex sticky border-b-[1px] border-gray-300 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black dark:text-white justify-between h-14 items-center w-full px-page py-3 top-0">
+    <div className="flex sticky border-b-[1px] dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black dark:text-white justify-between h-14 items-center w-full px-page py-3 top-0">
       {isAuth ? (
         <SignedUser user={user as User} />
       ) : (

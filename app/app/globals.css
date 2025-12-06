@@ -54,6 +54,7 @@ body {
 
   * {
     direction: inherit;
+    border: var(--color-gray-300);
   }
 }
 

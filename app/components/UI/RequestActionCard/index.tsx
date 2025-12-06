@@ -27,7 +27,7 @@ export const actionInfo = [
 
 export default function RequestActionCard({ action, duration }: RequestAction) {
   return (
-    <div className="bg-white flex flex-col w-full border-[1px] border-gray-300 px-4 py-5 rounded-xl gap-4">
+    <div className="bg-white flex flex-col w-full border-[1px] px-4 py-5 rounded-xl gap-4">
       <InfoLine title="פעולה" data={actionInfo[action].action} />
       <InfoLine title="משך" data={`${duration} שניות`} />
     </div>
