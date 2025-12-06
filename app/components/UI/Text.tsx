@@ -7,8 +7,8 @@ type TextProps = {
 
 const styling = {
   title: "text-black text-3xl font-bold dark:text-white",
-  subTitle: "text-black text-2xl font-bold dark:text-white",
-  text: "text-black dark:text-white",
+  subTitle: "text-black text-xl font-bold dark:text-white",
+  text: "text-zinc-400 font-medium dark:text-white",
 };
 
 export default function TextBlock({

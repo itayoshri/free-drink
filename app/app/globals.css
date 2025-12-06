@@ -33,6 +33,13 @@
     padding-left: var(--space-page);
     padding-right: var(--space-page);
   }
+  .py-page {
+    padding-left: var(--space-page);
+    padding-right: var(--space-page);
+  }
+  .p-page {
+    padding: var(--space-page);
+  }
   .gap-form {
     gap: var(--space-form);
   }

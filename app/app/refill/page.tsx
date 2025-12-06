@@ -1,4 +1,3 @@
-import { Add, Wind } from "@/components/Icons";
 import MenuItem from "@/components/UI/MenuItem";
 import Logo from "@/components/UI/Logo";
 
