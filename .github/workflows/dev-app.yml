@@ -13,7 +13,8 @@ jobs:
       branch: develop
       docker_repo: ${{ vars.DOCKER_REPO }}
       username: ${{ vars.DOCKER_USERNAME }}
-      service: app-dev
+      service: app
+      image_tag: dev
     secrets:
       password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -22,7 +23,8 @@ jobs:
     needs: build-and-push
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
-      service: app-dev
+      service: app
+      image_tag: dev
       service_port: 5000
       app_url: https://dev.freed.itayoshri.com
     secrets:
