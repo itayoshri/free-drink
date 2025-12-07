@@ -21,13 +21,15 @@ export default function Logo({
   version?: keyof typeof logo;
 }) {
   return (
-    <svg
-      viewBox={logo[version].viewBox}
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`${className} w-fit fill-primary`}
-    >
-      <path d={logo[version].path} />
-    </svg>
+    <div className="inline-flex">
+      <svg
+        viewBox={logo[version].viewBox}
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`${className} fill-primary`}
+      >
+        <path d={logo[version].path} />
+      </svg>
+    </div>
   );
 }
