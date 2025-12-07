@@ -4,7 +4,7 @@ import TextBlock from "@/components/UI/Text";
 
 type GetPointsCardProps = {
   amountOfCorks: number;
-  phoneNumber: string;
+  phoneNumber?: string;
 };
 
 export default function GetPointsCard({
@@ -20,10 +20,12 @@ export default function GetPointsCard({
     <div className="flex flex-col w-full p-page border rounded-3xl gap-6">
       <Logo className="h-3" />
       <TextBlock subTitle="שובר למשקה מהמכונה" text={message(amountOfCorks)} />
-      <span>
-        <a className="font-inter font-medium">{phoneNumber}</a>
-        <a className="font-bold text-primary mr-2">ערוך מספר</a>
-      </span>
+      {phoneNumber ? (
+        <span>
+          <a className="font-inter font-medium">{phoneNumber}</a>
+          <a className="font-bold text-primary mr-2">ערוך מספר</a>
+        </span>
+      ) : null}
       <Button>המשיכו</Button>
     </div>
   );

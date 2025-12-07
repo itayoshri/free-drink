@@ -8,8 +8,8 @@ import { useApp } from "@/context";
 export default function HomePage() {
   const { mobilePhone } = useApp();
   return (
-    <div className="flex flex-col items-center h-full w-full gap-form">
-      <TextBlock title="ברוך שובכם!" className="py-12" />
+    <div className="flex flex-col h-full w-full gap-form">
+      <TextBlock title="ברוך שובכם!" className="py-6" />
       <GetPointsCard amountOfCorks={80} phoneNumber={mobilePhone as string} />
       <div className="flex flex-col gap-form w-full">
         {routes.map((route, index) => (
