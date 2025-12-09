@@ -7,11 +7,13 @@ import { useAuth } from "@/context/auth";
 import hasPermission from "@/utils/auth/permissions";
 import { User } from "@/interfaces/db/auth";
 import { useUserInfo } from "@/context/user";
+import { useLoading } from "@/context/loading";
 
 export default function PhoneInputPage() {
   const { setStep } = useApp();
   const { mobilePhone, setMobilePhone } = useUserInfo();
-  const { setLoading, user, rolesMap } = useAuth();
+  const { user, rolesMap } = useAuth();
+  const { setLoading } = useLoading();
   const sendVerificationCode = useCallback(
     (phoneNumber: string) => {
       if (phoneNumber) {

@@ -2,7 +2,6 @@ import MenuItem from "@/components/UI/MenuItem";
 import TextBlock from "@/components/UI/Text";
 import { routes } from "@/lib/constants";
 import GetPointsCard from "./Drink";
-import { useApp } from "@/context";
 
 export default function HomePage() {
   return (

@@ -4,6 +4,7 @@ import OtpInput from "@/components/UI/OTP";
 import EditPhoneNumber from "@/components/UI/OTP/Edit";
 import { useApp } from "@/context";
 import { useAuth } from "@/context/auth";
+import { useLoading } from "@/context/loading";
 import { useUserInfo } from "@/context/user";
 import { User } from "@/interfaces/db/auth";
 import hasPermission from "@/utils/auth/permissions";
@@ -13,7 +14,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export default function VerifyPage() {
   const { setStep, setgetPointsResData } = useApp();
   const { mobilePhone, setMobilePhone } = useUserInfo();
-  const { setLoading, user, rolesMap } = useAuth();
+  const { user, rolesMap } = useAuth();
+  const { setLoading } = useLoading();
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [digits, setDigits] = useState([0, 0, 0, 0]);

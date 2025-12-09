@@ -23,7 +23,6 @@ export default function RefillClientLayout({
         <RefillLoadingPage />
       ) : canAccess ? (
         <>
-          <Navbar />
           <main className="refill-route bg-zinc-900 flex-1 h-full flex flex-col items-center justify-center px-6 py-12">
             {children}
           </main>

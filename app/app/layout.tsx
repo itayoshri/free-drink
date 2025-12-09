@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import axios from "axios";
 import { getUserPermissions } from "@/utils/auth/permissions";
 import { UserProvider } from "@/context/user";
+import { LoadingProvider } from "@/context/loading";
 const AUTH_SERVER_URL = process.env.NEXT_PUBLIC_AUTH_SERVER_URL || "";
 
 export const metadata: Metadata = {
@@ -33,11 +34,13 @@ export default async function RootLayout({
     >
       <AppProvider>
         <UserProvider phoneNumber={phone_number}>
-          <html lang="en">
-            <body className={`antialiased  h-dvh w-screen flex flex-col`}>
-              {children}
-            </body>
-          </html>
+          <LoadingProvider>
+            <html lang="en">
+              <body className={`antialiased h-dvh w-screen flex flex-col`}>
+                {children}
+              </body>
+            </html>
+          </LoadingProvider>
         </UserProvider>
       </AppProvider>
     </AuthProvider>
