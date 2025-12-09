@@ -5,9 +5,14 @@ import { PermissionData } from "@/utils/auth/permissions";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+type userContextObj = {
+  role_key: string;
+  phone_number: string;
+};
+
 type AuthContextType = {
-  user: User | null;
-  setUser: (user: User) => void;
+  user: userContextObj | null;
+  setUser: (user: userContextObj) => void;
   isAuth: boolean;
   setIsAuth: (authed: boolean) => void;
   loading: boolean;
@@ -23,13 +28,17 @@ export const AuthProvider = ({
   children,
   isAuth: initialValue,
   rolesMap,
+  user: inistialUser,
 }: {
   children: React.ReactNode;
   isAuth: boolean;
   rolesMap: PermissionData;
+  user: userContextObj | undefined;
 }) => {
   const [isAuth, setIsAuth] = useState(initialValue);
-  const [user, setUserVar] = useState<User | null>(null);
+  const [user, setUserVar] = useState<userContextObj | null>(
+    inistialUser || null
+  );
   const [loading, setLoading] = useState(true);
 
   const logout = async () => {
@@ -41,17 +50,15 @@ export const AuthProvider = ({
     setUser();
   };
 
-  const setUser = (newUser?: User) => {
+  const setUser = (newUser?: userContextObj) => {
     try {
       if (typeof window !== "undefined") {
         if (newUser) {
-          localStorage.setItem("user", JSON.stringify(newUser));
           setIsAuth(true);
           setUserVar(newUser);
         } else {
           setUserVar(null);
           setIsAuth(false);
-          localStorage.removeItem("user");
         }
       }
     } catch {}
@@ -66,8 +73,6 @@ export const AuthProvider = ({
 
   useEffect(() => {
     if (!isAuth) setUser();
-    const localStorageUser = localStorage.getItem("user");
-    if (localStorageUser) setUserVar(JSON.parse(localStorageUser as string));
     setLoading(false);
   }, [isAuth]);
 

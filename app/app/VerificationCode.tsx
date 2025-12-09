@@ -4,14 +4,15 @@ import OtpInput from "@/components/UI/OTP";
 import EditPhoneNumber from "@/components/UI/OTP/Edit";
 import { useApp } from "@/context";
 import { useAuth } from "@/context/auth";
+import { useUserInfo } from "@/context/user";
 import { User } from "@/interfaces/db/auth";
 import hasPermission from "@/utils/auth/permissions";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const { mobilePhone, setMobilePhone, setStep, setgetPointsResData } =
-    useApp();
+  const { setStep, setgetPointsResData } = useApp();
+  const { mobilePhone, setMobilePhone } = useUserInfo();
   const { setLoading, user, rolesMap } = useAuth();
 
   const buttonRef = useRef<HTMLButtonElement>(null);

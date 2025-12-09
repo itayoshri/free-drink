@@ -31,7 +31,7 @@ export default function Navbar() {
           כניסה
         </button>
       )}
-      <button onClick={() => navigateHome()}>
+      <button onClick={() => navigateHome()} className="flex">
         <Logo className="h-4 fill-primary" version="short" />
       </button>
     </div>
