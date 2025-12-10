@@ -1,11 +1,10 @@
 "use client";
 import { AUTH_SERVER_URL } from "@/app/account/Form";
-import { User } from "@/interfaces/db/auth";
 import { PermissionData } from "@/utils/auth/permissions";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type userContextObj = {
+export type userContextObj = {
   role_key: string;
   phone_number: string;
 };

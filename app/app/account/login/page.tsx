@@ -6,13 +6,15 @@ import { AUTH_SERVER_URL } from "../Form";
 import axios from "axios";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/auth";
+import { useAuth, userContextObj } from "@/context/auth";
+import { useUserInfo } from "@/context/user";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
   const phoneNumber = searchParams.get("phoneNumber") || "";
   const router = useRouter();
   const { setUser } = useAuth();
+  const { setMobilePhone } = useUserInfo();
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (phoneNumber: string, password: string) => {
@@ -26,7 +28,9 @@ export default function LoginPage() {
         },
         { withCredentials: true }
       );
-      setUser(res.data.data.user);
+      const user = res.data.data.user as userContextObj;
+      setUser(user);
+      setMobilePhone(user.phone_number);
       router.push("/");
     } catch (error) {
       setLoading(false);
