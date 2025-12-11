@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - develop
     paths:
       - "app/**"
   workflow_dispatch:
@@ -10,10 +10,11 @@ jobs:
   build-and-push:
     uses: ./.github/workflows/build.yml
     with:
-      branch: main
+      branch: develop
       docker_repo: ${{ vars.DOCKER_REPO }}
       username: ${{ vars.DOCKER_USERNAME }}
       service: app
+      image_tag: dev
     secrets:
       password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -23,6 +24,9 @@ jobs:
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: app
+      image_tag: dev
+      service_port: 5000
+      app_url: https://dev.freed.itayoshri.com
     secrets:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

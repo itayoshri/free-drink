@@ -8,6 +8,12 @@ export async function AddAnswer(answer: unknown) {
   client.close();
 }
 
+export async function addAnswersToDB(answers: object[]) {
+  const { db, client } = GetDB();
+  await db.collection("answers").insertMany(answers);
+  client.close();
+}
+
 export async function GetContentsFromDB(contentIds: number[], db: Db) {
   const contents = db.collection<DBContent>("contents");
   return await contents.find({ contentId: { $in: contentIds } }).toArray();

@@ -1,3 +1,9 @@
+export type ContentType =
+  | "KnowledgeQuestionnaire"
+  | "PersonalityQuestionnaire"
+  | "Hotspots"
+  | "Campaigns";
+
 type userInfo = {
   accessToken: string;
   id: number;
@@ -45,6 +51,7 @@ export interface ResExpendedContent {
       title: string;
       questions: question[];
       numberOfAnswersToSuccess: number;
+      timeInSeconds: number | null;
     };
     answerContent: null;
   };
@@ -66,14 +73,21 @@ export interface ResGetUserPoints {
   };
 }
 
+export interface ResAnswer {
+  body: {
+    succeed: boolean;
+    rightAnswerIds: number[];
+  };
+}
+
 export type content = {
   id: number;
   targetType: string;
-  formatType: string;
+  formatType: ContentType;
   rewardingCaps: number;
 };
 
-type answer = {
+export type Answer = {
   id: number;
   questionId: number;
   answer: string;
@@ -83,7 +97,7 @@ type answer = {
   order: number;
 };
 
-type question = {
+export type question = {
   id: number;
   questionnaireId: number;
   questionLayoutId: number;
@@ -98,5 +112,8 @@ type question = {
   incorrectAnswerFeedback: string;
   mustAnswerOn: number;
   amountOfAnswersGroups: number;
-  answers: answer[];
+  answers: Answer[];
+  wordsCompletionGame: boolean;
+  couplesGame: boolean;
+  freeScreen: boolean;
 };
