@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - develop
     paths:
       - "app/**"
   workflow_dispatch:
@@ -10,7 +11,8 @@ jobs:
   build-and-push:
     uses: ./.github/workflows/build.yml
     with:
-      branch: main
+      branch: ${{ github.ref_name }}
+      environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
       docker_repo: ${{ vars.DOCKER_REPO }}
       username: ${{ vars.DOCKER_USERNAME }}
       service: app
@@ -21,6 +23,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     needs: build-and-push
     with:
+      environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: app
     secrets:
