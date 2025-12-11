@@ -25,6 +25,7 @@ jobs:
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: auth
+      environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
       jwt_access_token_expiration_ms: ${{ vars.JWT_ACCESS_TOKEN_EXPIRATION_MS }}
       jwt_refresh_token_expiration_ms: ${{ vars.JWT_REFRESH_TOKEN_EXPIRATION_MS }}
 
