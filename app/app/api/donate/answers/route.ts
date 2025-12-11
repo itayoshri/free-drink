@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 import { addAnswersToDB, GetContentsFromDB } from "@/utils/db/answer";
 import { Questionnaire, QuestionObj } from "@/utils/getPoints/questionnaire";
 import { getContentIds } from "../../../../utils/getPoints/utils";
+import UpdateContent from "@/utils/db/content";
 
 type reqData = {
   verificationCode: string;
@@ -17,9 +18,11 @@ export async function POST(request: Request) {
   const data = (await request.json()) as reqData;
   const { mobilePhone, verificationCode } = data;
   const { accessToken } = await HandleUser(mobilePhone, verificationCode, true);
-
   const { db, client } = GetDB();
+
   const currentContents = (await GetHomePage()).body.contents;
+  await UpdateContent(currentContents, accessToken, db);
+
   const answeredIds = (
     await db
       .collection("answers")
