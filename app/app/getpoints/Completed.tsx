@@ -5,7 +5,8 @@ import RequestActionCard, {
   actionInfo,
 } from "@/components/UI/RequestActionCard";
 import { useApp } from "@/context";
-import ScreenConfetti from "./Confetti";
+import ScreenConfetti from "../Confetti";
+import { Retry } from "@/components/Icons";
 
 export default function CompletedPage() {
   const { getPointsResData, setStep } = useApp();
@@ -23,6 +24,8 @@ export default function CompletedPage() {
       ? Action.RESET_ACCOUNT
       : Action.FAILED;
 
+  const retry = () => setStep("phoneNumber");
+
   return (
     <div className="flex flex-col w-full gap-6 items-center">
       {/* TODO: add Check icon */}
@@ -38,9 +41,14 @@ export default function CompletedPage() {
           duration={getPointsResData.duration as number}
         />
         {userCorks < 80 ? (
-          <Button onClick={() => setStep("phoneNumber")}>נסו שוב</Button>
+          <Button onClick={retry}>נסו שוב</Button>
         ) : (
-          <Button disabled>לקבלת משקה מהמכונה</Button>
+          <div className="flex gap-3">
+            <Button disabled>לקבלת משקה מהמכונה</Button>{" "}
+            <Button fit onClick={retry}>
+              <Retry width={24} />
+            </Button>
+          </div>
         )}
       </div>
       {userCorks >= 80 ? <ScreenConfetti /> : null}

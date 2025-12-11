@@ -1,8 +1,8 @@
 "use client";
 import { useApp } from "@/context";
-import PhoneInputPage from "../PhoneInput";
-import VerifyPage from "../VerificationCode";
-import CompletedPage from "../Completed";
+import PhoneInputPage from "./PhoneInput";
+import VerifyPage from "./VerificationCode";
+import CompletedPage from "./Completed";
 import { JSX } from "react";
 import { useLoading } from "@/context/loading";
 import LoadingPage from "@/app/Loading";
