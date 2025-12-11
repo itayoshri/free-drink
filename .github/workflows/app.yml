@@ -23,8 +23,6 @@ jobs:
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: app
-      service_port: 3000
-      app_url: https://itayoshri.com
     secrets:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
