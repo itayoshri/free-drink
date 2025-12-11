@@ -2,17 +2,20 @@ on:
   push:
     branches:
       - main
+      - develop
     paths:
-      - "./auth/**"
+      - "auth/**"
   workflow_dispatch:
 
 jobs:
   build-and-push:
     uses: ./.github/workflows/build.yml
     with:
+      branch: ${{ github.ref_name }}
+      environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
       docker_repo: ${{ vars.DOCKER_REPO }}
-      service: auth
       username: ${{ vars.DOCKER_USERNAME }}
+      service: auth
     secrets:
       password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -22,7 +25,6 @@ jobs:
     with:
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: auth
-      service_port: 3002
       jwt_access_token_expiration_ms: ${{ vars.JWT_ACCESS_TOKEN_EXPIRATION_MS }}
       jwt_refresh_token_expiration_ms: ${{ vars.JWT_REFRESH_TOKEN_EXPIRATION_MS }}
 
