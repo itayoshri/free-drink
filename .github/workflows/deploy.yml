@@ -83,8 +83,8 @@ jobs:
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
             docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
-            docker stop freed-$SERVICE >/dev/null 2>&1 || true
-            docker rm freed-$SERVICE >/dev/null 2>&1 || true
+            docker stop freed-$SERVICE-$ENV >/dev/null 2>&1 || true
+            docker rm freed-$SERVICE-$ENV >/dev/null 2>&1 || true
 
             docker run -d --name freed-$SERVICE-$ENV -p $SERVICE_PORT:3000 \
               -e DB_USERNAME="$DB_USERNAME" \
