@@ -8,7 +8,8 @@ export type apiNamespace =
   | "content"
   | "questionnaire"
   | "hotspot"
-  | "homePage";
+  | "homePage"
+  | "myPrezi";
 export type apiAction =
   | "getUserInfo"
   | "register"
@@ -20,7 +21,8 @@ export type apiAction =
   | "answer"
   | "recordLog"
   | "Answer"
-  | "getUserPoints";
+  | "getUserPoints"
+  | "nayaxMetadata";
 
 export interface IFetchDataParams {
   method: Method;

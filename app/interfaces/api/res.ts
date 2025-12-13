@@ -80,6 +80,46 @@ export interface ResAnswer {
   };
 }
 
+export interface ResGetProducts {
+  body: {
+    gift: gift;
+  };
+}
+
+export interface ResPurchaseNayaxCardGift {
+  body: {
+    gift: gift;
+    nayaxCard: nayaxCard;
+  };
+}
+
+type gift = {
+  id: number;
+  uniqueId: string;
+  name: string;
+  shortName: null | string;
+  type: string;
+  deliveryType: string;
+  quantityAvaliability: number;
+  quantityUsed: number;
+  nayaxCardGiftOptions: [
+    {
+      paymentType: "Corks";
+      paymentAmount: 80;
+      credit: 1;
+    }
+  ];
+};
+
+type nayaxCard = {
+  cardUniqueId: string;
+  cardId: number;
+  cardActivationDate: null;
+  cardExpirationDate: null;
+  credit: 1;
+  cardNote: null;
+};
+
 export type content = {
   id: number;
   targetType: string;

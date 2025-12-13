@@ -40,3 +40,9 @@ export interface ReqRecordLog {
   contentId: number;
   type: string;
 }
+
+export interface ReqPurchaseNayaxCardGift {
+  credits: number; //1
+  uniqueId: string;
+  paymentType: "Corks";
+}
