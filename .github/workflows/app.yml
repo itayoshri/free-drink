@@ -21,7 +21,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       branch: ${{ inputs.branch || github.ref_name }}
-      environment: ${{ (inputs.branch || github.ref_name) == 'main' && 'production' || 'development' }}
+      environment: ${{ (inputs.branch || github.ref_name) == 'main' && 'Production' || 'Develop' }}
       docker_repo: ${{ vars.DOCKER_REPO }}
       username: ${{ vars.DOCKER_USERNAME }}
       service: app
@@ -32,7 +32,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     needs: build-and-push
     with:
-      environment: ${{ (inputs.branch || github.ref_name) == 'main' && 'production' || 'development' }}
+      environment: ${{ (inputs.branch || github.ref_name) == 'main' && 'Production' || 'Develop' }}
       docker_repo: ${{ vars.DOCKER_REPO }}
       service: app
     secrets:
