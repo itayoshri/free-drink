@@ -96,7 +96,7 @@ export interface ResPurchaseNayaxCardGift {
 type gift = {
   id: number;
   uniqueId: string;
-  name: string;
+  name: "מוצר קוקה-קולה במכונות משקר";
   shortName: null | string;
   type: string;
   deliveryType: string;
