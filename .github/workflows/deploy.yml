@@ -12,20 +12,15 @@ on:
         required: false
         type: string
         default: app
-      service_port:
-        required: false
-        type: number
-        default: 3000
-      app_url:
-        required: false
+      environment:
         type: string
-        default: https://itayoshri.com
+        default: "production"
       jwt_access_token_expiration_ms:
         required: false
-        type: number
+        type: string
       jwt_refresh_token_expiration_ms:
         required: false
-        type: number
+        type: string
       db_port:
         required: false
         type: number
@@ -58,13 +53,15 @@ jobs:
   deploy:
     name: Pull Docker image on the app server and run it
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     env:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       DOCKER_REPO: ${{ inputs.docker_repo }}
       IMAGE_TAG: ${{ inputs.image_tag }}
       SERVICE: ${{ inputs.service }}
-      SERVICE_PORT: ${{ inputs.service_port }}
-      NEXT_PUBLIC_AUTH_SERVER_URL: ${{ inputs.app_url }}
+      ENV: ${{ inputs.environment }}
+      SERVICE_PORT: ${{ inputs.service == 'app' && vars.APP_PORT || vars.AUTH_PORT }}
+      NEXT_PUBLIC_AUTH_SERVER_URL: ${{ vars.APP_URL }}
     steps:
       - name: Set up SSH
         env:
@@ -88,21 +85,12 @@ jobs:
             docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
             docker stop freed-$SERVICE >/dev/null 2>&1 || true
             docker rm freed-$SERVICE >/dev/null 2>&1 || true
-            EXTRA_ENV=""
 
-            if [ "$SERVICE" = "auth" ]; then
-              EXTRA_ENV="$EXTRA_ENV -e JWT_PRIVATE_KEY=\"${JWT_PRIVATE_KEY}\""
-              EXTRA_ENV="$EXTRA_ENV -e DB_HOST=\"${DB_HOST}\""
-            fi
-
-            if [ "$SERVICE" = "app" ]; then
-              EXTRA_ENV="$EXTRA_ENV -e NEXT_PUBLIC_AUTH_SERVER_URL=\"${NEXT_PUBLIC_AUTH_SERVER_URL}\""
-            fi
-
-            docker run -d --name freed-$SERVICE -p $SERVICE_PORT:3000 \
-              -e DB_USERNAME="${DB_USERNAME}" \
-              -e DB_PASSWORD="${DB_PASSWORD}" \
-              -e JWT_PUBLIC_KEY="${JWT_PUBLIC_KEY}" \
-              $EXTRA_ENV \
-              $DOCKER_REPO:$SERVICE-$IMAGE_TAG
+            docker run -d --name freed-$SERVICE-$ENV -p $SERVICE_PORT:3000 \
+              -e DB_USERNAME="$DB_USERNAME" \
+              -e DB_PASSWORD="$DB_PASSWORD" \
+              -e JWT_PUBLIC_KEY="$JWT_PUBLIC_KEY" \
+              $(if [ "$SERVICE" = "auth" ]; then echo "-e JWT_PRIVATE_KEY=\"$JWT_PRIVATE_KEY\" -e DB_HOST=\"$DB_HOST\""; fi) \
+              $(if [ "$SERVICE" = "app" ]; then echo "-e NEXT_PUBLIC_AUTH_SERVER_URL=\"$NEXT_PUBLIC_AUTH_SERVER_URL\""; fi) \
+              $DOCKER_REPO:$SERVICE-$ENV-$IMAGE_TAG
           EOF

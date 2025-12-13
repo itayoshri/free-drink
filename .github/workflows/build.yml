@@ -20,6 +20,9 @@ on:
       username:
         required: true
         type: string
+      environment:
+        type: string
+        default: "production"
     secrets:
       password:
         required: true
@@ -33,6 +36,7 @@ jobs:
       IMAGE_TAG: ${{ inputs.image_tag }}
       GITHUB_SHA: ${{ github.sha }}
       SERVICE: ${{ inputs.service }}
+      ENV: ${{ inputs.environment }}
 
     steps:
       - name: Checkout code
@@ -49,10 +53,10 @@ jobs:
       - name: Build Docker image
         run: |
           cd $SERVICE
-          docker build -t $DOCKER_REPO:$SERVICE-$GITHUB_SHA .
-          docker tag $DOCKER_REPO:$SERVICE-$GITHUB_SHA $DOCKER_REPO:$SERVICE-$IMAGE_TAG
+          docker build -t $DOCKER_REPO:$SERVICE-$ENV-$GITHUB_SHA .
+          docker tag $DOCKER_REPO:$SERVICE-$ENV-$GITHUB_SHA $DOCKER_REPO:$SERVICE-$ENV-$IMAGE_TAG
 
       - name: Push Docker image
         run: |
-          docker push $DOCKER_REPO:$SERVICE-$GITHUB_SHA
-          docker push $DOCKER_REPO:$SERVICE-$IMAGE_TAG
+          docker push $DOCKER_REPO:$SERVICE-$ENV-$GITHUB_SHA
+          docker push $DOCKER_REPO:$SERVICE-$ENV-$IMAGE_TAG
