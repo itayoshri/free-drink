@@ -3,6 +3,7 @@ import Button from "@/components/button";
 import Logo from "@/components/UI/Logo";
 import TextBlock from "@/components/UI/Text";
 import { useUserInfo } from "@/context/user";
+import Link from "next/link";
 
 type GetPointsCardProps = {
   amountOfCorks: number;
@@ -26,7 +27,9 @@ export default function GetPointsCard({ amountOfCorks }: GetPointsCardProps) {
           <a className="font-bold text-primary mr-2">ערוך מספר</a>
         </span>
       ) : null}
-      <Button>המשיכו</Button>
+      <Link href={"/getpoints"}>
+        <Button>המשיכו</Button>
+      </Link>
     </div>
   );
 }
