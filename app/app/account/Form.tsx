@@ -4,6 +4,7 @@ import TextBlock from "@/components/UI/Text";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
+import AccountTitle from "./Title";
 
 const TITLE = "התחברו או צרו משתמש";
 const SUBTITLE = "עם משתמש רשום ניתן לקבל 80 פקיים ויותר";
@@ -32,11 +33,9 @@ export default function AccountForm() {
   );
   return (
     <div className="flex flex-col gap-4 w-full">
-      <TextBlock
-        title={TITLE}
-        text={SUBTITLE}
-        className="flex flex-col items-center"
-      />
+      <AccountTitle>
+        <TextBlock title={TITLE} text={SUBTITLE} className="flex flex-col" />
+      </AccountTitle>
       <PhoneNumberInput
         onSubmit={(phoneNumber) => checkIfUserExists(phoneNumber)}
         placeholder="מספר טלפון"
