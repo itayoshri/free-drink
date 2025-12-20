@@ -3,8 +3,11 @@ import React, { createContext, useContext, useState } from "react";
 
 type UserContextType = {
   accessToken: string | null;
+  nayaxAccessToken: string | null;
+
   mobilePhone: string | null;
   setAccessToken: (token: string | null) => void;
+  setNayaxAccessToken: (token: string | null) => void;
   setMobilePhone: (phone: string | null) => void;
 };
 
@@ -18,6 +21,7 @@ export const UserProvider = ({
   phoneNumber: string | undefined;
 }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [nayaxAccessToken, setNayaxAccessToken] = useState<string | null>(null);
   const [mobilePhone, setMobilePhone] = useState<string | null>(
     phoneNumber || null
   );
@@ -26,8 +30,10 @@ export const UserProvider = ({
     <UserContext.Provider
       value={{
         accessToken,
+        nayaxAccessToken,
         mobilePhone,
         setAccessToken,
+        setNayaxAccessToken,
         setMobilePhone,
       }}
     >
