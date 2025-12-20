@@ -82,7 +82,7 @@ jobs:
         run: |
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
-            docker pull $DOCKER_REPO:$SERVICE-$IMAGE_TAG
+            docker pull $DOCKER_REPO:$SERVICE-$ENV-$IMAGE_TAG
             docker stop freed-$SERVICE-$ENV >/dev/null 2>&1 || true
             docker rm freed-$SERVICE-$ENV >/dev/null 2>&1 || true
 
