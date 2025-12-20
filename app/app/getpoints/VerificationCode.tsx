@@ -13,7 +13,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
   const { setStep, setgetPointsResData } = useApp();
-  const { mobilePhone, setMobilePhone } = useUserInfo();
+  const { mobilePhone, setMobilePhone, setAccessToken } = useUserInfo();
   const { user, rolesMap } = useAuth();
   const { setLoading } = useLoading();
 
@@ -51,6 +51,7 @@ export default function VerifyPage() {
           const endTime = performance.now();
           const duration = ((endTime - startTime) / 1000).toFixed(2);
           setStep("completed");
+          setAccessToken(res.data.data.accessToken);
           setgetPointsResData({ ...res.data, duration, points: amountOfCorks });
         });
     } catch {
@@ -62,6 +63,7 @@ export default function VerifyPage() {
     amountOfCorks,
     digits,
     mobilePhone,
+    setAccessToken,
     setLoading,
     setStep,
     setgetPointsResData,
