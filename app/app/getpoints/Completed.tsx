@@ -7,9 +7,10 @@ import RequestActionCard, {
 import { useApp } from "@/context";
 import ScreenConfetti from "../Confetti";
 import { Retry } from "@/components/Icons";
+import { getPointsStepProps } from "./page";
 
-export default function CompletedPage() {
-  const { getPointsResData, setStep } = useApp();
+export default function CompletedPage({ setStep }: getPointsStepProps) {
+  const { getPointsResData } = useApp();
 
   // TODO: Get in better way from req data
   // TODO: Get if user already had corks

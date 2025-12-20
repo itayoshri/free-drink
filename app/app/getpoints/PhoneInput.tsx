@@ -1,16 +1,15 @@
 "use client";
 import axios from "axios";
 import { useCallback } from "react";
-import { useApp } from "@/context";
 import PhoneNumberInput from "@/components/UI/PhoneNumberInput";
 import { useAuth } from "@/context/auth";
 import hasPermission from "@/utils/auth/permissions";
 import { User } from "@/interfaces/db/auth";
 import { useUserInfo } from "@/context/user";
 import { useLoading } from "@/context/loading";
+import { getPointsStepProps } from "./page";
 
-export default function PhoneInputPage() {
-  const { setStep } = useApp();
+export default function PhoneInputPage({ setStep }: getPointsStepProps) {
   const { mobilePhone, setMobilePhone } = useUserInfo();
   const { user, rolesMap } = useAuth();
   const { setLoading } = useLoading();

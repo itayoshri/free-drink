@@ -5,19 +5,16 @@ import SignedUser from "./SignedUser";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { usePathname } from "next/navigation";
-import { useApp } from "@/context";
 import { User } from "@/interfaces/db/auth";
 
 export default function Navbar() {
   const { isAuth, user } = useAuth();
-  const { setStep } = useApp();
-
   const router = useRouter();
   const pathname = usePathname();
   const navigateHome = useCallback(() => {
-    if (pathname === "/") setStep("phoneNumber");
+    if (pathname === "/") console.log(); //setStep("phoneNumber");
     else router.push("/");
-  }, [pathname, router, setStep]);
+  }, [pathname, router]);
 
   return (
     <div className="flex sticky border-b-[1px] dark:border-zinc-800 bg-white dark:bg-zinc-900 text-black dark:text-white justify-between h-14 items-center w-full px-page py-3 top-0">
