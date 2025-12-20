@@ -4,14 +4,18 @@ import RequestActionCard, {
   Action,
   actionInfo,
 } from "@/components/UI/RequestActionCard";
-import { useApp } from "@/context";
 import ScreenConfetti from "../Confetti";
 import { Retry } from "@/components/Icons";
 import { getPointsStepProps } from "./page";
 
-export default function CompletedPage({ setStep }: getPointsStepProps) {
-  const { getPointsResData } = useApp();
+interface CompletedPageProps extends getPointsStepProps {
+  getPointsResData: Record<string, unknown>;
+}
 
+export default function CompletedPage({
+  setStep,
+  getPointsResData,
+}: CompletedPageProps) {
   // TODO: Get in better way from req data
   // TODO: Get if user already had corks
   const userCorks = (getPointsResData.data as Record<string, unknown>)

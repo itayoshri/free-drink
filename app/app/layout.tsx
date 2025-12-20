@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AppProvider } from "@/context";
 import { AuthProvider } from "@/context/auth";
 import { cookies } from "next/headers";
 import {
@@ -32,17 +31,15 @@ export default async function RootLayout({
       rolesMap={rolesMap}
       user={{ role_key, phone_number }}
     >
-      <AppProvider>
-        <UserProvider phoneNumber={phone_number}>
-          <LoadingProvider>
-            <html lang="en">
-              <body className={`antialiased h-dvh w-screen flex flex-col`}>
-                {children}
-              </body>
-            </html>
-          </LoadingProvider>
-        </UserProvider>
-      </AppProvider>
+      <UserProvider phoneNumber={phone_number}>
+        <LoadingProvider>
+          <html lang="en">
+            <body className={`antialiased h-dvh w-screen flex flex-col`}>
+              {children}
+            </body>
+          </html>
+        </LoadingProvider>
+      </UserProvider>
     </AuthProvider>
   );
 }

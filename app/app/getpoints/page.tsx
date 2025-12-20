@@ -1,5 +1,4 @@
 "use client";
-import { useApp } from "@/context";
 import PhoneInputPage from "./PhoneInput";
 import VerifyPage from "../Verify";
 import CompletedPage from "./Completed";
@@ -18,7 +17,9 @@ export type getPointsStepProps = {
 export default function Home() {
   const { loading, setLoading } = useLoading();
   const [step, setStep] = useState<Step>("phoneNumber");
-  const { setgetPointsResData } = useApp();
+  const [getPointsResData, setgetPointsResData] = useState<
+    Record<string, unknown>
+  >({});
   const { setAccessToken } = useUserInfo();
   const getPoints = useCallback(
     async (
@@ -57,7 +58,9 @@ export default function Home() {
   const steps: Record<string, JSX.Element> = {
     phoneNumber: <PhoneInputPage setStep={setStep} />,
     verificationCode: <VerifyPage onClick={getPoints} setStep={setStep} />,
-    completed: <CompletedPage setStep={setStep} />,
+    completed: (
+      <CompletedPage setStep={setStep} getPointsResData={getPointsResData} />
+    ),
   };
 
   return loading ? <LoadingPage /> : steps[step] ?? null;
