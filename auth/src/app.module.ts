@@ -10,6 +10,7 @@ import { InvitationModule } from './invitation/invitation.module';
 import { Invitation } from './invitation/invitation.entity';
 import { Token } from './auth/auth.entity';
 import { Role } from './invitation/roles.entity';
+import { AccessToken } from './users/token.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { Role } from './invitation/roles.entity';
         port: configService.get<number>('DATABASE_PORT'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         username: configService.get<string>('DATABASE_USER'),
-        entities: [User, Invitation, Token, Role],
+        entities: [User, Invitation, Token, Role, AccessToken],
         ssl: { rejectUnauthorized: false },
         database: configService.get<string>('DATABASE_NAME'),
         logging: true,
