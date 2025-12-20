@@ -8,6 +8,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth, userContextObj } from "@/context/auth";
 import { useUserInfo } from "@/context/user";
+import Logo from "@/components/UI/Logo";
+import AccountTitle from "../Title";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -45,8 +47,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col w-full gap-6 items-center">
-      <h2 className="text-black text-2xl font-bold">התחברות</h2>
+    <div className="flex flex-col w-full gap-8">
+      <AccountTitle title="התחברות באמצעות מספר טלפון" />
       <form className="flex flex-col w-full gap-form" onSubmit={handleSubmit}>
         <Input
           name="phone"

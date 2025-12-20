@@ -7,6 +7,7 @@ import axios from "axios";
 import { AUTH_SERVER_URL } from "../Form";
 import Button from "@/components/button";
 import { useAuth } from "@/context/auth";
+import AccountTitle from "../Title";
 
 export default function RegisterPage() {
   const searchParams = useSearchParams();
@@ -50,8 +51,8 @@ export default function RegisterPage() {
   return completed ? (
     <SignedUpSuccesfuly />
   ) : (
-    <div className="flex flex-col items-center w-full gap-6">
-      <h2 className="text-black text-2xl font-bold">יצירת משתמש</h2>
+    <div className="flex flex-col w-full gap-6">
+      <AccountTitle title="יצירת משתמש" />
       <form className="flex flex-col gap-form w-full" onSubmit={handleSubmit}>
         <TitledInput
           title="מספר טלפון"
