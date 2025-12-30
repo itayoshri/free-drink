@@ -52,7 +52,12 @@ export class Questionnaire {
 
   static isGeneric(questions: question[]) {
     const q = questions[0];
-    return !(q.wordsCompletionGame || q.couplesGame || q.freeScreen);
+    return !(
+      q.wordsCompletionGame ||
+      q.couplesGame ||
+      q.freeScreen ||
+      q.isSliderTemplate
+    );
   }
 
   getAnsweredQuestionsArr(accessToken: string) {

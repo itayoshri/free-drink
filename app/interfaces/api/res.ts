@@ -116,4 +116,5 @@ export type question = {
   wordsCompletionGame: boolean;
   couplesGame: boolean;
   freeScreen: boolean;
+  isSliderTemplate: boolean;
 };
