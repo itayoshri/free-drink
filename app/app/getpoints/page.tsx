@@ -25,7 +25,7 @@ export default function Home() {
   const { loading, setLoading } = useLoading();
   const [step, setStep] = useState<Step>("phoneNumber");
   const [getPointsResData, setgetPointsResData] = useState<getPointsResData>();
-  const { setAccessToken } = useUserInfo();
+  const { setAccessToken, setGiftCardId } = useUserInfo();
   const getPoints = useCallback(
     async (
       mobilePhone: string,
@@ -46,6 +46,7 @@ export default function Home() {
             const duration = ((endTime - startTime) / 1000).toFixed(2);
             setStep("completed");
             setAccessToken(res.data.data.accessToken);
+            setGiftCardId(giftCard.cardId);
             setgetPointsResData({
               goalCorks: amountOfCorks,
               corks: corks,

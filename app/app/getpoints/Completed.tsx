@@ -51,7 +51,9 @@ export default function CompletedPage({
         <a className="text-center font-bold text-2xl">
           {actionInfo[action].message}
         </a>
-        <a className="text-xl">{`קיבלתם ${corks} פקקים`}</a>
+        <a className="text-xl">
+          {cardId ? "קיבלתם שובר למשקה" : `קיבלתם ${corks} פקקים`}
+        </a>
       </div>
       {cardId ? (
         <GiftCard cardId={cardId} />

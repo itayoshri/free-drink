@@ -1,7 +1,8 @@
+import { shuffleString } from "@/lib/functions";
 import Logo from "../Logo";
 import GiftCardVector from "./vector";
 
-const TOP_TEXT = "שובר למשקה ממכונת שמקר";
+const TOP_TEXT = `שובר למשקה ממכונת ${shuffleString("שמקר")}`;
 
 type GiftCardProps = {
   cardId: number;
