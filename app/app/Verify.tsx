@@ -13,7 +13,7 @@ interface VerifyPageProps extends getPointsStepProps {
   onClick(
     mobilePhone: string,
     verificationCode: number,
-    amountOfCorks: number
+    amountOfCorks?: number
   ): unknown;
 }
 

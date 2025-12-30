@@ -63,7 +63,9 @@ export async function POST(request: NextRequest) {
     await getPoints(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
     const achieved = Boolean(corks >= targetNumberOfCorks);
-    const giftCard = await getGiftCard(accessToken as string);
+    const giftCard = achieved
+      ? await getGiftCard(accessToken as string)
+      : undefined;
 
     return NextResponse.json(
       {
