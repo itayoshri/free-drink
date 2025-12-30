@@ -14,12 +14,17 @@ export type getPointsStepProps = {
   setStep: (step: Step) => void;
 };
 
+export type getPointsResData = {
+  goalCorks: number;
+  corks: number;
+  duration: string;
+  cardId: number;
+};
+
 export default function Home() {
   const { loading, setLoading } = useLoading();
   const [step, setStep] = useState<Step>("phoneNumber");
-  const [getPointsResData, setgetPointsResData] = useState<
-    Record<string, unknown>
-  >({});
+  const [getPointsResData, setgetPointsResData] = useState<getPointsResData>();
   const { setAccessToken } = useUserInfo();
   const getPoints = useCallback(
     async (
@@ -36,15 +41,17 @@ export default function Home() {
             mobilePhone,
           })
           .then((res) => {
+            const { corks, giftCard } = res.data.data;
             const endTime = performance.now();
             const duration = ((endTime - startTime) / 1000).toFixed(2);
             setStep("completed");
             setAccessToken(res.data.data.accessToken);
             setgetPointsResData({
-              ...res.data,
+              goalCorks: amountOfCorks,
+              corks: corks,
               duration,
-              points: amountOfCorks,
-            });
+              cardId: giftCard.cardId,
+            } as getPointsResData);
           });
       } catch {
         // TODO: add toast error
@@ -59,7 +66,10 @@ export default function Home() {
     phoneNumber: <PhoneInputPage setStep={setStep} />,
     verificationCode: <VerifyPage onClick={getPoints} setStep={setStep} />,
     completed: (
-      <CompletedPage setStep={setStep} getPointsResData={getPointsResData} />
+      <CompletedPage
+        setStep={setStep}
+        getPointsResData={getPointsResData as getPointsResData}
+      />
     ),
   };
 

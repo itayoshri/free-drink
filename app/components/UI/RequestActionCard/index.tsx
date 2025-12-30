@@ -9,7 +9,7 @@ export enum Action {
 
 type RequestAction = {
   action: Action;
-  duration: number;
+  duration: string;
 };
 
 export const actionInfo = [
