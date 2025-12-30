@@ -8,6 +8,7 @@ import hasPermission, {
 } from "@/utils/auth/permissions";
 import { HttpStatusCode } from "axios";
 import getPoints from ".";
+import getGiftCard from "./giftCard";
 
 type reqData = {
   verificationCode: string;
@@ -62,10 +63,11 @@ export async function POST(request: NextRequest) {
     await getPoints(corksForTarget, accessToken);
     const corks = (await GetUserPoints(accessToken)).body.corks;
     const achieved = Boolean(corks >= targetNumberOfCorks);
+    const giftCard = await getGiftCard(accessToken as string);
 
     return NextResponse.json(
       {
-        data: { corks, accessToken },
+        data: { corks, accessToken, giftCard },
         message: achieved
           ? ""
           : "there aren't enough available solved games on our DB",

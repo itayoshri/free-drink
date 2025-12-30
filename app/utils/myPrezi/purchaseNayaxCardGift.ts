@@ -2,11 +2,11 @@ import { ResPurchaseNayaxCardGift } from "@/interfaces/api/res";
 import { fetchDataSource } from "../datasource";
 import { ReqPurchaseNayaxCardGift } from "@/interfaces/api/requests";
 
-export default function purcheseCardGift(uniqueId: string, token: string) {
+export default function purcheseGiftCard(uniqueId: string, token: string) {
   return fetchDataSource<ResPurchaseNayaxCardGift>({
-    method: "GET",
+    method: "POST",
     namespace: "myPrezi",
-    action: "nayaxMetadata",
+    action: "purchaseNayaxCardGift",
     token,
     data: {
       credits: 1,

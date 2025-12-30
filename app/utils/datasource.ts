@@ -22,7 +22,8 @@ export type apiAction =
   | "recordLog"
   | "Answer"
   | "getUserPoints"
-  | "nayaxMetadata";
+  | "nayaxMetadata"
+  | "purchaseNayaxCardGift";
 
 export interface IFetchDataParams {
   method: Method;
