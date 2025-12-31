@@ -1,7 +1,13 @@
 import axios, { Method } from "axios";
 
 const BASE_URL = "https://cocacola-app.co.il/api";
+const NAYAX_BASE_URL = "https://payapi.nayax.com/v1";
 
+type Api = "coca" | "nayax";
+const api_map: Record<Api, string> = {
+  coca: BASE_URL,
+  nayax: NAYAX_BASE_URL,
+};
 export type apiNamespace =
   | "account"
   | "locations"
@@ -9,7 +15,9 @@ export type apiNamespace =
   | "questionnaire"
   | "hotspot"
   | "homePage"
-  | "myPrezi";
+  | "myPrezi"
+  | "machines"
+  | "orders";
 export type apiAction =
   | "getUserInfo"
   | "register"
@@ -23,7 +31,10 @@ export type apiAction =
   | "Answer"
   | "getUserPoints"
   | "nayaxMetadata"
-  | "purchaseNayaxCardGift";
+  | "purchaseNayaxCardGift"
+  | "orders"
+  | "challenge"
+  | "verify";
 
 export interface IFetchDataParams {
   method: Method;
@@ -32,14 +43,8 @@ export interface IFetchDataParams {
   query?: string;
   data?: unknown;
   token?: string;
-}
-
-export function buildFetchUrl(
-  namespace: apiNamespace,
-  action: apiAction,
-  query: string
-) {
-  return `/${namespace}${action ? `/${action}` : ""}${query ? query : ""}`;
+  type?: Api;
+  slug?: string;
 }
 
 export async function fetchDataSource<T>({
@@ -49,11 +54,15 @@ export async function fetchDataSource<T>({
   query = "",
   data,
   token = "",
+  type = "coca",
+  slug,
 }: IFetchDataParams) {
   const res = await axios<T>({
     method: method,
-    baseURL: BASE_URL,
-    url: `${namespace}${action ? `/${action}` : ""}${query ? `?${query}` : ""}`,
+    baseURL: api_map[type],
+    url: `${namespace}${slug ? `/${slug}` : ""}${action ? `/${action}` : ""}${
+      query ? `?${query}` : ""
+    }`,
     data: data,
     headers: { Authorization: token ? `Bearer ${token}` : "" },
   });
