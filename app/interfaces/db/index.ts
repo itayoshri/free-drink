@@ -1,9 +1,9 @@
 import { BoolString } from "../api/requests";
-import { ResExpendedContent } from "../api/res";
+import { ContentType, ResExpendedContent } from "../api/res";
 
 export interface DBContent {
   contentId: number;
-  type: string; // TODO: type
+  type: ContentType; // TODO: type
   content: ResExpendedContent["body"]["content"];
 }
 
