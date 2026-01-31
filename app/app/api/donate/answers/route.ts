@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       .toArray()
   ).map((doc) => doc.contentId);
   const contentIds = getContentIds(currentContents).filter(
-    (c) => !answeredIds.includes(c)
+    (c) => !answeredIds.includes(c),
   );
   const contents = await GetContentsFromDB(contentIds, db);
   client.close();
@@ -44,8 +44,7 @@ export async function POST(request: Request) {
       !rawQuestions ||
       rawQuestions.length == 0 ||
       !Questionnaire.isGeneric(rawQuestions) ||
-      content.type !== "KnowledgeQuestionnaire" ||
-      content.content.timeInSeconds !== null
+      content.type !== "KnowledgeQuestionnaire"
     )
       continue;
 
@@ -53,17 +52,18 @@ export async function POST(request: Request) {
       questionnaireId: question.questionnaireId,
       questionId: question.id,
       answers: question.answers,
+      timeInSeconds: content.content.timeInSeconds,
     })) as QuestionObj[];
 
     const q = new Questionnaire(
       content.contentId,
       content.content.id,
       questions,
-      content.type as ContentType
+      content.type as ContentType,
     );
 
     answeredQuestionsToPush.push(
-      ...(await q.getAnsweredQuestionsArr(accessToken))
+      ...(await q.getAnsweredQuestionsArr(accessToken)),
     );
   }
 
@@ -75,6 +75,6 @@ export async function POST(request: Request) {
       data: { solved: answeredQuestionsToPush, accessToken },
       message: "",
     },
-    { status: 200 }
+    { status: 200 },
   );
 }

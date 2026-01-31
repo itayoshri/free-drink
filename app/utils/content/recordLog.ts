@@ -1,10 +1,10 @@
-import { ReqRecordLog } from "@/interfaces/api/requests";
+import type { ReqRecordLog } from "@/interfaces/api/requests";
 import { fetchDataSource } from "../datasource";
 
 export default function RecordLog(
   contentId: number,
-  state: string,
-  token: string
+  state: ReqRecordLog["type"],
+  token: string,
 ) {
   return fetchDataSource({
     method: "POST",

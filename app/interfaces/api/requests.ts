@@ -38,5 +38,5 @@ export interface ReqRegisterUser {
 
 export interface ReqRecordLog {
   contentId: number;
-  type: string;
+  type: "Started" | "Finished";
 }

@@ -10,6 +10,8 @@ export interface DBContent {
 export interface DBAnswer {
   contentId: number;
   isLastQuestion: BoolString;
-  questionnaireId?: number;
+  questionnaireId: number;
+  questionsId: number;
+  timeLimited: boolean;
   hotSpotQuestionnaireId?: number;
 }

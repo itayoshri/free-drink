@@ -11,7 +11,7 @@ const CORKS_PER_QUIZ = 10;
 
 export default async function getPoints(
   corksForTarget: number,
-  accessToken: string
+  accessToken: string,
 ) {
   const { db, client } = GetDB();
 
@@ -22,7 +22,7 @@ export default async function getPoints(
   // in order accelerate answering proccess
   const answers = await GetAnswersFromDB(contentIds, db);
   const groupedAnswers = groupByContentId(answers).sort(
-    (a, b) => a.length - b.length
+    (a, b) => a.length - b.length,
   );
 
   const neededNumOfQuizes = corksForTarget / CORKS_PER_QUIZ;

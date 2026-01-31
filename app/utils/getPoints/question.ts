@@ -8,25 +8,28 @@ export class Question {
   type: ContentType;
   answers: Answer[];
   answerId: number;
+  timeInSeconds: number | null;
 
   constructor(
     questionId: number,
     questionnaireId: number,
     type: ContentType,
     answers: Answer[],
-    answerId?: number
+    timeInSeconds: number | null,
+    answerId?: number,
   ) {
     this.questionId = questionId;
     this.questionnaireId = questionnaireId;
     this.type = type;
     this.answers = answers;
+    this.timeInSeconds = timeInSeconds;
     this.answerId = answerId || -1;
   }
 
   generateAnswerObject(answerId?: number) {
     const signedHash = generateSignedHash(
       this.questionId,
-      this.questionnaireId
+      this.questionnaireId,
     );
 
     let answer = {};
@@ -57,19 +60,19 @@ export class Question {
   async submitAnswer(
     isLastQuestion: boolean,
     accessToken: string,
-    answerId?: number
+    answerId?: number,
   ) {
     return Question.submitAnswer(
       this.generateAnswerObject(answerId),
       isLastQuestion,
-      accessToken
+      accessToken,
     );
   }
 
   static async submitAnswer(
     answerObj: object,
     isLastQuestion: boolean,
-    accessToken: string
+    accessToken: string,
   ) {
     const res = await fetchDataSource<ResAnswer>({
       method: "POST",
@@ -88,14 +91,14 @@ export class Question {
     const { res, answerObj } = await this.submitAnswer(
       false,
       accessToken,
-      this.answers[randomIndex].id
+      this.answers[randomIndex].id,
     );
 
     try {
       const fullAnswerObj = this.generateAnswerObject(
-        res.body.rightAnswerIds[0]
+        res.body.rightAnswerIds[0],
       );
-      return fullAnswerObj;
+      return { ...fullAnswerObj, timeLimited: this.timeInSeconds != null };
     } catch (e) {
       console.log(e, this.questionnaireId, answerObj);
     }

@@ -1,11 +1,15 @@
 import { Answer, ContentType, question } from "@/interfaces/api/res";
 import { Question } from "./question";
+import { DBAnswer } from "@/interfaces/db";
+import RecordLog from "../content/recordLog";
+import { GetQuestionnaireFromServer } from "../content/expandedContent";
 
 export type QuestionObj = {
   questionnaireId: number;
   questionId: number;
   contentId: number;
   answers: Answer[];
+  timeInSeconds: number;
 };
 
 export class Questionnaire {
@@ -18,7 +22,7 @@ export class Questionnaire {
     contentId: number,
     questionnaireId: number,
     questions: QuestionObj[],
-    type: ContentType
+    type: ContentType,
   ) {
     this.contentId = contentId;
     this.questionnaireId = questionnaireId;
@@ -31,22 +35,30 @@ export class Questionnaire {
             question.questionId,
             question.questionnaireId,
             this.type,
-            question.answers
-          )
+            question.answers,
+            question.timeInSeconds,
+          ),
       );
   }
 
   static async submitAnsweredQuestions(
-    questions: object[],
-    accessToken: string
+    questions: DBAnswer[],
+    accessToken: string,
   ): Promise<void> {
     for (let index = 0; index < questions.length; index++) {
       const isLastQuestion = index + 1 === questions.length;
-      await Question.submitAnswer(
-        questions[index],
-        isLastQuestion,
-        accessToken
-      );
+      const { timeLimited, ...question } = questions[index];
+      if (timeLimited && index == 0) {
+        await RecordLog(question.contentId, "Started", accessToken);
+        await GetQuestionnaireFromServer(
+          question.contentId,
+          "KnowledgeQuestionnaire",
+          accessToken,
+        );
+      }
+      await Question.submitAnswer(question, isLastQuestion, accessToken);
+      if (timeLimited && isLastQuestion)
+        await RecordLog(question.contentId, "Finished", accessToken);
     }
   }
 
@@ -67,8 +79,8 @@ export class Questionnaire {
           await question.getObjWithAnswerId(accessToken).then((obj) => ({
             ...obj,
             contentId: this.contentId,
-          }))
-      )
+          })),
+      ),
     );
   }
 }
