@@ -3,7 +3,7 @@ import { ContentType, ResExpendedContent } from "../api/res";
 
 export interface DBContent {
   contentId: number;
-  type: ContentType; // TODO: type
+  type: ContentType;
   content: ResExpendedContent["body"]["content"];
 }
 
