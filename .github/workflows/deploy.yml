@@ -49,6 +49,8 @@ on:
         required: false
       DB_HOST:
         required: false
+      SECRET:
+        required: true
 jobs:
   deploy:
     name: Pull Docker image on the app server and run it
@@ -79,6 +81,7 @@ jobs:
           JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
           DB_HOST: ${{ secrets.DB_HOST }}
+          SECRET: ${{ secrets.SECRET }}
         run: |
           ssh itayo@$SERVER_IP <<EOF
             sudo -s
@@ -90,6 +93,7 @@ jobs:
               -e DB_USERNAME="$DB_USERNAME" \
               -e DB_PASSWORD="$DB_PASSWORD" \
               -e JWT_PUBLIC_KEY="$JWT_PUBLIC_KEY" \
+              -e SECRET="$SECRET" \
               $(if [ "$SERVICE" = "auth" ]; then echo "-e JWT_PRIVATE_KEY=\"$JWT_PRIVATE_KEY\" -e DB_HOST=\"$DB_HOST\""; fi) \
               $(if [ "$SERVICE" = "app" ]; then echo "-e NEXT_PUBLIC_AUTH_SERVER_URL=\"$NEXT_PUBLIC_AUTH_SERVER_URL\""; fi) \
               $DOCKER_REPO:$SERVICE-$ENV-$IMAGE_TAG
